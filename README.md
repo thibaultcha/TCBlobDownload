@@ -46,6 +46,7 @@ And the usage becomes:
 ```objective-c
 BlobDownloader *blobDL = [sharedManager addDownloadWithURL:@"http://give.me/bigfile.avi"
                       andDelegate:delegate];
+// Store blobDL the way you want to retrieve it in delegate methods
 ```
 
 Then, if your add multiple downloads to the Manager, you must 
@@ -65,7 +66,7 @@ And to access to its file name and URL address. Blah blah blah.
 You can also set dependencies in your downloads. See [NSOperation Class Reference](http://developer.apple.com/library/mac/#documentation/Cocoa/Reference/NSOperation_class/Reference/Reference.html) and the `addDependency:` method in particular.
 
 ## Roadmap
-It would be great to handle the storage thing and let your mind free of that, but I did not find a way yet. If you have any idea, please suggest it! :)
+It would be **great** to handle the storage thing and let your mind free of that, but I did not find a way yet, or ugly ones I think. If you have any idea, please suggest it! :)
 
 - Solve the storage thing
 - Choose the local download path
