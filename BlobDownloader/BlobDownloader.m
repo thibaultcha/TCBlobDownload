@@ -100,8 +100,8 @@
           [error localizedDescription],
           [[error userInfo] objectForKey:NSURLErrorFailingURLStringErrorKey]);
 #endif
-    if ([self.delegate respondsToSelector:@selector(downloader:didReceiveError:)]) {
-        [self.delegate downloader:self didReceiveError:error];
+    if ([self.delegate respondsToSelector:@selector(downloader:didStopWithError:)]) {
+        [self.delegate downloader:self didStopWithError:error];
     }
     
     [self endDownloadAndRemoveFile:NO];
@@ -117,15 +117,15 @@
         NSMutableDictionary *errorDetails = [NSMutableDictionary dictionary];
         [errorDetails setValue:errorDesc
                         forKey:NSLocalizedDescriptionKey];
-        NSError *error = [NSError errorWithDomain:ERROR_DOMAIN
+        __autoreleasing NSError *error = [NSError errorWithDomain:ERROR_DOMAIN
                                              code:1
                                          userInfo:errorDetails];
         [self endDownloadAndRemoveFile:NO];
 #ifdef DEBUG
         NSLog(@"Download failed. Error - %@", [error localizedDescription]);
 #endif
-        if ([self.delegate respondsToSelector:@selector(downloader:didReceiveError:)]) {
-            [self.delegate downloader:self didReceiveError:error];
+        if ([self.delegate respondsToSelector:@selector(downloader:didStopWithError:)]) {
+            [self.delegate downloader:self didStopWithError:error];
         }
     }
 }
@@ -158,8 +158,8 @@
 #ifdef DEBUG
     NSLog(@"Download succeeded. Bytes received: %lld", _receivedDataLength);
 #endif
-    if ([self.delegate respondsToSelector:@selector(downloadDidFinishLoadingWithDownload:)]) {
-        [self.delegate downloadDidFinishLoadingWithDownload:self];
+    if ([self.delegate respondsToSelector:@selector(downloadDidFinishWithDownloader:)]) {
+        [self.delegate downloadDidFinishWithDownloader:self];
     }
     
     [self endDownloadAndRemoveFile:NO];
