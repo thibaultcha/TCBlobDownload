@@ -47,6 +47,7 @@
 
 - (void)download:(id)sender
 {
+    // Wild download
     [self.sharedDownloadManager addDownloadWithURL:self.urlField.text
                                        andDelegate:self];
     [self.urlField resignFirstResponder];
