@@ -49,9 +49,9 @@ BlobDownloader *blobDL = [sharedManager addDownloadWithURL:@"http://give.me/bigf
 ```
 
 Then, if your add multiple downloads to the Manager, you must 
-find a way to store the created `BlobDownloader`s. **For example, to update `UIProgressView`s in `UITableViewCell`s, I used a `NSMutableDictionnary` using the cell's `indexPath` as key.** I may update the lib example later, and it would come with a screenshot and that would be nice.
+find a way to store the created `BlobDownloaders`. **For example, to update UIProgressViews in UITableViewCells, I used a NSMutableDictionnary using the cell's indexPath as key.** I may update the lib example later, and it would come with a screenshot and that would be nice.
 
-3. Store your `BlobDownloader`s allows you to do:
+3. Store your `BlobDownloaders` allows you to do:
 
 ```objective-c
 BlobDownloader *blobDL = [sharedManager addDownloadWithURL:@"http://give.me/bigfile.avi"
