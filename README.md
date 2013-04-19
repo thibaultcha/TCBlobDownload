@@ -17,6 +17,7 @@ Files are currently downloaded in the `Documents/` app directory.
 
 ## Usage
 1. Wild download. (No delegate)
+
 ```objective-c
 #import "BlobDownloadManager.h"
 
@@ -41,20 +42,24 @@ This way, you your download will start and you'll see the progress in console.
 ```
 
 And the usage becomes:
+
 ```objective-c
 BlobDownloader *blobDL = [sharedManager addDownloadWithURL:@"http://give.me/bigfile.avi"
                       andDelegate:delegate];
 ```
+
 Then, if your add multiple downloads to the Manager, you must 
 find a way to store the created `BlobDownloader`s. **For example, to update `UIProgressView`s in `UITableViewCell`s, I used a `NSMutableDictionnary` using the cell's `indexPath` as key.** I may update the lib example later, and it would come with a screenshot and that would be nice.
 
 3. Store your `BlobDownloader`s allows you to do:
+
 ```objective-c
 BlobDownloader *blobDL = [sharedManager addDownloadWithURL:@"http://give.me/bigfile.avi"
                       andDelegate:delegate];
 
 [BlobDownloader endDownloadAndRemoveFile:YES]
 ```
+
 And to access to its file name and URL address. Blah blah blah.
 
 You can also set dependencies in your downloads. See [NSOperation Class Reference](http://developer.apple.com/library/mac/#documentation/Cocoa/Reference/NSOperation_class/Reference/Reference.html) and the `addDependency:` method in particular.
@@ -67,6 +72,7 @@ It would be great to handle the storage thing and let your mind free of that, bu
 - Encapsulate dependencies
 
 ## Licence
+
 ```
 Copyright (C) 2013 by Thibault Charbonnier.
 
