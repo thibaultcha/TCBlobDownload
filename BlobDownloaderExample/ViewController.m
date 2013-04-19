@@ -69,13 +69,13 @@
     // with the current progression.
 }
 
-- (void)downloadDidFinishLoadingWithDownload:(BlobDownloader *)blobDownloader
+- (void)downloadDidFinishWithDownloader:(BlobDownloader *)blobDownloader
 {
     // If you stored the BlobDownloader you can retrieve it and update your view
     // when the download has finished.
 }
 
-- (void)downloader:(BlobDownloader *)blobDownloader didReceiveError:(NSError *)error
+- (void)downloader:(BlobDownloader *)blobDownloader didStopWithError:(NSError *)error
 {
     // If you stored the BlobDownloader you can retrieve it and display the error
     // it created.

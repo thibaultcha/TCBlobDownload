@@ -35,7 +35,7 @@
 // Let you handle the error for a given download
 //
 - (void)downloader:(BlobDownloader *)blobDownloader
-   didReceiveError:(NSError *)error;
+   didStopWithError:(NSError *)error;
 //
 // If you stored the BlobDownloader you can retrieve it and update the corresponding view
 //
@@ -45,6 +45,6 @@
 //
 // If you stored the BlobDownloader you can retrieve it and update the corresponding view
 //
-- (void)downloadDidFinishLoadingWithDownload:(BlobDownloader *)blobDownloader;
+- (void)downloadDidFinishWithDownloader:(BlobDownloader *)blobDownloader;
 
 @end
