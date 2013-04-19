@@ -6,9 +6,6 @@
 //  Copyright (c) 2013 thibaultCha. All rights reserved.
 //
 
-#define BUTTON_WIDTH 100
-#define FIELD_PADDING 10
-
 #import "ViewController.h"
 
 @interface ViewController ()
@@ -17,42 +14,23 @@
 
 @implementation ViewController
 
+
+#pragma mark - Init
+
+
+- (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
+{
+    self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
+    if (self) {
+        self.sharedDownloadManager = [BlobDownloadManager sharedDownloadManager];
+    }
+    
+    return self;
+}
+
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-	// URI label
-    _urlField = [[UITextField alloc] initWithFrame:CGRectMake(FIELD_PADDING,
-                                                              self.view.bounds.size.height / 2 - 2*BUTTON_WIDTH,
-                                                              self.view.bounds.size.width - FIELD_PADDING,
-                                                              50)];
-    self.urlField.placeholder = @"http://give.me/a/big/file.avi";
-    self.urlField.textAlignment = NSTextAlignmentCenter;
-    [self.view addSubview:self.urlField];
-    // Dowload button
-    self.downloadButton = [UIButton buttonWithType:UIButtonTypeRoundedRect];
-    [self.downloadButton setFrame:CGRectMake(self.view.bounds.size.width / 2 - (BUTTON_WIDTH / 2),
-                                        self.view.bounds.size.height / 2 - BUTTON_WIDTH,
-                                        BUTTON_WIDTH,
-                                        30)];
-    [self.downloadButton setTitle:@"Download" forState:UIControlStateNormal];
-    [self.downloadButton addTarget:self
-                       action:@selector(download)
-             forControlEvents:UIControlEventTouchUpInside];
-    
-    [self.view addSubview:self.downloadButton];
-    // Cancel button
-    self.downloadButton = [UIButton buttonWithType:UIButtonTypeRoundedRect];
-    [self.downloadButton setFrame:CGRectMake(self.view.bounds.size.width / 2 - (BUTTON_WIDTH / 2),
-                                             self.view.bounds.size.height / 2 - (BUTTON_WIDTH / 2),
-                                             BUTTON_WIDTH,
-                                             30)];
-    [self.downloadButton setTitle:@"Cancel all" forState:UIControlStateNormal];
-    [self.downloadButton addTarget:self
-                            action:@selector(cancelAll)
-                  forControlEvents:UIControlEventTouchUpInside];
-    
-    [self.view addSubview:self.downloadButton];
-    self.view.backgroundColor = [UIColor whiteColor];
 }
 
 - (void)didReceiveMemoryWarning
@@ -64,26 +42,43 @@
 }
 
 
-#pragma mark- Demo
+#pragma mark - Demo
 
 
-- (void)download
+- (void)download:(id)sender
 {
-    NSString *url = self.urlField.text;
-    if ([NSURL URLWithString:url]) {
-        BlobDownloaderQueue *sharedQueue = [BlobDownloaderQueue sharedDownloadQueue];
-        BlobDownloader *downloader = [[BlobDownloader alloc] initWithUrlString:url
-                                                                   andDelegate:self];
-        [sharedQueue.operationQueue addOperation:downloader];
-    } else {
-        NSLog(@"Invalid URL provided.");
-    }
+    [self.sharedDownloadManager addDownloadWithURL:self.urlField.text
+                                       andDelegate:self];
+    [self.urlField resignFirstResponder];
 }
 
-- (void)cancelAll
+- (void)cancelAll:(id)sender
 {
-    BlobDownloaderQueue *sharedQueue = [BlobDownloaderQueue sharedDownloadQueue];
-    [sharedQueue.operationQueue cancelAllOperations];
+    [self.sharedDownloadManager cancelAllDownloadsAndRemoveFiles:YES];
+}
+
+
+#pragma mark - BlobDownloadManager Delegate
+
+
+- (void)downloader:(BlobDownloader *)blobDownloader
+    didReceiveData:(uint64_t)received
+           onTotal:(uint64_t)total
+{
+    // If you stored the BlobDownloader you can retrieve it and update your view
+    // with the current progression.
+}
+
+- (void)downloadDidFinishLoadingWithDownload:(BlobDownloader *)blobDownloader
+{
+    // If you stored the BlobDownloader you can retrieve it and update your view
+    // when the download has finished.
+}
+
+- (void)downloader:(BlobDownloader *)blobDownloader didReceiveError:(NSError *)error
+{
+    // If you stored the BlobDownloader you can retrieve it and display the error
+    // it created.
 }
 
 @end

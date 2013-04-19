@@ -11,23 +11,40 @@
 
 #import <Foundation/Foundation.h>
 
-@protocol BlobDownloaderDelegate;
+@protocol BlobDownloadManagerDelegate;
 
 @interface BlobDownloader : NSOperation <NSURLConnectionDelegate>
 
-@property (nonatomic, assign) id<BlobDownloaderDelegate> delegate;
+@property (nonatomic, assign) id<BlobDownloadManagerDelegate> delegate;
 @property (nonatomic, copy) NSURL *urlAdress;
+@property (nonatomic, retain) NSString *fileName;
 
-- (id)initWithUrlString:(NSString *)url andDelegate:(id<BlobDownloaderDelegate>)delegate;
+- (id)initWithUrlString:(NSString *)urlString
+            andDelegate:(id<BlobDownloadManagerDelegate>)delegateOrNil;
+//
+// Cancel a download and remove the file if specified.
+//
+- (void)endDownloadAndRemoveFile:(BOOL)remove;
 
 @end
 
-
-@protocol BlobDownloaderDelegate <NSObject>
+@protocol BlobDownloadManagerDelegate <NSObject>
 
 @optional
-- (void)downloaderDidFinishLoading;
-- (void)downloaderDidFailWithError:(NSError **)error;
-- (void)downloaderDidReceiveData:(uint64_t)received onTotal:(uint64_t)total;
+//
+// Let you handle the error for a given download
+//
+- (void)downloader:(BlobDownloader *)blobDownloader
+   didReceiveError:(NSError *)error;
+//
+// If you stored the BlobDownloader you can retrieve it and update the corresponding view
+//
+- (void)downloader:(BlobDownloader *)blobDownloader
+    didReceiveData:(uint64_t)received
+           onTotal:(uint64_t)total;
+//
+// If you stored the BlobDownloader you can retrieve it and update the corresponding view
+//
+- (void)downloadDidFinishLoadingWithDownload:(BlobDownloader *)blobDownloader;
 
 @end

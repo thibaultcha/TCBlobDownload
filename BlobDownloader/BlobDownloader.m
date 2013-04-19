@@ -10,63 +10,54 @@
 @interface BlobDownloader ()
 {
     NSURLConnection *_connection;
-    NSMutableData *_receivedData;
-    NSFileHandle *_handleFile;
-    NSString *_fileName;
+    NSMutableData *_receivedDataBuffer;
+    NSFileHandle *_file;
     NSPort *_port; // Trick the NSRunLoop
 
     uint64_t _receivedDataLength;
-    uint64_t _totalDataLength;
+    uint64_t _expectedDataLength;
 }
 
-- (void)cancelDownload;
 + (uint64_t)freeDiskSpace;
 
 @end
 
 @implementation BlobDownloader
 
-
-#pragma mark - Utilities
-
-
-- (id)initWithUrlString:(NSString *)url andDelegate:(id<BlobDownloaderDelegate>)delegate
+- (id)initWithUrlString:(NSString *)urlString
+            andDelegate:(id<BlobDownloadManagerDelegate>)delegateOrNil
 {
     if (self = [super init]) {
-        self.urlAdress = [NSURL URLWithString:url];
-        self.delegate = delegate;
+        self.urlAdress = [NSURL URLWithString:urlString];
+        self.delegate = delegateOrNil;
     }
     
     return self;
 }
 
 
-- (void)cancelDownload
-{
-    [_connection cancel];
-    [_handleFile closeFile];
-    [_port invalidate];
-    
-#ifdef DEBUG
-    NSLog(@"Operation cancelled for file %@", _fileName);
-#endif
-    
-}
-
-
 #pragma mark - NSOperation override
 
+
+- (void)cancel
+{
+    [_connection cancel];
+    [_file closeFile];
+    [_port invalidate]; // Remove input source so the run loop stops
+    [super cancel];
+}
 
 - (void)main
 {    
     NSMutableURLRequest *fileRequest = [NSMutableURLRequest requestWithURL:self.urlAdress
                                                                cachePolicy:NSURLRequestUseProtocolCachePolicy
                                                            timeoutInterval:DEFAULT_TIMEOUT];
+    NSAssert([NSURLConnection canHandleRequest:fileRequest], @"NSURLConnection can't handle provided request");
     
-    _fileName = [[[NSURL URLWithString:[self.urlAdress absoluteString]] path] lastPathComponent];
+    self.fileName = [[[NSURL URLWithString:[self.urlAdress absoluteString]] path] lastPathComponent];
     NSFileManager *fm = [NSFileManager defaultManager];
     NSString *folder = [NSHomeDirectory() stringByAppendingPathComponent:@"Documents/"];
-    NSString *filePath = [folder stringByAppendingPathComponent:_fileName];
+    NSString *filePath = [folder stringByAppendingPathComponent:self.fileName];
 
     // File already exists or not
     if (![fm fileExistsAtPath:filePath]) {
@@ -79,131 +70,119 @@
         [fileRequest setValue:range forHTTPHeaderField:@"Range"];
     }
     
-    _receivedData = [[NSMutableData alloc] init];
-    _handleFile = [NSFileHandle fileHandleForWritingAtPath:filePath];
-    [_handleFile seekToEndOfFile];
+    _receivedDataBuffer = [[NSMutableData alloc] init];
+    _file = [NSFileHandle fileHandleForWritingAtPath:filePath];
+    [_file seekToEndOfFile];
     _connection = [[NSURLConnection alloc] initWithRequest:fileRequest
                                                   delegate:self
                                           startImmediately:NO];
     
     if (_connection) {
-
 #ifdef DEBUG
-    NSLog(@"Connection started for download at path:\n%@", filePath);
+    NSLog(@"Operation started for file:\n%@", filePath);
 #endif
-        
-        if ([self isCancelled]) {
-            [self cancelDownload];
-            return;
-        }
-        
         // Trick to avoid the thread to exit: new input source to the run loop
         _port = [NSPort port];
         [[NSRunLoop currentRunLoop] addPort:_port forMode:NSDefaultRunLoopMode];
         [_connection start];
         [[NSRunLoop currentRunLoop] run];
-    } else {
-        
-#ifdef DEBUG
-    NSLog(@"Connection failed.");
-#endif
-        
     }
 }
 
 
-#pragma mark - NSURLConnection management
+#pragma mark - NSURLConnection Delegate
 
 
 - (void)connection:(NSURLConnection*)connection didFailWithError:(NSError *)error
 {
-    [_receivedData setData:nil];
-    [_handleFile closeFile];
-    [_port invalidate]; // Remove input source so the run loop stops
-
 #ifdef DEBUG
-    NSLog(@"Connection failed. Error - %@ %@",
+    NSLog(@"Download failed. Error - %@ %@",
           [error localizedDescription],
           [[error userInfo] objectForKey:NSURLErrorFailingURLStringErrorKey]);
 #endif
-    
-    if ([self.delegate respondsToSelector:@selector(downloaderDidFailWithError:)]) {
-        [self.delegate downloaderDidFailWithError:&error];
+    if ([self.delegate respondsToSelector:@selector(downloader:didReceiveError:)]) {
+        [self.delegate downloader:self didReceiveError:error];
     }
+    
+    [self endDownloadAndRemoveFile:NO];
 }
 
 - (void)connection:(NSURLConnection*)connection didReceiveResponse:(NSURLResponse *)response
 {
-    _totalDataLength = [response expectedContentLength];
-    [_receivedData setData:nil];
+    _expectedDataLength = [response expectedContentLength];
+    [_receivedDataBuffer setData:nil];
     
-    if ([BlobDownloader freeDiskSpace] < _totalDataLength) {
-        [self cancel];
-        NSString *errorDesc = [NSString stringWithFormat:@"Not enough free space to download file %@",
-                               _fileName,
-                               nil];
+    if ([BlobDownloader freeDiskSpace] < _expectedDataLength) {
+        NSString *errorDesc = [NSString stringWithFormat:@"Not enough free space to download file %@", self.fileName];
         NSMutableDictionary *errorDetails = [NSMutableDictionary dictionary];
         [errorDetails setValue:errorDesc
                         forKey:NSLocalizedDescriptionKey];
         NSError *error = [NSError errorWithDomain:ERROR_DOMAIN
                                              code:1
                                          userInfo:errorDetails];
-        
+        [self endDownloadAndRemoveFile:NO];
 #ifdef DEBUG
-    NSLog(@"Download failed. Error - %@", [error localizedDescription]);
+        NSLog(@"Download failed. Error - %@", [error localizedDescription]);
 #endif
-        
-        if ([self.delegate respondsToSelector:@selector(downloaderDidFailWithError:)]) {
-            [self.delegate downloaderDidFailWithError:&error];
+        if ([self.delegate respondsToSelector:@selector(downloader:didReceiveError:)]) {
+            [self.delegate downloader:self didReceiveError:error];
         }
     }
 }
 
 - (void)connection:(NSURLConnection*)connection didReceiveData:(NSData *)data
-{
-    if ([self isCancelled]) {
-        [self cancelDownload];
-        return;
-    }
-    
-    [_receivedData appendData:data];
+{    
+    [_receivedDataBuffer appendData:data];
     _receivedDataLength += [data length];
 
 #ifdef DEBUG
-    float percent = (float) _receivedDataLength / _totalDataLength * 100;
+    float percent = (float) _receivedDataLength / _expectedDataLength * 100;
     NSLog(@"%@ | %.2f%% - Received: %lld - Total: %lld",
-          _fileName, percent, _receivedDataLength, _totalDataLength);
+          self.fileName, percent, _receivedDataLength, _expectedDataLength);
 #endif
     
-    if (_receivedData.length > BUFFER_SIZE && _handleFile) {
-        [_handleFile writeData:_receivedData];
-        [_receivedData setData:nil];
+    if (_receivedDataBuffer.length > BUFFER_SIZE && _file) {
+        [_file writeData:_receivedDataBuffer];
+        [_receivedDataBuffer setData:nil];
     }
     
-    if ([self.delegate respondsToSelector:@selector(downloaderDidReceiveData:onTotal:)]) {
-        [self.delegate downloaderDidReceiveData:_receivedDataLength
-                                        onTotal:_totalDataLength];
+    if ([self.delegate respondsToSelector:@selector(downloader:didReceiveData:onTotal:)]) {
+        [self.delegate downloader:self
+                   didReceiveData:_receivedDataLength
+                          onTotal:_expectedDataLength];
     }
 }
 
 - (void)connectionDidFinishLoading:(NSURLConnection*)connection
 {
-    [_handleFile writeData:_receivedData];
-    [_handleFile closeFile];
-    [_port invalidate];
-    
 #ifdef DEBUG
-    NSLog(@"Succeeded. Received %lld bytes of data.", _receivedDataLength);
+    NSLog(@"Download succeeded. Bytes received: %lld", _receivedDataLength);
 #endif
-    
-    if ([self.delegate respondsToSelector:@selector(downloaderDidFinishLoading)]) {
-        [self.delegate downloaderDidFinishLoading];
+    if ([self.delegate respondsToSelector:@selector(downloadDidFinishLoadingWithDownload:)]) {
+        [self.delegate downloadDidFinishLoadingWithDownload:self];
     }
+    
+    [self endDownloadAndRemoveFile:NO];
 }
 
 
-#pragma mark - Disk Space Management
+#pragma mark - Utilities
 
+
+- (void)endDownloadAndRemoveFile:(BOOL)remove
+{
+#ifdef DEBUG
+    NSLog(@"Operation ended for file %@", self.fileName);
+#endif
+    if (remove) {
+        NSFileManager *fm = [NSFileManager defaultManager];
+        NSString *folder = [NSHomeDirectory() stringByAppendingPathComponent:@"Documents/"];
+        NSString *filePath = [folder stringByAppendingPathComponent:self.fileName];
+        [fm removeItemAtPath:filePath error:nil];
+    }
+
+    [self cancel];
+}
 
 + (uint64_t)freeDiskSpace
 {
@@ -214,7 +193,6 @@
     NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
     NSDictionary *dictionary = [[NSFileManager defaultManager] attributesOfFileSystemForPath:[paths lastObject]
                                                                                        error: &error];
-    
     if (dictionary) {
         NSNumber *fileSystemSizeInBytes = [dictionary objectForKey: NSFileSystemSize];
         NSNumber *freeFileSystemSizeInBytes = [dictionary objectForKey:NSFileSystemFreeSize];
