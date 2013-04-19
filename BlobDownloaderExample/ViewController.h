@@ -7,16 +7,16 @@
 //
 
 #import <UIKit/UIKit.h>
-#import "BlobDownloaderQueue.h"
-#import "BlobDownloader.h"
+#import "BlobDownloadManager.h"
 
-@interface ViewController : UIViewController <BlobDownloaderDelegate>
+@interface ViewController : UIViewController <BlobDownloadManagerDelegate>
 
-@property (nonatomic, retain) UITextField *urlField;
-@property (nonatomic, retain) UIButton *downloadButton;
-@property (nonatomic, retain) UIButton *cancelButton;
+@property (assign, nonatomic) BlobDownloadManager *sharedDownloadManager;
+@property (weak, nonatomic) IBOutlet UITextField *urlField;
+@property (weak, nonatomic) IBOutlet UIButton *downloadButton;
+@property (weak, nonatomic) IBOutlet UIButton *cancelButton;
 
-- (void)download;
-- (void)cancelAll;
+- (IBAction)download:(id)sender;
+- (IBAction)cancelAll:(id)sender;
 
 @end

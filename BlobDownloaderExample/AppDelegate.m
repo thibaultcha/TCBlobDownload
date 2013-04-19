@@ -14,7 +14,8 @@
 {
     self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
     
-    _viewController = [[ViewController alloc] init];
+    _viewController = [[ViewController alloc] initWithNibName:@"ViewController"
+                                                       bundle:nil];
     [self.viewController.view setFrame:self.window.frame];
     self.window.rootViewController = self.viewController;
     
