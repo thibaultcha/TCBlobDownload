@@ -25,10 +25,13 @@
 @implementation BlobDownloader
 
 - (id)initWithUrlString:(NSString *)urlString
+           downloadPath:(NSString *)pathToDL
             andDelegate:(id<BlobDownloadManagerDelegate>)delegateOrNil
+
 {
     if (self = [super init]) {
         self.urlAdress = [NSURL URLWithString:urlString];
+        self.pathToDownloadDirectory = pathToDL;
         self.delegate = delegateOrNil;
     }
     
@@ -56,8 +59,7 @@
     
     self.fileName = [[[NSURL URLWithString:[self.urlAdress absoluteString]] path] lastPathComponent];
     NSFileManager *fm = [NSFileManager defaultManager];
-    NSString *folder = [NSHomeDirectory() stringByAppendingPathComponent:@"Documents/"];
-    NSString *filePath = [folder stringByAppendingPathComponent:self.fileName];
+    NSString *filePath = [self.pathToDownloadDirectory stringByAppendingPathComponent:self.fileName];
 
     // File already exists or not
     if (![fm fileExistsAtPath:filePath]) {

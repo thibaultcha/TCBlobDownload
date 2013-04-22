@@ -49,6 +49,7 @@
 {
     // Wild download
     [self.sharedDownloadManager addDownloadWithURL:self.urlField.text
+                           customDownloadDirectory:nil
                                        andDelegate:self];
     [self.urlField resignFirstResponder];
 }

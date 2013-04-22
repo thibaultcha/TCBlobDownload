@@ -17,9 +17,11 @@
 
 @property (nonatomic, assign) id<BlobDownloadManagerDelegate> delegate;
 @property (nonatomic, copy) NSURL *urlAdress;
+@property (nonatomic, copy) NSString *pathToDownloadDirectory;
 @property (nonatomic, retain) NSString *fileName;
 
 - (id)initWithUrlString:(NSString *)urlString
+           downloadPath: (NSString *)pathToDL
             andDelegate:(id<BlobDownloadManagerDelegate>)delegateOrNil;
 //
 // Cancel a download and remove the file if specified.
@@ -35,7 +37,7 @@
 // Let you handle the error for a given download
 //
 - (void)downloader:(BlobDownloader *)blobDownloader
-   didStopWithError:(NSError *)error;
+  didStopWithError:(NSError *)error;
 //
 // If you stored the BlobDownloader you can retrieve it and update the corresponding view
 //
