@@ -24,6 +24,7 @@
 {
     if (self = [super init]) {
         _operationQueue = [[NSOperationQueue alloc] init];
+        _defaultDownloadPath = [NSHomeDirectory() stringByAppendingPathComponent:@"Documents/"];
     }
     
     return self;
@@ -41,6 +42,30 @@
     return sharedMediaServer;
 }
 
+- (void)setDefaultDownloadDirectory:(NSString *)pathToDL
+{
+    NSFileManager *fm = [NSFileManager defaultManager];
+    
+    if ([fm fileExistsAtPath:pathToDL]) {
+        self.defaultDownloadPath = pathToDL;
+    } else {
+        NSError *error = nil;
+        BOOL created = [fm createDirectoryAtPath:pathToDL
+                     withIntermediateDirectories:YES
+                                      attributes:nil
+                                           error:&error];
+        if (created) {
+            self.defaultDownloadPath = pathToDL;
+        } else {
+#ifdef DEBUG
+            NSLog(@"Error creating download directory - %@ %d",
+                  [error localizedDescription],
+                  [error code]);
+#endif
+        }
+    }
+}
+
 - (NSUInteger)downloadCount
 {
     return [_operationQueue operationCount];
@@ -56,9 +81,16 @@
 
 
 - (BlobDownloader *)addDownloadWithURL:(NSString *)urlString
+               customDownloadDirectory:(NSString *)customPath
                            andDelegate:(id<BlobDownloadManagerDelegate>)delegateOrNil
 {
+    NSString *downlodPath = self.defaultDownloadPath;
+    if (nil != customPath) {
+        downlodPath = customPath;
+    }
+    
     BlobDownloader *downloader = [[BlobDownloader alloc] initWithUrlString:urlString
+                                                              downloadPath:downlodPath
                                                                andDelegate:delegateOrNil];
     [_operationQueue addOperation:downloader];
     

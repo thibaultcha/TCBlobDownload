@@ -11,12 +11,30 @@ However, BlobDL does not provide a way to store executing downloads, and it's up
 2. Pause and resume later a download.
 3. Set maximum number of concurrent downloads.
 4. Keep trace of your downloads using delegates and update your UI.
-5. [BlobDownloader endDownloadAndRemoveFile:BOOL]
+5. Custom download path.
+6. [BlobDownloader endDownloadAndRemoveFile:BOOL]
 
-Files are currently downloaded in the `Documents/` app directory.
+## Methods
+```objective-c
+// BlobDownloadManager
+- (BlobDownloader *)addDownloadWithURL:(NSString *)urlString
+             customDownloadDirectory:(NSString *)customPathOrNil
+                         andDelegate:(id<BlobDownloadManagerDelegate>)delegateOrNil;
+
+- (void)setDefaultDownloadDirectory:(NSString *)pathToDL;
+
+- (void)setMaxConcurrentDownloads:(NSInteger)max;
+
+- (NSUInteger)downloadCount;
+
+- (void)cancelAllDownloadsAndRemoveFiles:(BOOL)remove;
+
+// BlobDownloader
+- (void)endDownloadAndRemoveFile;
+```
 
 ## Usage
-### Wild download. (No delegate)
+### Wild download (No delegate)
 
 ```objective-c
 #import "BlobDownloadManager.h"
@@ -24,10 +42,22 @@ Files are currently downloaded in the `Documents/` app directory.
 BlobDownloadManager *sharedManager = [BlobDownloadManager sharedDownloadManager];
 
 [sharedManager addDownloadWithURL:@"http://give.me/bigfile.avi"
+									customPathOrNil:nil
                       andDelegate:nil];
 ```
 
-This way, your download will start and you'll see the progress in console.
+This way, your download will start and you'll see the progress in the console. It will be downloaded in the default download directory (`Documents/` if not set).
+
+Note that:
+
+```objective-c
+NSString *customPath = [NSHomeDirectory() stringByAppendingPathComponent:@"Documents/My/Custom/Path/"];
+[sharedManager addDownloadWithURL:@"http://give.me/bigfile.avi"
+									customPathOrNil:customPath
+                      andDelegate:nil];
+```
+ 
+Will create the given path and download the file in the `Path/` directory.
 
 ### BlobDL and delegates
 If you want to update your UI, you can set a delegate which can implement those optional methods:
@@ -35,18 +65,28 @@ If you want to update your UI, you can set a delegate which can implement those 
 ```objective-c
 - (void)downloader:(BlobDownloader *)blobDownloader
   didReceiveData:(uint64_t)received
-         onTotal:(uint64_t)total;
+         onTotal:(uint64_t)total
+{
 
-- (void)downloadDidFinishWithDownloader:(BlobDownloader *)blobDownloader;
+}
 
-- (void)downloader:(BlobDownloader *)blobDownloader didStopWithError:(NSError *)error;
+- (void)downloadDidFinishWithDownloader:(BlobDownloader *)blobDownloader
+{
+
+}
+
+- (void)downloader:(BlobDownloader *)blobDownloader didStopWithError:(NSError *)error
+{
+
+}
 ```
 
 And the usage becomes:
 
 ```objective-c
 BlobDownloader *blobDL = [sharedManager addDownloadWithURL:@"http://give.me/bigfile.avi"
-                      andDelegate:delegate];
+customDownloadDirectory:nil
+            andDelegate:delegate];
 // Store blobDL the way you want to retrieve it in delegate methods
 ```
 
@@ -57,23 +97,22 @@ find a way to store the created `BlobDownloaders`. **For example, to update UIPr
 Store your `BlobDownloaders` allows you to do:
 
 ```objective-c
-BlobDownloader *blobDL = [sharedManager addDownloadWithURL:@"http://give.me/bigfile.avi"
-                      andDelegate:delegate];
+BlobDownloader *blobDL = [sharedManager addDownloadWithURL:@"http://give.me/bigfile.avi" customDownloadDirectory: nil
+       andDelegate:delegate];
 
 [BlobDownloader endDownloadAndRemoveFile:YES]
 ```
 
-And access to its file name and URL address. Blah blah blah.
+And access to its file name, file path and URL address. Blah blah blah.
 
 **Cool thing:** if a download has been stopped and the local file has not been deleted, when you will restart the download to the same local path, the download will start where it has stopped using the HTTP `Range=bytes` header.
 
 **Cool thing 2:** You can also set dependencies in your downloads. See [NSOperation Class Reference](http://developer.apple.com/library/mac/#documentation/Cocoa/Reference/NSOperation_class/Reference/Reference.html) and the `addDependency:` method in particular.
 
 ## Roadmap
-It would be **great** to handle the storage thing and let your mind free of that, but I did not find a way yet, or ugly ones I think. If you have any idea, please suggest it! :)
+It would be **great** to handle the BlobDL storage thing and let your mind free of that, but I did not find a way yet, or ugly ones I think. If you have any idea, please suggest it! :)
 
-- Solve the storage thing
-- Choose the local download path
+- Solve the BlobDL storage thing
 - Encapsulate dependencies
 
 ## Licence
