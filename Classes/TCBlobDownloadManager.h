@@ -6,9 +6,9 @@
 //
 
 #import <Foundation/Foundation.h>
-#import "BlobDownloader.h"
+#import "TCBlobDownload.h"
 
-@interface BlobDownloadManager : NSObject
+@interface TCBlobDownloadManager : NSObject
 
 @property (retain, nonatomic) NSString *defaultDownloadPath;
 
@@ -16,29 +16,38 @@
 // Retrieve the singleton
 //
 + (id)sharedDownloadManager;
+
 //
-// Add a download with the specified URL, an optional download path (default if nil)
+// Start a download with the specified URL, an optional download path (default if nil)
 // and an optional delegate.
-// (if you want to update your view, your delegate should be the ViewController
-// and you should find a way to store the returned value for later retrieve)
 //
 // The download will be added to a NSOperationQueue and will run in background.
 //
-- (BlobDownloader *)addDownloadWithURL:(NSString *)urlString
-               customDownloadDirectory:(NSString *)customPath
-                           andDelegate:(id<BlobDownloadManagerDelegate>)delegateOrNil;
+- (void)addDownloadWithURL:(NSString *)urlString
+   customDownloadDirectory:(NSString *)customPath
+               andDelegate:(id<TCBlobDownloadDelegate>)delegateOrNil;
+
 //
-// Specify the download repository. It can be a non existant path.
+// Start an already initialized download
+//
+- (void)addDownload:(TCBlobDownload *)blobDownload;
+
+//
+// Specify the download repository. It can be a non existant path,
+// if so, it will be created.
 //
 - (void)setDefaultDownloadDirectory:(NSString *)pathToDL;
+
 //
 // Set the maximum concurrent downloads allowed.
 //
 - (void)setMaxConcurrentDownloads:(NSInteger)max;
+
 //
 // Return the number of downloads currently in progress.
 //
 - (NSUInteger)downloadCount;
+
 //
 // Cancel all downloads.
 //

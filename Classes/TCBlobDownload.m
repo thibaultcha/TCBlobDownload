@@ -5,9 +5,9 @@
 //  Copyright (c) 2013 Thibault Charbonnier. All rights reserved.
 //
 
-#import "BlobDownloader.h"
+#import "TCBlobDownload.h"
 
-@interface BlobDownloader ()
+@interface TCBlobDownload ()
 {
     NSURLConnection *_connection;
     NSMutableData *_receivedDataBuffer;
@@ -22,11 +22,11 @@
 
 @end
 
-@implementation BlobDownloader
+@implementation TCBlobDownload
 
 - (id)initWithUrlString:(NSString *)urlString
            downloadPath:(NSString *)pathToDL
-            andDelegate:(id<BlobDownloadManagerDelegate>)delegateOrNil
+            andDelegate:(id<TCBlobDownloadDelegate>)delegateOrNil
 
 {
     if (self = [super init]) {
@@ -114,7 +114,7 @@
     _expectedDataLength = [response expectedContentLength];
     [_receivedDataBuffer setData:nil];
     
-    if ([BlobDownloader freeDiskSpace] < _expectedDataLength) {
+    if ([TCBlobDownload freeDiskSpace] < _expectedDataLength) {
         NSString *errorDesc = [NSString stringWithFormat:@"Not enough free space to download file %@", self.fileName];
         NSMutableDictionary *errorDetails = [NSMutableDictionary dictionary];
         [errorDetails setValue:errorDesc

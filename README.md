@@ -1,25 +1,25 @@
-# BlobDownloadManager
-
+# TCBlobDownload
 This little library uses `NSOperationQueue` to download big files using `NSURLConnection`.
 
-I've created `BlobDownloader` which extends `NSOperation` and use `BlobDownloadManager` to execute it. You can set a delegate for each `BlobDownloader` to update your views etc…
-
-However, BlobDL does not provide a way to store executing downloads, and it's up to you to choose how to store them, and how you retrieve them in their delegate. Better explanation in usage section.
+I've created `TCBlobDownload` which extends `NSOperation` and use `TCBlobDownloadManager` to execute it. You can set a delegate for each `TCBlobDownload` to update your views etc…
 
 ## Features
 1. Download files in background threads.
 2. Pause and resume later a download.
 3. Set maximum number of concurrent downloads.
-4. Keep trace of your downloads using delegates and update your UI.
-5. Custom download path.
-6. [BlobDownloader endDownloadAndRemoveFile:BOOL]
+4. Update your UI with delegates.
+5. Custom download path and auto path creation.
+6. [download endDownloadAndRemoveFile:BOOL]
+7. Dependencies and more.
 
 ## Methods
 ```objective-c
-// BlobDownloadManager
-- (BlobDownloader *)addDownloadWithURL:(NSString *)urlString
-             customDownloadDirectory:(NSString *)customPathOrNil
-                         andDelegate:(id<BlobDownloadManagerDelegate>)delegateOrNil;
+// TCBlobDownloadManager
+- (void)addDownloadWithURL:(NSString *)urlString
+ customDownloadDirectory:(NSString *)customPathOrNil
+             andDelegate:(id<TCBlobDownloadDelegate>)delegateOrNil;
+
+- (void)addDownload:(TCBlobDownload *)blobDownload;
 
 - (void)setDefaultDownloadDirectory:(NSString *)pathToDL;
 
@@ -29,7 +29,11 @@ However, BlobDL does not provide a way to store executing downloads, and it's up
 
 - (void)cancelAllDownloadsAndRemoveFiles:(BOOL)remove;
 
-// BlobDownloader
+// TCBlobDownload
+- (id)initWithUrlString:(NSString *)urlString
+           downloadPath:(NSString *)pathToDL
+            andDelegate:(id<TCBlobDownloadDelegate>)delegateOrNil;
+
 - (void)endDownloadAndRemoveFile;
 ```
 
@@ -37,9 +41,9 @@ However, BlobDL does not provide a way to store executing downloads, and it's up
 ### Wild download (No delegate)
 
 ```objective-c
-#import "BlobDownloadManager.h"
+#import "TCBlobDownloadManager.h"
 
-BlobDownloadManager *sharedManager = [BlobDownloadManager sharedDownloadManager];
+TCBlobDownloadManager *sharedManager = [TCBlobDownloadManager sharedDownloadManager];
 
 [sharedManager addDownloadWithURL:@"http://give.me/bigfile.avi"
 									customPathOrNil:nil
@@ -59,23 +63,23 @@ NSString *customPath = [NSHomeDirectory() stringByAppendingPathComponent:@"Docum
  
 Will create the given path and download the file in the `Path/` directory.
 
-### BlobDL and delegates
+### TCBlobDownloadDelegate
 If you want to update your UI, you can set a delegate which can implement those optional methods:
 
 ```objective-c
-- (void)downloader:(BlobDownloader *)blobDownloader
+- (void)downloader:(TCBlobDownload *)blobDownload
   didReceiveData:(uint64_t)received
          onTotal:(uint64_t)total
 {
 
 }
 
-- (void)downloadDidFinishWithDownloader:(BlobDownloader *)blobDownloader
+- (void)downloadDidFinishWithDownloader:(TCBlobDownloader *)blobDownload
 {
 
 }
 
-- (void)downloader:(BlobDownloader *)blobDownloader didStopWithError:(NSError *)error
+- (void)downloader:(TCBlobDownloader *)blobDownload didStopWithError:(NSError *)error
 {
 
 }
@@ -87,32 +91,16 @@ And the usage becomes:
 BlobDownloader *blobDL = [sharedManager addDownloadWithURL:@"http://give.me/bigfile.avi"
 customDownloadDirectory:nil
             andDelegate:delegate];
-// Store blobDL the way you want to retrieve it in delegate methods
 ```
-
-Then, if your add multiple downloads to the Manager, you must 
-find a way to store the created `BlobDownloaders`. **For example, to update UIProgressViews in UITableViewCells, I used a NSMutableDictionnary using the cell's indexPath as key.** I may update the lib example later, and it would come with a screenshot and that would be nice.
 
 ### Other things you should know
-Store your `BlobDownloaders` allows you to do:
-
-```objective-c
-BlobDownloader *blobDL = [sharedManager addDownloadWithURL:@"http://give.me/bigfile.avi" customDownloadDirectory: nil
-       andDelegate:delegate];
-
-[BlobDownloader endDownloadAndRemoveFile:YES]
-```
-
-And access to its file name, file path and URL address. Blah blah blah.
-
-**Cool thing:** if a download has been stopped and the local file has not been deleted, when you will restart the download to the same local path, the download will start where it has stopped using the HTTP `Range=bytes` header.
+**Cool thing 1:** if a download has been stopped and the local file has not been deleted, when you will restart the download to the same local path, the download will start where it has stopped using the HTTP `Range=bytes` header.
 
 **Cool thing 2:** You can also set dependencies in your downloads. See [NSOperation Class Reference](http://developer.apple.com/library/mac/#documentation/Cocoa/Reference/NSOperation_class/Reference/Reference.html) and the `addDependency:` method in particular.
 
 ## Roadmap
-It would be **great** to handle the BlobDL storage thing and let your mind free of that, but I did not find a way yet, or ugly ones I think. If you have any idea, please suggest it! :)
+If you have any idea, please suggest it! :)
 
-- Solve the BlobDL storage thing
 - Encapsulate dependencies
 
 ## Licence

@@ -1,8 +1,8 @@
 //
 //  AppDelegate.m
-//  BlobDownloaderExample
+//  TCBlobDownloadExample
 //
-//  Created by Thibault Charbonnier on 18/04/13.
+//  Created by Thibault Charbonnier on 23/04/13.
 //  Copyright (c) 2013 thibaultCha. All rights reserved.
 //
 
@@ -13,14 +13,13 @@
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
     self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
-    
-    _viewController = [[ViewController alloc] initWithNibName:@"ViewController"
-                                                       bundle:nil];
-    [self.viewController.view setFrame:self.window.frame];
-    self.window.rootViewController = self.viewController;
-    
+    // Override point for customization after application launch.
+    ViewController *viewController = [[ViewController alloc]
+                                      initWithNibName:@"ViewController"
+                                      bundle:nil];
+    self.window.rootViewController = viewController;
+    self.window.backgroundColor = [UIColor whiteColor];
     [self.window makeKeyAndVisible];
-    
     return YES;
 }
 

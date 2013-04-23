@@ -1,8 +1,8 @@
 //
 //  AppDelegate.h
-//  BlobDownloaderExample
+//  TCBlobDownloadExample
 //
-//  Created by Thibault Charbonnier on 18/04/13.
+//  Created by Thibault Charbonnier on 23/04/13.
 //  Copyright (c) 2013 thibaultCha. All rights reserved.
 //
 
@@ -12,6 +12,5 @@
 @interface AppDelegate : UIResponder <UIApplicationDelegate>
 
 @property (strong, nonatomic) UIWindow *window;
-@property (strong, nonatomic) ViewController *viewController;
 
 @end

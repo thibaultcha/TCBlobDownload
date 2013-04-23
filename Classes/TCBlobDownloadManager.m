@@ -5,16 +5,16 @@
 //  Copyright (c) 2013 Thibault Charbonnier. All rights reserved.
 //
 
-#import "BlobDownloadManager.h"
+#import "TCBlobDownloadManager.h"
 
-@interface BlobDownloadManager ()
+@interface TCBlobDownloadManager ()
 {
     NSOperationQueue *_operationQueue;
 }
 
 @end
 
-@implementation BlobDownloadManager
+@implementation TCBlobDownloadManager
 
 
 #pragma mark - Init and utilities
@@ -54,15 +54,14 @@
                      withIntermediateDirectories:YES
                                       attributes:nil
                                            error:&error];
-        if (created) {
+        if (created) 
             self.defaultDownloadPath = pathToDL;
-        } else {
+        else
 #ifdef DEBUG
             NSLog(@"Error creating download directory - %@ %d",
                   [error localizedDescription],
                   [error code]);
 #endif
-        }
     }
 }
 
@@ -80,28 +79,29 @@
 #pragma mark - Downloads Management
 
 
-- (BlobDownloader *)addDownloadWithURL:(NSString *)urlString
-               customDownloadDirectory:(NSString *)customPath
-                           andDelegate:(id<BlobDownloadManagerDelegate>)delegateOrNil
+- (void)addDownloadWithURL:(NSString *)urlString
+   customDownloadDirectory:(NSString *)customPath
+               andDelegate:(id<TCBlobDownloadDelegate>)delegateOrNil
 {
     NSString *downlodPath = self.defaultDownloadPath;
-    if (nil != customPath) {
+    if (nil != customPath)
         downlodPath = customPath;
-    }
     
-    BlobDownloader *downloader = [[BlobDownloader alloc] initWithUrlString:urlString
+    TCBlobDownload *downloader = [[TCBlobDownload alloc] initWithUrlString:urlString
                                                               downloadPath:downlodPath
                                                                andDelegate:delegateOrNil];
     [_operationQueue addOperation:downloader];
-    
-    return downloader;
+}
+
+- (void)addDownload:(TCBlobDownload *)blobDownload
+{
+    [_operationQueue addOperation:blobDownload];
 }
 
 - (void)cancelAllDownloadsAndRemoveFiles:(BOOL)remove
 {
-    for (BlobDownloader *blob in [_operationQueue operations]) {
+    for (TCBlobDownload *blob in [_operationQueue operations])
         [blob endDownloadAndRemoveFile:remove];
-    }
 #ifdef DEBUG
     NSLog(@"Cancelled all downloads.");
 #endif
