@@ -10,7 +10,8 @@ I've created `TCBlobDownload` which extends `NSOperation` and use `TCBlobDownloa
 4. Update your UI with delegates.
 5. Custom download path and auto path creation.
 6. [download endDownloadAndRemoveFile:BOOL]
-7. Dependencies and more.
+
+Dependencies and more...
 
 ## Methods
 ```objective-c
@@ -46,7 +47,7 @@ I've created `TCBlobDownload` which extends `NSOperation` and use `TCBlobDownloa
 TCBlobDownloadManager *sharedManager = [TCBlobDownloadManager sharedDownloadManager];
 
 [sharedManager addDownloadWithURL:@"http://give.me/bigfile.avi"
-									customPathOrNil:nil
+                  customPathOrNil:nil
                       andDelegate:nil];
 ```
 
@@ -57,7 +58,7 @@ Note that:
 ```objective-c
 NSString *customPath = [NSHomeDirectory() stringByAppendingPathComponent:@"Documents/My/Custom/Path/"];
 [sharedManager addDownloadWithURL:@"http://give.me/bigfile.avi"
-									customPathOrNil:customPath
+                  customPathOrNil:customPath
                       andDelegate:nil];
 ```
  
@@ -71,26 +72,18 @@ If you want to update your UI, you can set a delegate which can implement those 
   didReceiveData:(uint64_t)received
          onTotal:(uint64_t)total
 {
-
+  // wow moving progress bar!
 }
 
 - (void)downloadDidFinishWithDownloader:(TCBlobDownloader *)blobDownload
 {
-
+  // this is cool
 }
 
 - (void)downloader:(TCBlobDownloader *)blobDownload didStopWithError:(NSError *)error
 {
-
+  // this is not cool
 }
-```
-
-And the usage becomes:
-
-```objective-c
-BlobDownloader *blobDL = [sharedManager addDownloadWithURL:@"http://give.me/bigfile.avi"
-customDownloadDirectory:nil
-            andDelegate:delegate];
 ```
 
 ### Other things you should know
