@@ -17,8 +17,8 @@ Dependencies and more...
 ```objective-c
 // TCBlobDownloadManager
 - (void)addDownloadWithURL:(NSString *)urlString
- customDownloadDirectory:(NSString *)customPathOrNil
-             andDelegate:(id<TCBlobDownloadDelegate>)delegateOrNil;
+  customDownloadDirectory:(NSString *)customPathOrNil
+              andDelegate:(id<TCBlobDownloadDelegate>)delegateOrNil;
 
 - (void)addDownload:(TCBlobDownload *)blobDownload;
 
@@ -69,18 +69,18 @@ If you want to update your UI, you can set a delegate which can implement those 
 
 ```objective-c
 - (void)downloader:(TCBlobDownload *)blobDownload
-  didReceiveData:(uint64_t)received
-         onTotal:(uint64_t)total
+    didReceiveData:(uint64_t)received
+           onTotal:(uint64_t)total
 {
   // wow moving progress bar!
 }
 
-- (void)downloadDidFinishWithDownloader:(TCBlobDownloader *)blobDownload
+- (void)downloadDidFinishWithDownloader:(TCBlobDownload *)blobDownload
 {
   // this is cool
 }
 
-- (void)downloader:(TCBlobDownloader *)blobDownload didStopWithError:(NSError *)error
+- (void)downloader:(TCBlobDownload *)blobDownload didStopWithError:(NSError *)error
 {
   // this is not cool
 }
