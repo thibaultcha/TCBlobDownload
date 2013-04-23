@@ -1,8 +1,8 @@
 //
 //  main.m
-//  BlobDownloaderExample
+//  TCBlobDownloadExample
 //
-//  Created by Thibault Charbonnier on 18/04/13.
+//  Created by Thibault Charbonnier on 23/04/13.
 //  Copyright (c) 2013 thibaultCha. All rights reserved.
 //
 

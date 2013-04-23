@@ -22,7 +22,7 @@
 {
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
     if (self) {
-        self.sharedDownloadManager = [BlobDownloadManager sharedDownloadManager];
+        self.sharedDownloadManager = [TCBlobDownloadManager sharedDownloadManager];
     }
     
     return self;
@@ -63,7 +63,7 @@
 #pragma mark - BlobDownloadManager Delegate
 
 
-- (void)downloader:(BlobDownloader *)blobDownloader
+- (void)downloader:(TCBlobDownload *)blobDownloader
     didReceiveData:(uint64_t)received
            onTotal:(uint64_t)total
 {
@@ -71,13 +71,13 @@
     // with the current progression.
 }
 
-- (void)downloadDidFinishWithDownloader:(BlobDownloader *)blobDownloader
+- (void)downloadDidFinishWithDownloader:(TCBlobDownload *)blobDownloader
 {
     // If you stored the BlobDownloader you can retrieve it and update your view
     // when the download has finished.
 }
 
-- (void)downloader:(BlobDownloader *)blobDownloader didStopWithError:(NSError *)error
+- (void)downloader:(TCBlobDownload *)blobDownloader didStopWithError:(NSError *)error
 {
     // If you stored the BlobDownloader you can retrieve it and display the error
     // it created.

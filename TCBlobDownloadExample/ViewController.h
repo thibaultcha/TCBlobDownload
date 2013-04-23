@@ -7,11 +7,11 @@
 //
 
 #import <UIKit/UIKit.h>
-#import "BlobDownloadManager.h"
+#import "TCBlobDownloadManager.h"
 
-@interface ViewController : UIViewController <BlobDownloadManagerDelegate>
+@interface ViewController : UIViewController <TCBlobDownloadDelegate>
 
-@property (assign, nonatomic) BlobDownloadManager *sharedDownloadManager;
+@property (assign, nonatomic) TCBlobDownloadManager *sharedDownloadManager;
 @property (weak, nonatomic) IBOutlet UITextField *urlField;
 @property (weak, nonatomic) IBOutlet UIButton *downloadButton;
 @property (weak, nonatomic) IBOutlet UIButton *cancelButton;
