@@ -32,11 +32,17 @@
 //
 - (void)endDownloadAndRemoveFile:(BOOL)remove;
 
+//
+// Create a path from string
+//
++ (BOOL)createPathFromPath:(NSString *)path;
+
 @end
 
 @protocol TCBlobDownloadDelegate <NSObject>
 
-@required
+@optional
+
 //
 // Let you handle the error for a given download
 //
