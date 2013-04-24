@@ -1,7 +1,11 @@
 # TCBlobDownload
-This little library uses `NSOperationQueue` to download big files using `NSURLConnection`.
+This little library uses `NSOperations` to download big files using `NSURLConnection` in background threads with `NSOperationQueue`.
 
-I've created `TCBlobDownload` which extends `NSOperation` and use `TCBlobDownloadManager` to execute it. You can set a delegate for each `TCBlobDownload` to update your views etc…
+I've implemented `TCBlobDownload` which extends `NSOperation` and use `TCBlobDownloadManager` to execute it. You can set a delegate for each `TCBlobDownload` to update your views etc…
+
+I've tested it with files from ~150MB to ~700MB, mostly videos.
+
+It currently only supports ARC but I hope to make a non-ARC implementation soon.
 
 ## Features
 1. Download files in background threads.
