@@ -30,9 +30,11 @@
 
 {
     if (self = [super init]) {
+        NSAssert(nil != pathToDL, @"Download path cannot be nil for TCBlobDownload.");
         self.urlAdress = [NSURL URLWithString:urlString];
-        self.pathToDownloadDirectory = pathToDL;
         self.delegate = delegateOrNil;
+        if ([TCBlobDownload createPathFromPath:pathToDL])
+            self.pathToDownloadDirectory = pathToDL;
     }
     
     return self;
@@ -184,6 +186,30 @@
     }
 
     [self cancel];
+}
+
++ (BOOL)createPathFromPath:(NSString *)path
+{
+    NSFileManager *fm = [NSFileManager defaultManager];
+    
+    if ([fm fileExistsAtPath:path]) {
+        return true;
+    } else {
+        NSError *error = nil;
+        BOOL created = [fm createDirectoryAtPath:path
+                     withIntermediateDirectories:YES
+                                      attributes:nil
+                                           error:&error];
+        if (error) {
+#ifdef DEBUG
+        NSLog(@"Error creating download directory - %@ %d",
+              [error localizedDescription],
+              [error code]);
+#endif
+        }
+        
+        return created;
+    }
 }
 
 + (uint64_t)freeDiskSpace

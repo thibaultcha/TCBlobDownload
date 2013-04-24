@@ -13,7 +13,7 @@ I've created `TCBlobDownload` which extends `NSOperation` and use `TCBlobDownloa
 
 Dependencies and more...
 
-## Methods
+### Methods
 ```objective-c
 // TCBlobDownloadManager
 - (void)addDownloadWithURL:(NSString *)urlString
@@ -32,7 +32,7 @@ Dependencies and more...
 
 // TCBlobDownload
 - (id)initWithUrlString:(NSString *)urlString
-           downloadPath:(NSString *)pathToDL
+           downloadPath:(NSString *)pathToDL // cannot be nil
             andDelegate:(id<TCBlobDownloadDelegate>)delegateOrNil;
 
 - (void)endDownloadAndRemoveFile;

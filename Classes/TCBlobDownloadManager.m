@@ -42,27 +42,10 @@
     return sharedMediaServer;
 }
 
-- (void)setDefaultDownloadDirectory:(NSString *)pathToDL
+- (void)setDefaultDownloadPath:(NSString *)pathToDL
 {
-    NSFileManager *fm = [NSFileManager defaultManager];
-    
-    if ([fm fileExistsAtPath:pathToDL]) {
-        self.defaultDownloadPath = pathToDL;
-    } else {
-        NSError *error = nil;
-        BOOL created = [fm createDirectoryAtPath:pathToDL
-                     withIntermediateDirectories:YES
-                                      attributes:nil
-                                           error:&error];
-        if (created) 
-            self.defaultDownloadPath = pathToDL;
-        else
-#ifdef DEBUG
-            NSLog(@"Error creating download directory - %@ %d",
-                  [error localizedDescription],
-                  [error code]);
-#endif
-    }
+    if ([TCBlobDownload createPathFromPath:pathToDL])
+        _defaultDownloadPath = pathToDL;
 }
 
 - (NSUInteger)downloadCount
@@ -83,12 +66,12 @@
    customDownloadDirectory:(NSString *)customPath
                andDelegate:(id<TCBlobDownloadDelegate>)delegateOrNil
 {
-    NSString *downlodPath = self.defaultDownloadPath;
-    if (nil != customPath)
-        downlodPath = customPath;
+    NSString *downloadPath = self.defaultDownloadPath;
+    if (nil != customPath && [TCBlobDownload createPathFromPath:customPath])
+        downloadPath = customPath;
     
     TCBlobDownload *downloader = [[TCBlobDownload alloc] initWithUrlString:urlString
-                                                              downloadPath:downlodPath
+                                                              downloadPath:downloadPath
                                                                andDelegate:delegateOrNil];
     [_operationQueue addOperation:downloader];
 }

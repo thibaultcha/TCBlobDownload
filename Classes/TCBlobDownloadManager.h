@@ -10,7 +10,7 @@
 
 @interface TCBlobDownloadManager : NSObject
 
-@property (retain, nonatomic) NSString *defaultDownloadPath;
+@property (retain, nonatomic, setter = setDefaultDownloadPath:) NSString *defaultDownloadPath;
 
 //
 // Retrieve the singleton
@@ -36,7 +36,7 @@
 // Specify the download repository. It can be a non existant path,
 // if so, it will be created.
 //
-- (void)setDefaultDownloadDirectory:(NSString *)pathToDL;
+- (void)setDefaultDownloadPath:(NSString *)pathToDL;
 
 //
 // Set the maximum concurrent downloads allowed.
