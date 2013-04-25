@@ -21,7 +21,8 @@
 @property (nonatomic, retain) NSString *fileName;
 
 //
-// Init
+// Init. Will not start the download while you do not add the instanciated object to
+// TCBlobDownloadManager. pathToDL cannot be nil from here.
 //
 - (id)initWithUrlString:(NSString *)urlString
            downloadPath:(NSString *)pathToDL
@@ -33,7 +34,7 @@
 - (void)cancelDownloadAndRemoveFile:(BOOL)remove;
 
 //
-// Create a path from string
+// Create a path from string. You should not use this method directly.
 //
 + (BOOL)createPathFromPath:(NSString *)path;
 
@@ -50,14 +51,14 @@
 didStopWithError:(NSError *)error;
 
 //
-// If you stored the BlobDownloader you can retrieve it and update the corresponding view
+// On each response from the NSURLConnection
 //
 - (void)download:(TCBlobDownload *)blobDownload
   didReceiveData:(uint64_t)received
          onTotal:(uint64_t)total;
 
 //
-// If you stored the BlobDownloader you can retrieve it and update the corresponding view
+// When a download ends
 //
 - (void)downloadDidFinishWithDownload:(TCBlobDownload *)blobDownload;
 

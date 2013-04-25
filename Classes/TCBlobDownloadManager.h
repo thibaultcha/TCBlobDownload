@@ -33,7 +33,7 @@
 - (void)addDownload:(TCBlobDownload *)blobDownload;
 
 //
-// Specify the download repository. It can be a non existant path,
+// Specify the default download repository. It can be a non existant path,
 // if so, it will be created.
 //
 - (void)setDefaultDownloadPath:(NSString *)pathToDL;
