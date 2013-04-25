@@ -104,7 +104,7 @@
           [error localizedDescription],
           [[error userInfo] objectForKey:NSURLErrorFailingURLStringErrorKey]);
 #endif
-    if ([self.delegate respondsToSelector:@selector(downloader:didStopWithError:)]) {
+    if ([self.delegate respondsToSelector:@selector(download:didStopWithError:)]) {
         [self.delegate download:self didStopWithError:error];
     }
     
@@ -128,7 +128,7 @@
 #ifdef DEBUG
         NSLog(@"Download failed. Error - %@", [error localizedDescription]);
 #endif
-        if ([self.delegate respondsToSelector:@selector(downloader:didStopWithError:)]) {
+        if ([self.delegate respondsToSelector:@selector(download:didStopWithError:)]) {
             [self.delegate download:self didStopWithError:error];
         }
     }
@@ -150,7 +150,7 @@
         [_receivedDataBuffer setData:nil];
     }
     
-    if ([self.delegate respondsToSelector:@selector(downloader:didReceiveData:onTotal:)]) {
+    if ([self.delegate respondsToSelector:@selector(download:didReceiveData:onTotal:)]) {
         [self.delegate download:self
                    didReceiveData:_receivedDataLength
                           onTotal:_expectedDataLength];
@@ -162,7 +162,7 @@
 #ifdef DEBUG
     NSLog(@"Download succeeded. Bytes received: %lld", _receivedDataLength);
 #endif
-    if ([self.delegate respondsToSelector:@selector(downloadDidFinishWithDownloader:)]) {
+    if ([self.delegate respondsToSelector:@selector(downloadDidFinishWithDownload:)]) {
         [self.delegate downloadDidFinishWithDownload:self];
     }
     
