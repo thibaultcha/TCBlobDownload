@@ -6,7 +6,7 @@
 //
 
 #define BUFFER_SIZE 1024*1024 // 1 MB
-#define DEFAULT_TIMEOUT 10
+#define DEFAULT_TIMEOUT 15
 #define ERROR_DOMAIN @"myDomain"
 
 #import <Foundation/Foundation.h>

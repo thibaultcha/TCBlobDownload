@@ -5,6 +5,8 @@ I've implemented `TCBlobDownload` which extends `NSOperation` and use `TCBlobDow
 
 I've tested it with files from ~150MB to ~700MB, mostly videos.
 
+Requires **iOS 5.0 or greater**.
+
 It currently only supports ARC but I hope to make a non-ARC implementation soon.
 
 ## Features
@@ -55,18 +57,18 @@ TCBlobDownloadManager *sharedManager = [TCBlobDownloadManager sharedDownloadMana
                       andDelegate:nil];
 ```
 
-This way, your download will start and you'll see the progress in the console. It will be downloaded in the default download directory (`Documents/` if not set).
+This way, your download will start and you'll see the progress in the console. It will be downloaded in the default download directory (`tmp/` if not set).
 
 Note that:
 
 ```objective-c
-NSString *customPath = [NSHomeDirectory() stringByAppendingPathComponent:@"Documents/My/Custom/Path/"];
+NSString *customPath = [NSTemporaryDirectory() stringByAppendingPathComponent:@"My/Custom/Path/"];
 [sharedManager addDownloadWithURL:@"http://give.me/bigfile.avi"
                   customPathOrNil:customPath
                       andDelegate:nil];
 ```
  
-Will create the given path and download the file in the `Path/` directory.
+Will create the given path and download the file in the `Path/` directory. **Remember that you should follow the [iOS Data Storage Guidelines](https://developer.apple.com/icloud/documentation/data-storage/)**.
 
 ### TCBlobDownloadDelegate
 If you want to update your UI, you can set a delegate which can implement those optional methods:

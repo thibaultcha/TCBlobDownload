@@ -180,9 +180,7 @@
 #endif
     if (remove) {
         NSFileManager *fm = [NSFileManager defaultManager];
-        NSString *folder = [NSHomeDirectory() stringByAppendingPathComponent:@"Documents/"];
-        NSString *filePath = [folder stringByAppendingPathComponent:self.fileName];
-        [fm removeItemAtPath:filePath error:nil];
+        [fm removeItemAtPath:self.pathToDownloadDirectory error:nil];
     }
 
     [self cancel];

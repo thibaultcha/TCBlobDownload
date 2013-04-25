@@ -24,7 +24,9 @@
 {
     if (self = [super init]) {
         _operationQueue = [[NSOperationQueue alloc] init];
-        _defaultDownloadPath = [NSHomeDirectory() stringByAppendingPathComponent:@"Documents/"];
+        //NSArray *paths = NSSearchPathForDirectoriesInDomains(NSCachesDirectory, NSUserDomainMask, YES);
+        //_defaultDownloadPath = [paths objectAtIndex:0];
+        _defaultDownloadPath = NSTemporaryDirectory();
     }
     
     return self;
