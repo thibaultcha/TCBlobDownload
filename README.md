@@ -13,7 +13,7 @@ It currently only supports ARC but I hope to make a non-ARC implementation soon.
 3. Set maximum number of concurrent downloads.
 4. Update your UI with delegates.
 5. Custom download path and auto path creation.
-6. [download endDownloadAndRemoveFile:BOOL]
+6. [download cancelDownloadAndRemoveFile:BOOL]
 
 Dependencies and more...
 
@@ -39,7 +39,7 @@ Dependencies and more...
            downloadPath:(NSString *)pathToDL // cannot be nil
             andDelegate:(id<TCBlobDownloadDelegate>)delegateOrNil;
 
-- (void)endDownloadAndRemoveFile;
+- (void)cancelDownloadAndRemoveFile;
 ```
 
 ## Usage
@@ -72,26 +72,24 @@ Will create the given path and download the file in the `Path/` directory.
 If you want to update your UI, you can set a delegate which can implement those optional methods:
 
 ```objective-c
-- (void)downloader:(TCBlobDownload *)blobDownload
-    didReceiveData:(uint64_t)received
-           onTotal:(uint64_t)total
+- (void)download:(TCBlobDownload *)blobDownload didReceiveData:(uint64_t)received onTotal:(uint64_t)total
 {
   // wow moving progress bar!
 }
 
-- (void)downloadDidFinishWithDownloader:(TCBlobDownload *)blobDownload
+- (void)downloadDidFinishWithDownload:(TCBlobDownload *)blobDownload
 {
   // this is cool
 }
 
-- (void)downloader:(TCBlobDownload *)blobDownload didStopWithError:(NSError *)error
+- (void)download:(TCBlobDownload *)blobDownload didStopWithError:(NSError *)error
 {
   // this is not cool
 }
 ```
 
 ### Other things you should know
-**Cool thing 1:** if a download has been stopped and the local file has not been deleted, when you will restart the download to the same local path, the download will start where it has stopped using the HTTP `Range=bytes` header.
+**Cool thing 1:** If a download has been stopped and the local file has not been deleted, when you will restart the download to the same local path, the download will start where it has stopped using the HTTP `Range=bytes` header.
 
 **Cool thing 2:** You can also set dependencies in your downloads. See [NSOperation Class Reference](http://developer.apple.com/library/mac/#documentation/Cocoa/Reference/NSOperation_class/Reference/Reference.html) and the `addDependency:` method in particular.
 

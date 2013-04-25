@@ -30,7 +30,7 @@
 //
 // Cancel a download and remove the file if specified.
 //
-- (void)endDownloadAndRemoveFile:(BOOL)remove;
+- (void)cancelDownloadAndRemoveFile:(BOOL)remove;
 
 //
 // Create a path from string
@@ -46,19 +46,19 @@
 //
 // Let you handle the error for a given download
 //
-- (void)downloader:(TCBlobDownload *)blobDownload
-  didStopWithError:(NSError *)error;
+- (void)download:(TCBlobDownload *)blobDownload
+didStopWithError:(NSError *)error;
 
 //
 // If you stored the BlobDownloader you can retrieve it and update the corresponding view
 //
-- (void)downloader:(TCBlobDownload *)blobDownload
-    didReceiveData:(uint64_t)received
-           onTotal:(uint64_t)total;
+- (void)download:(TCBlobDownload *)blobDownload
+  didReceiveData:(uint64_t)received
+         onTotal:(uint64_t)total;
 
 //
 // If you stored the BlobDownloader you can retrieve it and update the corresponding view
 //
-- (void)downloadDidFinishWithDownloader:(TCBlobDownload *)blobDownload;
+- (void)downloadDidFinishWithDownload:(TCBlobDownload *)blobDownload;
 
 @end

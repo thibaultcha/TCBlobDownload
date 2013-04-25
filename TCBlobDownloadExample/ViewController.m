@@ -63,7 +63,7 @@
 #pragma mark - BlobDownloadManager Delegate
 
 
-- (void)downloader:(TCBlobDownload *)blobDownloader
+- (void)download:(TCBlobDownload *)blobDownloader
     didReceiveData:(uint64_t)received
            onTotal:(uint64_t)total
 {
@@ -71,13 +71,13 @@
     // with the current progression.
 }
 
-- (void)downloadDidFinishWithDownloader:(TCBlobDownload *)blobDownloader
+- (void)downloadDidFinishWithDownload:(TCBlobDownload *)blobDownloader
 {
     // If you stored the BlobDownloader you can retrieve it and update your view
     // when the download has finished.
 }
 
-- (void)downloader:(TCBlobDownload *)blobDownloader didStopWithError:(NSError *)error
+- (void)download:(TCBlobDownload *)blobDownloader didStopWithError:(NSError *)error
 {
     // If you stored the BlobDownloader you can retrieve it and display the error
     // it created.

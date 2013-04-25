@@ -105,10 +105,10 @@
           [[error userInfo] objectForKey:NSURLErrorFailingURLStringErrorKey]);
 #endif
     if ([self.delegate respondsToSelector:@selector(downloader:didStopWithError:)]) {
-        [self.delegate downloader:self didStopWithError:error];
+        [self.delegate download:self didStopWithError:error];
     }
     
-    [self endDownloadAndRemoveFile:NO];
+    [self cancelDownloadAndRemoveFile:NO];
 }
 
 - (void)connection:(NSURLConnection*)connection didReceiveResponse:(NSURLResponse *)response
@@ -124,12 +124,12 @@
         __autoreleasing NSError *error = [NSError errorWithDomain:ERROR_DOMAIN
                                              code:1
                                          userInfo:errorDetails];
-        [self endDownloadAndRemoveFile:NO];
+        [self cancelDownloadAndRemoveFile:NO];
 #ifdef DEBUG
         NSLog(@"Download failed. Error - %@", [error localizedDescription]);
 #endif
         if ([self.delegate respondsToSelector:@selector(downloader:didStopWithError:)]) {
-            [self.delegate downloader:self didStopWithError:error];
+            [self.delegate download:self didStopWithError:error];
         }
     }
 }
@@ -151,7 +151,7 @@
     }
     
     if ([self.delegate respondsToSelector:@selector(downloader:didReceiveData:onTotal:)]) {
-        [self.delegate downloader:self
+        [self.delegate download:self
                    didReceiveData:_receivedDataLength
                           onTotal:_expectedDataLength];
     }
@@ -163,17 +163,17 @@
     NSLog(@"Download succeeded. Bytes received: %lld", _receivedDataLength);
 #endif
     if ([self.delegate respondsToSelector:@selector(downloadDidFinishWithDownloader:)]) {
-        [self.delegate downloadDidFinishWithDownloader:self];
+        [self.delegate downloadDidFinishWithDownload:self];
     }
     
-    [self endDownloadAndRemoveFile:NO];
+    [self cancelDownloadAndRemoveFile:NO];
 }
 
 
 #pragma mark - Utilities
 
 
-- (void)endDownloadAndRemoveFile:(BOOL)remove
+- (void)cancelDownloadAndRemoveFile:(BOOL)remove
 {
 #ifdef DEBUG
     NSLog(@"Operation ended for file %@", self.fileName);
