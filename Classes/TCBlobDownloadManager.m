@@ -84,7 +84,7 @@
 - (void)cancelAllDownloadsAndRemoveFiles:(BOOL)remove
 {
     for (TCBlobDownload *blob in [_operationQueue operations])
-        [blob endDownloadAndRemoveFile:remove];
+        [blob cancelDownloadAndRemoveFile:remove];
 #ifdef DEBUG
     NSLog(@"Cancelled all downloads.");
 #endif
