@@ -41,7 +41,7 @@ Dependencies and more...
            downloadPath:(NSString *)pathToDL // cannot be nil
             andDelegate:(id<TCBlobDownloadDelegate>)delegateOrNil;
 
-- (void)cancelDownloadAndRemoveFile;
+- (void)cancelDownloadAndRemoveFile:(BOOL)remove;
 ```
 
 ## Usage
