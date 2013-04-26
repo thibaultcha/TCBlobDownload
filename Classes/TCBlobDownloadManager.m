@@ -61,16 +61,16 @@
 }
 
 
-#pragma mark - Downloads Management
+#pragma mark - TCBlobDownloads Management
 
 
-- (void)addDownloadWithURL:(NSString *)urlString
-   customDownloadDirectory:(NSString *)customPath
-               andDelegate:(id<TCBlobDownloadDelegate>)delegateOrNil
+- (void)startDownloadWithURL:(NSString *)urlString
+                  customPath:(NSString *)customPathOrNil
+                 andDelegate:(id<TCBlobDownloadDelegate>)delegateOrNil
 {
     NSString *downloadPath = self.defaultDownloadPath;
-    if (nil != customPath && [TCBlobDownload createPathFromPath:customPath])
-        downloadPath = customPath;
+    if (nil != customPathOrNil && [TCBlobDownload createPathFromPath:customPathOrNil])
+        downloadPath = customPathOrNil;
     
     TCBlobDownload *downloader = [[TCBlobDownload alloc] initWithUrlString:urlString
                                                               downloadPath:downloadPath
@@ -78,7 +78,25 @@
     [_operationQueue addOperation:downloader];
 }
 
-- (void)addDownload:(TCBlobDownload *)blobDownload
+- (void)startDownloadWithURL:(NSString *)urlString
+                  customPath:(NSString *)customPathOrNil
+               progressBlock:(void (^)(float, float))progressBlock
+                  errorBlock:(void (^)(NSError *))errorBlock
+             completionBlock:(void (^)())completionBlock
+{
+    NSString *downloadPath = self.defaultDownloadPath;
+    if (nil != customPathOrNil && [TCBlobDownload createPathFromPath:customPathOrNil])
+        downloadPath = customPathOrNil;
+    
+    TCBlobDownload *downloader = [[TCBlobDownload alloc] initWithUrlString:urlString
+                                                              downloadPath:customPathOrNil
+                                                             progressBlock:progressBlock
+                                                                errorBlock:errorBlock
+                                                           completionBlock:completionBlock];
+    [_operationQueue addOperation:downloader];
+}
+
+- (void)startDownload:(TCBlobDownload *)blobDownload
 {
     [_operationQueue addOperation:blobDownload];
 }

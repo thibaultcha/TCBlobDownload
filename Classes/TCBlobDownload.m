@@ -7,6 +7,10 @@
 
 #import "TCBlobDownload.h"
 
+typedef void (^ProgressBlock)(float, float);
+typedef void (^ErrorBlock)(NSError *);
+typedef void (^CompletionBlock)();
+
 @interface TCBlobDownload ()
 {
     NSURLConnection *_connection;
@@ -17,6 +21,10 @@
     uint64_t _receivedDataLength;
     uint64_t _expectedDataLength;
 }
+
+@property (nonatomic, copy) ProgressBlock progressBlock;
+@property (nonatomic, copy) ErrorBlock errorBlock;
+@property (nonatomic, copy) CompletionBlock completionBlock;
 
 + (uint64_t)freeDiskSpace;
 
@@ -35,6 +43,24 @@
         self.delegate = delegateOrNil;
         if ([TCBlobDownload createPathFromPath:pathToDL])
             self.pathToDownloadDirectory = pathToDL;
+    }
+    
+    return self;
+}
+
+- (id)initWithUrlString:(NSString *)urlString
+           downloadPath:(NSString *)pathToDL
+          progressBlock:(void (^)(float, float))progressBlock
+             errorBlock:(void (^)(NSError *))errorBlock
+        completionBlock:(void (^)())completionBlock
+{
+    self = [self initWithUrlString:urlString
+                      downloadPath:pathToDL
+                       andDelegate:nil];
+    if (self) {
+        _progressBlock = progressBlock;
+        _errorBlock = errorBlock;
+        _completionBlock = completionBlock;
     }
     
     return self;
@@ -104,6 +130,9 @@
           [error localizedDescription],
           [[error userInfo] objectForKey:NSURLErrorFailingURLStringErrorKey]);
 #endif
+    if (self.errorBlock) {
+        self.errorBlock(error);
+    }
     if ([self.delegate respondsToSelector:@selector(download:didStopWithError:)]) {
         [self.delegate download:self didStopWithError:error];
     }
@@ -128,6 +157,9 @@
 #ifdef DEBUG
         NSLog(@"Download failed. Error - %@", [error localizedDescription]);
 #endif
+        if (self.errorBlock) {
+            self.errorBlock(error);
+        }
         if ([self.delegate respondsToSelector:@selector(download:didStopWithError:)]) {
             [self.delegate download:self didStopWithError:error];
         }
@@ -140,9 +172,9 @@
     _receivedDataLength += [data length];
 
 #ifdef DEBUG
-    float percent = (float) _receivedDataLength / _expectedDataLength * 100;
-    NSLog(@"%@ | %.2f%% - Received: %lld - Total: %lld",
-          self.fileName, percent, _receivedDataLength, _expectedDataLength);
+    //float percent = (float) _receivedDataLength / _expectedDataLength * 100;
+    //NSLog(@"%@ | %.2f%% - Received: %lld - Total: %lld",
+    //      self.fileName, percent, _receivedDataLength, _expectedDataLength);
 #endif
     
     if (_receivedDataBuffer.length > BUFFER_SIZE && _file) {
@@ -150,6 +182,9 @@
         [_receivedDataBuffer setData:nil];
     }
     
+    if (self.progressBlock) {
+        self.progressBlock(_receivedDataLength, _expectedDataLength);
+    }
     if ([self.delegate respondsToSelector:@selector(download:didReceiveData:onTotal:)]) {
         [self.delegate download:self
                    didReceiveData:_receivedDataLength
@@ -162,6 +197,9 @@
 #ifdef DEBUG
     NSLog(@"Download succeeded. Bytes received: %lld", _receivedDataLength);
 #endif
+    if (self.completionBlock) {
+        self.completionBlock();
+    }
     if ([self.delegate respondsToSelector:@selector(downloadDidFinishWithDownload:)]) {
         [self.delegate downloadDidFinishWithDownload:self];
     }

@@ -6,7 +6,7 @@
 //
 
 #define BUFFER_SIZE 1024*1024 // 1 MB
-#define DEFAULT_TIMEOUT 15
+#define DEFAULT_TIMEOUT 30
 #define ERROR_DOMAIN @"myDomain"
 
 #import <Foundation/Foundation.h>
@@ -27,6 +27,15 @@
 - (id)initWithUrlString:(NSString *)urlString
            downloadPath:(NSString *)pathToDL
             andDelegate:(id<TCBlobDownloadDelegate>)delegateOrNil;
+
+//
+// Same but with completion blocks
+//
+- (id)initWithUrlString:(NSString *)urlString
+           downloadPath:(NSString *)pathToDL
+          progressBlock:(void (^)(float receivedLength, float totalLength))progressBlock
+             errorBlock:(void (^)(NSError *error))errorBlock
+        completionBlock:(void (^)())completionBlock;
 
 //
 // Cancel a download and remove the file if specified.
@@ -54,8 +63,8 @@ didStopWithError:(NSError *)error;
 // On each response from the NSURLConnection
 //
 - (void)download:(TCBlobDownload *)blobDownload
-  didReceiveData:(uint64_t)received
-         onTotal:(uint64_t)total;
+  didReceiveData:(uint64_t)receivedLength
+         onTotal:(uint64_t)totalLength;
 
 //
 // When a download ends
