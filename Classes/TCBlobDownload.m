@@ -218,7 +218,8 @@ typedef void (^CompletionBlock)();
 #endif
     if (remove) {
         NSFileManager *fm = [NSFileManager defaultManager];
-        [fm removeItemAtPath:self.pathToDownloadDirectory error:nil];
+        NSString *pathToFile = [self.pathToDownloadDirectory stringByAppendingPathComponent:self.fileName];
+        [fm removeItemAtPath:pathToFile error:nil];
     }
 
     [self cancel];
