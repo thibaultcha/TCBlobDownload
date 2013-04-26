@@ -11,26 +11,26 @@ It currently only supports ARC but I hope to make a non-ARC implementation soon.
 
 ## Features
 1. Download files in background threads.
-2. Pause and resume later a download.
-3. Set maximum number of concurrent downloads.
-4. Blocks || delegate
+2. Use blocks `||` delegate!
+3. Pause and resume later a download.
+4. Set maximum number of concurrent downloads.
 5. Custom download path and auto path creation.
 6. [download cancelDownloadAndRemoveFile:BOOL]
 
 Dependencies and more...
 
-### Methods
-**TCBlobDownloadManager**
+## Methods
+#### TCBlobDownloadManager
 ```objective-c
 - (void)startDownloadWithURL:(NSString *)urlString
-             downloadPath:(NSString *)customPathOrNil
-              andDelegate:(id<TCBlobDownloadDelegate>)delegateOrNil;
+                downloadPath:(NSString *)customPathOrNil
+                 andDelegate:(id<TCBlobDownloadDelegate>)delegateOrNil;
 
 - (void)startDownloadWithURL:(NSString *)urlString
-             downloadPath:(NSString *)customPathOrNil
-            progressBlock:(void (^)(float receivedLength, float totalLength))progressBlock
-               errorBlock:(void (^)(NSError *error))errorBlock
-          completionBlock:(void (^)())completionBlock;
+                downloadPath:(NSString *)customPathOrNil
+               progressBlock:(void (^)(float receivedLength, float totalLength))progressBlock
+                  errorBlock:(void (^)(NSError *error))errorBlock
+             completionBlock:(void (^)())completionBlock;
 
 - (void)startDownload:(TCBlobDownload *)blobDownload;
 
@@ -43,24 +43,25 @@ Dependencies and more...
 - (void)cancelAllDownloadsAndRemoveFiles:(BOOL)remove;
 ```
 
-**TCBlobDownload**
+#### TCBlobDownload
 ```objective-c
 - (id)initWithUrlString:(NSString *)urlString
            downloadPath:(NSString *)pathToDL // cannot be nil
             andDelegate:(id<TCBlobDownloadDelegate>)delegateOrNil;
 
 - (id)initWithUrlString:(NSString *)urlString // cannot be nil
-          downloadPath:(NSString *)pathToDL
-         progressBlock:(void (^)(float receivedLength, float totalLength))progressBlock
-            errorBlock:(void (^)(NSError *error))errorBlock
-       completionBlock:(void (^)())completionBlock;
+           downloadPath:(NSString *)pathToDL
+          progressBlock:(void (^)(float receivedLength, float totalLength))progressBlock
+             errorBlock:(void (^)(NSError *error))errorBlock
+        completionBlock:(void (^)())completionBlock;
 
 - (void)cancelDownloadAndRemoveFile:(BOOL)remove;
 ```
 
 ## Usage
-### Blocks
+### 1. Blocks
 Blocks are cool.
+To immediately start a download in the default TCBlobDownloadManager directory (`tmp/` by default):
 
 ```objective-c
 #import "TCBlobDownloadManager.h"
@@ -68,21 +69,19 @@ Blocks are cool.
 TCBlobDownloadManager *sharedManager = [TCBlobDownloadManager sharedDownloadManager];
 
 [sharedManager startDownloadWithURL:@"http://give.me/bigfile.avi"
-                    downloadPath:nil
-                   progressBlock:^(float receivedLength, float totalLength){
+                       downloadPath:nil
+                      progressBlock:^(float receivedLength, float totalLength){
                    // wow moving progress bar!
                  }
-                      errorBlock:^(NSError *error){
+                       errorBlock:^(NSError *error){
                    // this not cool
                  }
-                 completionBlock:^{
+                       completionBlock:^{
                    // this is cool
                  }];
 ```
 
-This way, your download will immediately start. It will be downloaded in the default download directory (`tmp/` if not set) because customPath is `nil`.
-
-Note that:
+If you set a customPath:
 
 ```objective-c
 NSString *customPath = [NSTemporaryDirectory() stringByAppendingPathComponent:@"My/Custom/Path/"];
@@ -91,9 +90,9 @@ NSString *customPath = [NSTemporaryDirectory() stringByAppendingPathComponent:@"
                       andDelegate:nil];
 ```
  
-Will **create** the given path if needed and download the file in the `Path/` directory. **Remember that you should follow the [iOS Data Storage Guidelines](https://developer.apple.com/icloud/documentation/data-storage/)**.
+This will **create** the given path if needed and download the file in the `Path/` directory. **Remember that you should follow the [iOS Data Storage Guidelines](https://developer.apple.com/icloud/documentation/data-storage/)**.
 
-### Delegate
+### 2. Delegate
 You can either set a delegate which can implement those optional methods if delegates have your preference over blocks:
 
 ```objective-c
@@ -113,7 +112,7 @@ You can either set a delegate which can implement those optional methods if dele
 }
 ```
 
-### Other things you should know
+### 3. Other things you should know
 **Cool thing 1:** If a download has been stopped and the local file has not been deleted, when you will restart the download to the same local path, the download will start where it has stopped using the HTTP `Range=bytes` header.
 
 **Cool thing 2:** You can also set dependencies in your downloads. See [NSOperation Class Reference](http://developer.apple.com/library/mac/#documentation/Cocoa/Reference/NSOperation_class/Reference/Reference.html) and the `addDependency:` method in particular.
