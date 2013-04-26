@@ -92,7 +92,7 @@
                                                               downloadPath:customPathOrNil
                                                              progressBlock:progressBlock
                                                                 errorBlock:errorBlock
-                                                           downloadFinishedBlock:downloadFinishedBlock];
+                                                     downloadFinishedBlock:downloadFinishedBlock];
     [_operationQueue addOperation:downloader];
 }
 

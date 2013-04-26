@@ -30,7 +30,7 @@ Dependencies and more...
                 downloadPath:(NSString *)customPathOrNil
                progressBlock:(void (^)(float receivedLength, float totalLength))progressBlock
                   errorBlock:(void (^)(NSError *error))errorBlock
-       downloadFinishedBlock:(void (^)(NSString *pathToFile)) downloadFinishedBlock;
+       downloadFinishedBlock:(void (^)(NSString *pathToFile))downloadFinishedBlock;
 
 - (void)startDownload:(TCBlobDownload *)blobDownload;
 
@@ -53,7 +53,7 @@ Dependencies and more...
            downloadPath:(NSString *)pathToDL
           progressBlock:(void (^)(float receivedLength, float totalLength))progressBlock
              errorBlock:(void (^)(NSError *error))errorBlock
-  downloadFinishedBlock:(void (^)(NSString *pathToFile)) downloadFinishedBlock;
+  downloadFinishedBlock:(void (^)(NSString *pathToFile))downloadFinishedBlock;
 
 - (void)cancelDownloadAndRemoveFile:(BOOL)remove;
 ```
