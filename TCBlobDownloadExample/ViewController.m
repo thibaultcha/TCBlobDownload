@@ -47,10 +47,30 @@
 
 - (void)download:(id)sender
 {
-    // Wild download
-    [self.sharedDownloadManager addDownloadWithURL:self.urlField.text
-                           customDownloadDirectory:nil
-                                       andDelegate:self];
+    // Delegate
+    /*[self.sharedDownloadManager startDownloadWithURL:self.urlField.text
+                                          downloadPath:nil
+                                           andDelegate:self];*/
+    
+    // BLOCK POWA
+    [self.sharedDownloadManager startDownloadWithURL:self.urlField.text
+                                          customPath:nil
+                                       progressBlock:^(float receivedLength, float totalLength) {
+                                           
+                                              NSLog(@"Incoming!");
+                                           
+                                       }
+                                          errorBlock:^(NSError *error) {
+                                              
+                                              NSLog(@"Shit happens.");
+                                              
+                                          }
+                                     completionBlock:^{
+                                         
+                                              NSLog(@"Done.");
+                                         
+                                     }];
+    
     [self.urlField resignFirstResponder];
 }
 
@@ -60,27 +80,25 @@
 }
 
 
-#pragma mark - BlobDownloadManager Delegate
+#pragma mark - BlobDownloadManager Delegate (Optional, your choice)
 
 
-- (void)download:(TCBlobDownload *)blobDownloader
-    didReceiveData:(uint64_t)received
-           onTotal:(uint64_t)total
+- (void)download:(TCBlobDownload *)blobDownload
+  didReceiveData:(uint64_t)receivedLength
+         onTotal:(uint64_t)totalLength
 {
-    // If you stored the BlobDownloader you can retrieve it and update your view
-    // with the current progression.
+
 }
 
-- (void)downloadDidFinishWithDownload:(TCBlobDownload *)blobDownloader
+- (void)download:(TCBlobDownload *)blobDownload didStopWithError:(NSError *)error
 {
-    // If you stored the BlobDownloader you can retrieve it and update your view
-    // when the download has finished.
+
 }
 
-- (void)download:(TCBlobDownload *)blobDownloader didStopWithError:(NSError *)error
+
+- (void)downloadDidFinishWithDownload:(TCBlobDownload *)blobDownload
 {
-    // If you stored the BlobDownloader you can retrieve it and display the error
-    // it created.
+    
 }
 
 @end
