@@ -65,7 +65,7 @@
                                               NSLog(@"Shit happens.");
                                               
                                           }
-                                     completionBlock:^{
+                                     completionBlock:^(NSString *pathToFile){
                                          
                                               NSLog(@"Done.");
                                          

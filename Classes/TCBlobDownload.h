@@ -35,7 +35,7 @@
            downloadPath:(NSString *)pathToDL
           progressBlock:(void (^)(float receivedLength, float totalLength))progressBlock
              errorBlock:(void (^)(NSError *error))errorBlock
-        completionBlock:(void (^)())completionBlock;
+        completionBlock:(void (^)(NSString *pathToFile))completionBlock;
 
 //
 // Cancel a download and remove the file if specified.

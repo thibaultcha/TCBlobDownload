@@ -34,7 +34,7 @@
                   customPath:(NSString *)customPathOrNil
                progressBlock:(void (^)(float receivedLength, float totalLength))progressBlock
                   errorBlock:(void (^)(NSError *error))errorBlock
-             completionBlock:(void (^)())completionBlock;
+             completionBlock:(void (^)(NSString *pathToFile))completionBlock;
 
 //
 // Start an already initialized download

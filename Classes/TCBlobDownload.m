@@ -9,7 +9,7 @@
 
 typedef void (^ProgressBlock)(float, float);
 typedef void (^ErrorBlock)(NSError *);
-typedef void (^CompletionBlock)();
+typedef void (^CompletionBlock)(NSString *);
 
 @interface TCBlobDownload ()
 {
@@ -52,7 +52,7 @@ typedef void (^CompletionBlock)();
            downloadPath:(NSString *)pathToDL
           progressBlock:(void (^)(float, float))progressBlock
              errorBlock:(void (^)(NSError *))errorBlock
-        completionBlock:(void (^)())completionBlock
+        completionBlock:(void (^)(NSString *))completionBlock
 {
     self = [self initWithUrlString:urlString
                       downloadPath:pathToDL
@@ -198,7 +198,8 @@ typedef void (^CompletionBlock)();
     NSLog(@"Download succeeded. Bytes received: %lld", _receivedDataLength);
 #endif
     if (self.completionBlock) {
-        self.completionBlock();
+        NSString *pathToFile = [self.pathToDownloadDirectory stringByAppendingPathComponent:self.fileName];
+        self.completionBlock(pathToFile);
     }
     if ([self.delegate respondsToSelector:@selector(downloadDidFinishWithDownload:)]) {
         [self.delegate downloadDidFinishWithDownload:self];
