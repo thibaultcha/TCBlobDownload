@@ -60,16 +60,16 @@
                                               NSLog(@"Incoming!");
                                            
                                        }
-                                          errorBlock:^(NSError *error) {
+                                       errorBlock:^(NSError *error) {
                                               
                                               NSLog(@"Shit happens.");
                                               
-                                          }
-                                     completionBlock:^(NSString *pathToFile){
+                                       }
+                                       downloadFinishedBlock:^(NSString *pathToFile){
                                          
                                               NSLog(@"Done.");
                                          
-                                     }];
+                                       }];
     
     [self.urlField resignFirstResponder];
 }

@@ -71,14 +71,14 @@ TCBlobDownloadManager *sharedManager = [TCBlobDownloadManager sharedDownloadMana
 [sharedManager startDownloadWithURL:@"http://give.me/bigfile.avi"
                        downloadPath:nil
                       progressBlock:^(float receivedLength, float totalLength){
-                   // wow moving progress bar!
-                 }
+                        // wow moving progress bar!
+                      }
                        errorBlock:^(NSError *error){
-                   // this not cool
-                 }
+                         // this not cool
+                       }
                        completionBlock:^(NSString *pathToFile){
-                   // this is cool
-                 }];
+                         // this is cool
+                       }];
 ```
 
 If you set a customPath:

@@ -82,7 +82,7 @@
                   customPath:(NSString *)customPathOrNil
                progressBlock:(void (^)(float, float))progressBlock
                   errorBlock:(void (^)(NSError *))errorBlock
-             completionBlock:(void (^)(NSString *))completionBlock
+       downloadFinishedBlock:(void (^)(NSString *))downloadFinishedBlock
 {
     NSString *downloadPath = self.defaultDownloadPath;
     if (nil != customPathOrNil && [TCBlobDownload createPathFromPath:customPathOrNil])
@@ -92,7 +92,7 @@
                                                               downloadPath:customPathOrNil
                                                              progressBlock:progressBlock
                                                                 errorBlock:errorBlock
-                                                           completionBlock:completionBlock];
+                                                           downloadFinishedBlock:downloadFinishedBlock];
     [_operationQueue addOperation:downloader];
 }
 

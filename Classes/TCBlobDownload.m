@@ -24,7 +24,7 @@ typedef void (^CompletionBlock)(NSString *);
 
 @property (nonatomic, copy) ProgressBlock progressBlock;
 @property (nonatomic, copy) ErrorBlock errorBlock;
-@property (nonatomic, copy) CompletionBlock completionBlock;
+@property (nonatomic, copy) CompletionBlock downloadFinishedBlock;
 
 + (uint64_t)freeDiskSpace;
 
@@ -52,7 +52,7 @@ typedef void (^CompletionBlock)(NSString *);
            downloadPath:(NSString *)pathToDL
           progressBlock:(void (^)(float, float))progressBlock
              errorBlock:(void (^)(NSError *))errorBlock
-        completionBlock:(void (^)(NSString *))completionBlock
+  downloadFinishedBlock:(void (^)(NSString *))downloadFinishedBlock
 {
     self = [self initWithUrlString:urlString
                       downloadPath:pathToDL
@@ -60,7 +60,7 @@ typedef void (^CompletionBlock)(NSString *);
     if (self) {
         _progressBlock = progressBlock;
         _errorBlock = errorBlock;
-        _completionBlock = completionBlock;
+        _downloadFinishedBlock = downloadFinishedBlock;
     }
     
     return self;
@@ -197,9 +197,9 @@ typedef void (^CompletionBlock)(NSString *);
 #ifdef DEBUG
     NSLog(@"Download succeeded. Bytes received: %lld", _receivedDataLength);
 #endif
-    if (self.completionBlock) {
+    if (self.downloadFinishedBlock) {
         NSString *pathToFile = [self.pathToDownloadDirectory stringByAppendingPathComponent:self.fileName];
-        self.completionBlock(pathToFile);
+        self.downloadFinishedBlock(pathToFile);
     }
     if ([self.delegate respondsToSelector:@selector(downloadDidFinishWithDownload:)]) {
         [self.delegate downloadDidFinishWithDownload:self];
@@ -217,7 +217,7 @@ typedef void (^CompletionBlock)(NSString *);
 #ifdef DEBUG
     NSLog(@"Operation ended for file %@", self.fileName);
 #endif
-    self.completionBlock = nil;
+    self.downloadFinishedBlock = nil;
     if (remove) {
         NSFileManager *fm = [NSFileManager defaultManager];
         NSString *pathToFile = [self.pathToDownloadDirectory stringByAppendingPathComponent:self.fileName];
