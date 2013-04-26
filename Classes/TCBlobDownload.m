@@ -217,6 +217,7 @@ typedef void (^CompletionBlock)(NSString *);
 #ifdef DEBUG
     NSLog(@"Operation ended for file %@", self.fileName);
 #endif
+    self.completionBlock = nil;
     if (remove) {
         NSFileManager *fm = [NSFileManager defaultManager];
         NSString *pathToFile = [self.pathToDownloadDirectory stringByAppendingPathComponent:self.fileName];
