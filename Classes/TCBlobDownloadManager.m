@@ -1,5 +1,5 @@
 //
-//  BlobDownloadManager.m
+//  TCBlobDownloadManager.m
 //
 //  Created by Thibault Charbonnier on 16/04/13.
 //  Copyright (c) 2013 Thibault Charbonnier. All rights reserved.
@@ -35,13 +35,13 @@
 + (id)sharedDownloadManager
 {
     static dispatch_once_t onceToken;
-    static id sharedMediaServer = nil;
+    static id sharedManager = nil;
     
     dispatch_once(&onceToken, ^{
         sharedMediaServer = [[[self class] alloc] init];
     });
     
-    return sharedMediaServer;
+    return sharedManager;
 }
 
 - (void)setDefaultDownloadPath:(NSString *)pathToDL
