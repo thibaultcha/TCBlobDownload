@@ -7,10 +7,6 @@
 
 #import "TCBlobDownload.h"
 
-typedef void (^ProgressBlock)(float, float);
-typedef void (^ErrorBlock)(NSError *);
-typedef void (^CompletionBlock)(NSString *);
-
 @interface TCBlobDownload ()
 {
     NSURLConnection *_connection;
@@ -22,9 +18,10 @@ typedef void (^CompletionBlock)(NSString *);
     uint64_t _expectedDataLength;
 }
 
+@property (nonatomic, copy) FirstResponseBlock firstResponseBlock;
 @property (nonatomic, copy) ProgressBlock progressBlock;
 @property (nonatomic, copy) ErrorBlock errorBlock;
-@property (nonatomic, copy) CompletionBlock downloadFinishedBlock;
+@property (nonatomic, copy) DownloadFinishedBlock downloadFinishedBlock;
 
 + (uint64_t)freeDiskSpace;
 
@@ -50,14 +47,16 @@ typedef void (^CompletionBlock)(NSString *);
 
 - (id)initWithUrlString:(NSString *)urlString
            downloadPath:(NSString *)pathToDL
-          progressBlock:(void (^)(float, float))progressBlock
-             errorBlock:(void (^)(NSError *))errorBlock
-  downloadFinishedBlock:(void (^)(NSString *))downloadFinishedBlock
+     firstResponseBlock:(FirstResponseBlock)firstResponseBlock
+          progressBlock:(ProgressBlock)progressBlock
+             errorBlock:(ErrorBlock)errorBlock
+  downloadFinishedBlock:(DownloadFinishedBlock)downloadFinishedBlock
 {
     self = [self initWithUrlString:urlString
                       downloadPath:pathToDL
                        andDelegate:nil];
     if (self) {
+        _firstResponseBlock = firstResponseBlock;
         _progressBlock = progressBlock;
         _errorBlock = errorBlock;
         _downloadFinishedBlock = downloadFinishedBlock;
@@ -143,7 +142,6 @@ typedef void (^CompletionBlock)(NSString *);
 - (void)connection:(NSURLConnection*)connection didReceiveResponse:(NSURLResponse *)response
 {
     _expectedDataLength = [response expectedContentLength];
-    [_receivedDataBuffer setData:nil];
     
     if ([TCBlobDownload freeDiskSpace] < _expectedDataLength) {
         NSString *errorDesc = [NSString stringWithFormat:@"Not enough free space to download file %@", self.fileName];
@@ -163,6 +161,15 @@ typedef void (^CompletionBlock)(NSString *);
         if ([self.delegate respondsToSelector:@selector(download:didStopWithError:)]) {
             [self.delegate download:self didStopWithError:error];
         }
+    } else {
+        [_receivedDataBuffer setData:nil];
+        
+        if (self.firstResponseBlock) {
+            self.firstResponseBlock(response);
+        }
+        if ([self.delegate respondsToSelector:@selector(download:didReceiveFirstResponse:)]) {
+            [self.delegate download:self didReceiveFirstResponse:response];
+        }
     }
 }
 
@@ -172,9 +179,9 @@ typedef void (^CompletionBlock)(NSString *);
     _receivedDataLength += [data length];
 
 #ifdef DEBUG
-    //float percent = (float) _receivedDataLength / _expectedDataLength * 100;
-    //NSLog(@"%@ | %.2f%% - Received: %lld - Total: %lld",
-    //      self.fileName, percent, _receivedDataLength, _expectedDataLength);
+    float percent = (float) _receivedDataLength / _expectedDataLength * 100;
+    NSLog(@"%@ | %.2f%% - Received: %lld - Total: %lld",
+          self.fileName, percent, _receivedDataLength, _expectedDataLength);
 #endif
     
     if (_receivedDataBuffer.length > BUFFER_SIZE && _file) {

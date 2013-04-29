@@ -32,9 +32,10 @@
 //
 - (void)startDownloadWithURL:(NSString *)urlString
                   customPath:(NSString *)customPathOrNil
-               progressBlock:(void (^)(float receivedLength, float totalLength))progressBlock
-                  errorBlock:(void (^)(NSError *error))errorBlock
-       downloadFinishedBlock:(void (^)(NSString *pathToFile))downloadFinishedBlock;
+          firstResponseBlock:(FirstResponseBlock)firstResponseBlock
+               progressBlock:(ProgressBlock)progressBlock
+                  errorBlock:(ErrorBlock)errorBlock
+       downloadFinishedBlock:(DownloadFinishedBlock)downloadFinishedBlock;
 
 //
 // Start an already initialized download

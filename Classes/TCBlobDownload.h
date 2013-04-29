@@ -11,6 +11,11 @@
 
 #import <Foundation/Foundation.h>
 
+typedef void (^FirstResponseBlock)(NSURLResponse *response);
+typedef void (^ProgressBlock)(float receivedLength, float totalLength);
+typedef void (^ErrorBlock)(NSError *error);
+typedef void (^DownloadFinishedBlock)(NSString *pathToFile);
+
 @protocol TCBlobDownloadDelegate;
 
 @interface TCBlobDownload : NSOperation <NSURLConnectionDelegate>
@@ -33,9 +38,10 @@
 //
 - (id)initWithUrlString:(NSString *)urlString
            downloadPath:(NSString *)pathToDL
-          progressBlock:(void (^)(float receivedLength, float totalLength))progressBlock
-             errorBlock:(void (^)(NSError *error))errorBlock
-  downloadFinishedBlock:(void (^)(NSString *pathToFile))downloadFinishedBlock;
+     firstResponseBlock:(FirstResponseBlock)firstResponseBlock
+          progressBlock:(ProgressBlock)progressBlock
+             errorBlock:(ErrorBlock)errorBlock
+  downloadFinishedBlock:(DownloadFinishedBlock)downloadFinishedBlock;
 
 //
 // Cancel a download and remove the file if specified.
@@ -52,6 +58,11 @@
 @protocol TCBlobDownloadDelegate <NSObject>
 
 @optional
+
+//
+// Received first response
+//
+- (void)download:(TCBlobDownload *)blobDownload didReceiveFirstResponse:(NSURLResponse *)response;
 
 //
 // Let you handle the error for a given download

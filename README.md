@@ -28,6 +28,7 @@ Dependencies and more...
 
 - (void)startDownloadWithURL:(NSString *)urlString
                 downloadPath:(NSString *)customPathOrNil
+          firstResponseBlock:(NSURLResponse *response)firstResponseBlock
                progressBlock:(void (^)(float receivedLength, float totalLength))progressBlock
                   errorBlock:(void (^)(NSError *error))errorBlock
        downloadFinishedBlock:(void (^)(NSString *pathToFile))downloadFinishedBlock;
@@ -51,6 +52,7 @@ Dependencies and more...
 
 - (id)initWithUrlString:(NSString *)urlString // cannot be nil
            downloadPath:(NSString *)pathToDL
+     firstResponseBlock:(NSURLResponse *response)firstResponseBlock
           progressBlock:(void (^)(float receivedLength, float totalLength))progressBlock
              errorBlock:(void (^)(NSError *error))errorBlock
   downloadFinishedBlock:(void (^)(NSString *pathToFile))downloadFinishedBlock;
@@ -70,15 +72,18 @@ TCBlobDownloadManager *sharedManager = [TCBlobDownloadManager sharedDownloadMana
 
 [sharedManager startDownloadWithURL:@"http://give.me/bigfile.avi"
                        downloadPath:nil
-                      progressBlock:^(float receivedLength, float totalLength){
-                        // wow moving progress bar!
-                      }
-                       errorBlock:^(NSError *error){
-                         // this not cool
-                       }
-                       downloadFinishedBlock:^(NSString *pathToFile){
-                         // this is cool
-                       }];
+                 firstResponseBlock:^(NSURLResponse *response) {
+								   // [response expectedContentLength];
+                 }
+                 progressBlock:^(float receivedLength, float totalLength){
+                   // wow moving progress bar!
+                 }
+                 errorBlock:^(NSError *error){
+                   // this not cool
+                 }
+                 downloadFinishedBlock:^(NSString *pathToFile){
+                   // this is cool
+                 }];
 ```
 
 If you set a customPath:
@@ -96,6 +101,11 @@ This will **create** the given path if needed and download the file in the `Path
 You can either set a delegate which can implement those optional methods if delegates have your preference over blocks:
 
 ```objective-c
+- (void)download:(TCBlobDownload *)blobDownload didReceiveFirstResponse:(NSURLResponse *)response
+{
+
+}
+
 - (void)download:(TCBlobDownload *)blobDownload didReceiveData:(uint64_t)received onTotal:(uint64_t)total
 {
   // wow moving progress bar! (bis)

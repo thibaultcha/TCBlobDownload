@@ -49,27 +49,32 @@
 {
     // Delegate
     /*[self.sharedDownloadManager startDownloadWithURL:self.urlField.text
-                                          downloadPath:nil
+                                            customPath:nil
                                            andDelegate:self];*/
     
     // BLOCK POWA
     [self.sharedDownloadManager startDownloadWithURL:self.urlField.text
                                           customPath:nil
-                                       progressBlock:^(float receivedLength, float totalLength) {
+                                  firstResponseBlock:^(NSURLResponse *response) {
+                                      
+                                      NSLog(@"first response");
+                                      
+                                  } 
+                                  progressBlock:^(float receivedLength, float totalLength) {
                                            
-                                              NSLog(@"Incoming!");
+                                      //NSLog(@"Incoming!");
                                            
-                                       }
-                                       errorBlock:^(NSError *error) {
+                                  }
+                                  errorBlock:^(NSError *error) {
                                               
-                                              NSLog(@"Shit happens.");
+                                      NSLog(@"Shit happens.");
                                               
-                                       }
-                                       downloadFinishedBlock:^(NSString *pathToFile){
+                                  }
+                                  downloadFinishedBlock:^(NSString *pathToFile){
                                          
-                                              NSLog(@"Done.");
+                                      NSLog(@"Done.");
                                          
-                                       }];
+                                  }];
     
     [self.urlField resignFirstResponder];
 }
@@ -82,6 +87,10 @@
 
 #pragma mark - BlobDownloadManager Delegate (Optional, your choice)
 
+- (void)download:(TCBlobDownload *)blobDownload didReceiveFirstResponse:(NSURLResponse *)response
+{
+    
+}
 
 - (void)download:(TCBlobDownload *)blobDownload
   didReceiveData:(uint64_t)receivedLength
