@@ -80,9 +80,10 @@
 
 - (void)startDownloadWithURL:(NSString *)urlString
                   customPath:(NSString *)customPathOrNil
-               progressBlock:(void (^)(float, float))progressBlock
-                  errorBlock:(void (^)(NSError *))errorBlock
-       downloadFinishedBlock:(void (^)(NSString *))downloadFinishedBlock
+          firstResponseBlock:(FirstResponseBlock)firstResponseBlock
+               progressBlock:(ProgressBlock)progressBlock
+                  errorBlock:(ErrorBlock)errorBlock
+       downloadFinishedBlock:(DownloadFinishedBlock)downloadFinishedBlock
 {
     NSString *downloadPath = self.defaultDownloadPath;
     if (nil != customPathOrNil && [TCBlobDownload createPathFromPath:customPathOrNil])
@@ -90,6 +91,7 @@
     
     TCBlobDownload *downloader = [[TCBlobDownload alloc] initWithUrlString:urlString
                                                               downloadPath:customPathOrNil
+                                                        firstResponseBlock:firstResponseBlock
                                                              progressBlock:progressBlock
                                                                 errorBlock:errorBlock
                                                      downloadFinishedBlock:downloadFinishedBlock];
