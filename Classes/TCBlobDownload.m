@@ -12,7 +12,6 @@
     NSURLConnection *_connection;
     NSMutableData *_receivedDataBuffer;
     NSFileHandle *_file;
-    NSPort *_port; // Trick the NSRunLoop
 
     uint64_t _receivedDataLength;
     uint64_t _expectedDataLength;
@@ -24,6 +23,7 @@
 @property (nonatomic, copy) DownloadFinishedBlock downloadFinishedBlock;
 
 + (uint64_t)freeDiskSpace;
+- (void)finishOperation;
 
 @end
 
@@ -67,16 +67,6 @@
 
 
 #pragma mark - NSOperation override
-
-
-- (void)cancel
-{
-    [_connection cancel];
-    [_file closeFile];
-    [_port invalidate]; // Remove input source so the run loop stops
-    [super cancel];
-}
-
 - (void)main
 {    
     NSMutableURLRequest *fileRequest = [NSMutableURLRequest requestWithURL:self.urlAdress
@@ -110,13 +100,20 @@
 #ifdef DEBUG
     NSLog(@"Operation started for file:\n%@", filePath);
 #endif
-        // Trick to avoid the thread to exit: new input source to the run loop
-        _port = [NSPort port];
-        [[NSRunLoop currentRunLoop] addPort:_port forMode:NSDefaultRunLoopMode];
+        [self willChangeValueForKey:@"isExecuting"];
         [_connection start];
-        [[NSRunLoop currentRunLoop] run];
+        [self didChangeValueForKey:@"isExecuting"];
     }
 }
+
+- (BOOL)isExecuting {
+    return _connection != nil;
+}
+
+- (BOOL)isFinished {
+    return _connection == nil;
+}
+
 
 
 #pragma mark - NSURLConnection Delegate
@@ -211,13 +208,21 @@
     if ([self.delegate respondsToSelector:@selector(downloadDidFinishWithDownload:)]) {
         [self.delegate downloadDidFinishWithDownload:self];
     }
-    
-    [self cancelDownloadAndRemoveFile:NO];
+    [self finishOperation];
 }
 
 
 #pragma mark - Utilities
-
+- (void)finishOperation
+{
+    [self willChangeValueForKey:@"isExecuting"];
+    [self willChangeValueForKey:@"isFinished"];
+    [_connection cancel];
+    _connection = nil;
+    [_file closeFile];
+    [self didChangeValueForKey:@"isFinished"];
+    [self didChangeValueForKey:@"isExecuting"];
+}
 
 - (void)cancelDownloadAndRemoveFile:(BOOL)remove
 {
@@ -230,8 +235,7 @@
         NSString *pathToFile = [self.pathToDownloadDirectory stringByAppendingPathComponent:self.fileName];
         [fm removeItemAtPath:pathToFile error:nil];
     }
-
-    [self cancel];
+    [self finishOperation];
 }
 
 + (BOOL)createPathFromPath:(NSString *)path
