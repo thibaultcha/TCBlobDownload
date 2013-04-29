@@ -101,7 +101,8 @@
 #ifdef DEBUG
     NSLog(@"Operation started for file:\n%@", filePath);
 #endif
-        [_connection start];
+        [_connection scheduleInRunLoop:[NSRunLoop mainRunLoop]
+                            forMode:NSDefaultRunLoopMode];
         [self didChangeValueForKey:@"isExecuting"];
     }
 }
