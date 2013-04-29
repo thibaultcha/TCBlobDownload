@@ -1,5 +1,5 @@
 //
-//  BlobDownloadManager.h
+//  TCBlobDownloadManager.h
 //
 //  Created by Thibault Charbonnier on 16/04/13.
 //  Copyright (c) 2013 Thibault Charbonnier. All rights reserved.
