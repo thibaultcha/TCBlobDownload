@@ -38,7 +38,7 @@
     static id sharedManager = nil;
     
     dispatch_once(&onceToken, ^{
-        sharedMediaServer = [[[self class] alloc] init];
+        sharedManager = [[[self class] alloc] init];
     });
     
     return sharedManager;
