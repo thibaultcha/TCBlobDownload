@@ -67,8 +67,9 @@
 
 
 #pragma mark - NSOperation override
-- (void)main
-{    
+- (void)start
+{
+    [self willChangeValueForKey:@"isExecuting"];
     NSMutableURLRequest *fileRequest = [NSMutableURLRequest requestWithURL:self.urlAdress
                                                                cachePolicy:NSURLRequestUseProtocolCachePolicy
                                                            timeoutInterval:DEFAULT_TIMEOUT];
@@ -100,7 +101,6 @@
 #ifdef DEBUG
     NSLog(@"Operation started for file:\n%@", filePath);
 #endif
-        [self willChangeValueForKey:@"isExecuting"];
         [_connection start];
         [self didChangeValueForKey:@"isExecuting"];
     }
