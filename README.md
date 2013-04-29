@@ -28,7 +28,7 @@ Dependencies and more...
 
 - (void)startDownloadWithURL:(NSString *)urlString
                 downloadPath:(NSString *)customPathOrNil
-          firstResponseBlock:(NSURLResponse *response)firstResponseBlock
+          firstResponseBlock:(void (^)(NSURLResponse *response))firstResponseBlock
                progressBlock:(void (^)(float receivedLength, float totalLength))progressBlock
                   errorBlock:(void (^)(NSError *error))errorBlock
        downloadFinishedBlock:(void (^)(NSString *pathToFile))downloadFinishedBlock;
@@ -52,7 +52,7 @@ Dependencies and more...
 
 - (id)initWithUrlString:(NSString *)urlString // cannot be nil
            downloadPath:(NSString *)pathToDL
-     firstResponseBlock:(NSURLResponse *response)firstResponseBlock
+     firstResponseBlock:(void (^)(NSURLResponse *response))firstResponseBlock
           progressBlock:(void (^)(float receivedLength, float totalLength))progressBlock
              errorBlock:(void (^)(NSError *error))errorBlock
   downloadFinishedBlock:(void (^)(NSString *pathToFile))downloadFinishedBlock;
@@ -73,7 +73,7 @@ TCBlobDownloadManager *sharedManager = [TCBlobDownloadManager sharedDownloadMana
 [sharedManager startDownloadWithURL:@"http://give.me/bigfile.avi"
                        downloadPath:nil
                  firstResponseBlock:^(NSURLResponse *response) {
-								   // [response expectedContentLength];
+		               // [response expectedContentLength];
                  }
                  progressBlock:^(float receivedLength, float totalLength){
                    // wow moving progress bar!
