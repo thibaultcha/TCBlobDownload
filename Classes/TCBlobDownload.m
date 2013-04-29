@@ -103,6 +103,7 @@
 #endif
         [_connection scheduleInRunLoop:[NSRunLoop mainRunLoop]
                             forMode:NSDefaultRunLoopMode];
+        [_connection start];
         [self didChangeValueForKey:@"isExecuting"];
     }
 }
