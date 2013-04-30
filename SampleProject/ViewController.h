@@ -7,7 +7,7 @@
 //
 
 #import <UIKit/UIKit.h>
-#import "TCBlobDownloadManager.h"
+#import <TCBlobDownload/TCBlobDownloadManager.h>
 
 @interface ViewController : UIViewController <TCBlobDownloadDelegate>
 

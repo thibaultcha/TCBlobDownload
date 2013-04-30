@@ -26,7 +26,7 @@
         _operationQueue = [[NSOperationQueue alloc] init];
         //NSArray *paths = NSSearchPathForDirectoriesInDomains(NSCachesDirectory, NSUserDomainMask, YES);
         //_defaultDownloadPath = [paths objectAtIndex:0];
-        _defaultDownloadPath = NSTemporaryDirectory();
+        _defaultDownloadPath = [NSString stringWithString:NSTemporaryDirectory()];
     }
     
     return self;
@@ -90,7 +90,7 @@
         downloadPath = customPathOrNil;
     
     TCBlobDownload *downloader = [[TCBlobDownload alloc] initWithUrlString:urlString
-                                                              downloadPath:customPathOrNil
+                                                              downloadPath:downloadPath
                                                         firstResponseBlock:firstResponseBlock
                                                              progressBlock:progressBlock
                                                                 errorBlock:errorBlock
