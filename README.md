@@ -16,8 +16,7 @@ This is a static library, very easy to import in your project and allow you to p
 4. Set maximum number of concurrent downloads.
 5. Custom download path and auto path creation.
 6. [download cancelDownloadAndRemoveFile:BOOL]
-
-Dependencies and more...
+7. Download dependencies
 
 ## Methods
 #### TCBlobDownloadManager
@@ -62,7 +61,6 @@ Dependencies and more...
 
 ## Usage
 ### Import library
-Very easy:
 1. Clone project (better if you want to pull latest updates)/Download zip then drag and drop `TCBlobDownload.xcodeproj` from Finder to your opened project.
 2. Open your Project's Target -> Build Phases -> **Target Dependencies** and add `TCBlobDownload`.
 3. Same menu, click **Link binary with libraries** and add `libTCBlobDownload.a` (no worries if it's red).
