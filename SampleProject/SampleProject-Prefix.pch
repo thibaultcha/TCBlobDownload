@@ -1,5 +1,5 @@
 //
-// Prefix header for all source files of the 'TCBlobDownloadExample' target in the 'TCBlobDownloadExample' project
+// Prefix header for all source files of the 'SampleProject' target in the 'SampleProject' project
 //
 
 #import <Availability.h>

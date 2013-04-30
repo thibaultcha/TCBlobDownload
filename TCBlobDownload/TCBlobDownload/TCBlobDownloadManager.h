@@ -5,7 +5,6 @@
 //  Copyright (c) 2013 Thibault Charbonnier. All rights reserved.
 //
 
-#import <Foundation/Foundation.h>
 #import "TCBlobDownload.h"
 
 @interface TCBlobDownloadManager : NSObject
