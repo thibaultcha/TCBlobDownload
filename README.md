@@ -1,18 +1,16 @@
 # TCBlobDownload
-This library uses **NSOperations** to download big files using **NSURLConnection** in background threads.
+This library uses **NSOperations** to download big files (typically videos, music... well: BLOBs) using **NSURLConnection** in background threads. This is a static library, very easy to import in your project and it allows you to pull the latest updates. Installation steps are explained in usage section.
+
+Tested with files from ~150MB to ~700MB, mostly videos. It currently only supports ARC.
 
 I've implemented **TCBlobDownload** which extends NSOperation and use **TCBlobDownloadManager** to execute it. You can set a delegate or use blocks (your choice) for each download to update your views etc…
 
-I've tested it with files from ~150MB to ~700MB, mostly videos.
-
 Requires **iOS 5.0 or later**.
-
-This is a static library, very easy to import in your project and allow you to pull latest updates. Installation steps are explained in usage section. It currently only supports ARC.
 
 ## Features
 1. Download files in background threads.
 2. Use blocks `||` delegate!
-3. Pause and resume later a download.
+3. Pause and resume a download.
 4. Set maximum number of concurrent downloads.
 5. Custom download path and auto path creation.
 6. [download cancelDownloadAndRemoveFile:BOOL]
@@ -49,8 +47,8 @@ This is a static library, very easy to import in your project and allow you to p
            downloadPath:(NSString *)pathToDL // cannot be nil
             andDelegate:(id<TCBlobDownloadDelegate>)delegateOrNil;
 
-- (id)initWithUrlString:(NSString *)urlString // cannot be nil
-           downloadPath:(NSString *)pathToDL
+- (id)initWithUrlString:(NSString *)urlString
+           downloadPath:(NSString *)pathToDL // cannot be nil
      firstResponseBlock:(void (^)(NSURLResponse *response))firstResponseBlock
           progressBlock:(void (^)(float receivedLength, float totalLength))progressBlock
              errorBlock:(void (^)(NSError *error))errorBlock
@@ -61,7 +59,7 @@ This is a static library, very easy to import in your project and allow you to p
 
 ## Usage
 ### Import library
-1. Clone project (better if you want to pull latest updates)/Download zip then drag and drop `TCBlobDownload.xcodeproj` from Finder to your opened project.
+1. Clone project (better if you want to pull latest updates) **OR** Download zip, then drag and drop `TCBlobDownload.xcodeproj` from Finder to your opened project.
 2. Open your Project's Target -> Build Phases -> **Target Dependencies** and add `TCBlobDownload`.
 3. Same menu, click **Link binary with libraries** and add `libTCBlobDownload.a` (no worries if it's red).
 4. Use `#import <TCBlobDownload/TCBlobDownloadManager.h>` in any file where you want to use it. No auto-completion on this import  if you did not build your project once before but don't worry.
