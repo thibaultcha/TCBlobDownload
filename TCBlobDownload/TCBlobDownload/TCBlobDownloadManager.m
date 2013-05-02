@@ -64,7 +64,7 @@
 #pragma mark - TCBlobDownloads Management
 
 
-- (void)startDownloadWithURL:(NSString *)urlString
+- (void)startDownloadWithURL:(NSURL *)url
                   customPath:(NSString *)customPathOrNil
                  andDelegate:(id<TCBlobDownloadDelegate>)delegateOrNil
 {
@@ -72,13 +72,13 @@
     if (nil != customPathOrNil && [TCBlobDownload createPathFromPath:customPathOrNil])
         downloadPath = customPathOrNil;
     
-    TCBlobDownload *downloader = [[TCBlobDownload alloc] initWithUrlString:urlString
-                                                              downloadPath:downloadPath
-                                                               andDelegate:delegateOrNil];
+    TCBlobDownload *downloader = [[TCBlobDownload alloc] initWithUrl:url
+                                                        downloadPath:downloadPath
+                                                         andDelegate:delegateOrNil];
     [_operationQueue addOperation:downloader];
 }
 
-- (void)startDownloadWithURL:(NSString *)urlString
+- (void)startDownloadWithURL:(NSURL *)url
                   customPath:(NSString *)customPathOrNil
           firstResponseBlock:(FirstResponseBlock)firstResponseBlock
                progressBlock:(ProgressBlock)progressBlock
@@ -89,12 +89,12 @@
     if (nil != customPathOrNil && [TCBlobDownload createPathFromPath:customPathOrNil])
         downloadPath = customPathOrNil;
     
-    TCBlobDownload *downloader = [[TCBlobDownload alloc] initWithUrlString:urlString
-                                                              downloadPath:downloadPath
-                                                        firstResponseBlock:firstResponseBlock
-                                                             progressBlock:progressBlock
-                                                                errorBlock:errorBlock
-                                                     downloadFinishedBlock:downloadFinishedBlock];
+    TCBlobDownload *downloader = [[TCBlobDownload alloc] initWithUrl:url
+                                                        downloadPath:downloadPath
+                                                  firstResponseBlock:firstResponseBlock
+                                                       progressBlock:progressBlock
+                                                          errorBlock:errorBlock
+                                               downloadFinishedBlock:downloadFinishedBlock];
     [_operationQueue addOperation:downloader];
 }
 

@@ -29,14 +29,14 @@
 
 @implementation TCBlobDownload
 
-- (id)initWithUrlString:(NSString *)urlString
-           downloadPath:(NSString *)pathToDL
-            andDelegate:(id<TCBlobDownloadDelegate>)delegateOrNil
+- (id)initWithUrl:(NSURL *)url
+     downloadPath:(NSString *)pathToDL
+      andDelegate:(id<TCBlobDownloadDelegate>)delegateOrNil
 
 {
     if (self = [super init]) {
         NSAssert(nil != pathToDL, @"Download path cannot be nil for TCBlobDownload.");
-        self.urlAdress = [NSURL URLWithString:urlString];
+        self.urlAdress = url;
         self.delegate = delegateOrNil;
         if ([TCBlobDownload createPathFromPath:pathToDL])
             self.pathToDownloadDirectory = pathToDL;
@@ -45,16 +45,15 @@
     return self;
 }
 
-- (id)initWithUrlString:(NSString *)urlString
-           downloadPath:(NSString *)pathToDL
-     firstResponseBlock:(FirstResponseBlock)firstResponseBlock
-          progressBlock:(ProgressBlock)progressBlock
-             errorBlock:(ErrorBlock)errorBlock
-  downloadFinishedBlock:(DownloadFinishedBlock)downloadFinishedBlock
+- (id)initWithUrl:(NSURL *)url
+     downloadPath:(NSString *)pathToDL
+firstResponseBlock:(FirstResponseBlock)firstResponseBlock
+    progressBlock:(ProgressBlock)progressBlock
+       errorBlock:(ErrorBlock)errorBlock
+downloadFinishedBlock:(DownloadFinishedBlock)downloadFinishedBlock
 {
-    self = [self initWithUrlString:urlString
-                      downloadPath:pathToDL
-                       andDelegate:nil];
+    self = [self initWithUrl:url downloadPath:pathToDL andDelegate:nil];
+    
     if (self) {
         _firstResponseBlock = firstResponseBlock;
         _progressBlock = progressBlock;
@@ -74,6 +73,7 @@
     NSMutableURLRequest *fileRequest = [NSMutableURLRequest requestWithURL:self.urlAdress
                                                                cachePolicy:NSURLRequestUseProtocolCachePolicy
                                                            timeoutInterval:DEFAULT_TIMEOUT];
+    
     NSAssert([NSURLConnection canHandleRequest:fileRequest], @"NSURLConnection can't handle provided request");
     
     self.fileName = [[[NSURL URLWithString:[self.urlAdress absoluteString]] path] lastPathComponent];
@@ -215,6 +215,9 @@
 #ifdef DEBUG
     NSLog(@"Download succeeded. Bytes received: %lld", _receivedDataLength);
 #endif
+    
+    [_file writeData:_receivedDataBuffer];
+    [_receivedDataBuffer setData:nil];
     
     if (self.downloadFinishedBlock) {
         NSString *pathToFile = [self.pathToDownloadDirectory stringByAppendingPathComponent:self.fileName];
