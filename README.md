@@ -19,11 +19,11 @@ Requires **iOS 5.0 or later**.
 ## Methods
 #### TCBlobDownloadManager
 ```objective-c
-- (void)startDownloadWithURL:(NSString *)urlString
+- (void)startDownloadWithURL:(NSURl *)url
                 downloadPath:(NSString *)customPathOrNil
                  andDelegate:(id<TCBlobDownloadDelegate>)delegateOrNil;
 
-- (void)startDownloadWithURL:(NSString *)urlString
+- (void)startDownloadWithURL:(NSURL *)url
                 downloadPath:(NSString *)customPathOrNil
           firstResponseBlock:(void (^)(NSURLResponse *response))firstResponseBlock
                progressBlock:(void (^)(float receivedLength, float totalLength))progressBlock
@@ -43,16 +43,16 @@ Requires **iOS 5.0 or later**.
 
 #### TCBlobDownload
 ```objective-c
-- (id)initWithUrlString:(NSString *)urlString
-           downloadPath:(NSString *)pathToDL // cannot be nil
-            andDelegate:(id<TCBlobDownloadDelegate>)delegateOrNil;
+- (id)initWithUrl:(NSURL *)url
+     downloadPath:(NSString *)pathToDL // cannot be nil
+      andDelegate:(id<TCBlobDownloadDelegate>)delegateOrNil;
 
-- (id)initWithUrlString:(NSString *)urlString
-           downloadPath:(NSString *)pathToDL // cannot be nil
-     firstResponseBlock:(void (^)(NSURLResponse *response))firstResponseBlock
-          progressBlock:(void (^)(float receivedLength, float totalLength))progressBlock
-             errorBlock:(void (^)(NSError *error))errorBlock
-  downloadFinishedBlock:(void (^)(NSString *pathToFile))downloadFinishedBlock;
+- (id)initWithUrl:(NSURL *)url
+   downloadPath:(NSString *)pathToDL // cannot be nil
+firstResponseBlock:(void (^)(NSURLResponse *response))firstResponseBlock
+    progressBlock:(void (^)(float receivedLength, float totalLength))progressBlock
+       errorBlock:(void (^)(NSError *error))errorBlock
+downloadFinishedBlock:(void (^)(NSString *pathToFile))downloadFinishedBlock;
 
 - (void)cancelDownloadAndRemoveFile:(BOOL)remove;
 ```
@@ -62,7 +62,10 @@ Requires **iOS 5.0 or later**.
 1. Clone project (better if you want to pull latest updates) **OR** Download zip, then drag and drop `TCBlobDownload.xcodeproj` from Finder to your opened project.
 2. Open your Project's Target -> Build Phases -> **Target Dependencies** and add `TCBlobDownload`. Then, click **Link binary with libraries** and add `libTCBlobDownload.a` (no worries if it's red).
 3. Go to **build settings**, switch "always search user paths" to `YES` and add `$(PROJECT_TEMP_DIR)/../UninstalledProducts/include` to "User Header Search Paths".
-4. Use `#import <TCBlobDownload/TCBlobDownloadManager.h>` in any file where you want to use the lib. (no worries if no autocomplete) You are done!
+4. Import in each file where you want to use the lib. (no worries if no autocomplete)
+```
+#import <TCBlobDownload/TCBlobDownloadManager.h>
+```
 
 ### 1. Blocks
 Blocks are cool.

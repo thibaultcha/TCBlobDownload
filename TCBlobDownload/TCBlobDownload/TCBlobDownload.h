@@ -29,19 +29,19 @@ typedef void (^DownloadFinishedBlock)(NSString *pathToFile);
 // Init. Will not start the download while you do not add the instanciated object to
 // TCBlobDownloadManager. pathToDL cannot be nil from here.
 //
-- (id)initWithUrlString:(NSString *)urlString
-           downloadPath:(NSString *)pathToDL
-            andDelegate:(id<TCBlobDownloadDelegate>)delegateOrNil;
+- (id)initWithUrl:(NSURL *)url
+     downloadPath:(NSString *)pathToDL
+      andDelegate:(id<TCBlobDownloadDelegate>)delegateOrNil;
 
 //
 // Same but with completion blocks
 //
-- (id)initWithUrlString:(NSString *)urlString
-           downloadPath:(NSString *)pathToDL
-     firstResponseBlock:(FirstResponseBlock)firstResponseBlock
-          progressBlock:(ProgressBlock)progressBlock
-             errorBlock:(ErrorBlock)errorBlock
-  downloadFinishedBlock:(DownloadFinishedBlock)downloadFinishedBlock;
+- (id)initWithUrl:(NSURL *)url
+     downloadPath:(NSString *)pathToDL
+firstResponseBlock:(FirstResponseBlock)firstResponseBlock
+    progressBlock:(ProgressBlock)progressBlock
+       errorBlock:(ErrorBlock)errorBlock
+downloadFinishedBlock:(DownloadFinishedBlock)downloadFinishedBlock;
 
 //
 // Cancel a download and remove the file if specified.
