@@ -14,12 +14,12 @@ Requires **iOS 5.0 or later**.
 4. Set maximum number of concurrent downloads.
 5. Custom download path and auto path creation.
 6. [download cancelDownloadAndRemoveFile:BOOL]
-7. Download dependencies
+7. Download dependencies.
 
 ## Methods
 #### TCBlobDownloadManager
 ```objective-c
-- (void)startDownloadWithURL:(NSURl *)url
+- (void)startDownloadWithURL:(NSURL *)url
                 downloadPath:(NSString *)customPathOrNil
                  andDelegate:(id<TCBlobDownloadDelegate>)delegateOrNil;
 
@@ -48,7 +48,7 @@ Requires **iOS 5.0 or later**.
       andDelegate:(id<TCBlobDownloadDelegate>)delegateOrNil;
 
 - (id)initWithUrl:(NSURL *)url
-   downloadPath:(NSString *)pathToDL // cannot be nil
+     downloadPath:(NSString *)pathToDL // cannot be nil
 firstResponseBlock:(void (^)(NSURLResponse *response))firstResponseBlock
     progressBlock:(void (^)(float receivedLength, float totalLength))progressBlock
        errorBlock:(void (^)(NSError *error))errorBlock
@@ -79,7 +79,7 @@ TCBlobDownloadManager *sharedManager = [TCBlobDownloadManager sharedDownloadMana
 [sharedManager startDownloadWithURL:@"http://give.me/bigfile.avi"
                        downloadPath:nil
                  firstResponseBlock:^(NSURLResponse *response) {
-		               // [response expectedContentLength];
+		   // why not do [response expectedContentLength] for example?
                  }
                  progressBlock:^(float receivedLength, float totalLength){
                    // wow moving progress bar!
@@ -109,7 +109,7 @@ You can either set a delegate which can implement those optional methods if dele
 ```objective-c
 - (void)download:(TCBlobDownload *)blobDownload didReceiveFirstResponse:(NSURLResponse *)response
 {
-
+  // why not do [response expectedContentLength] for example?
 }
 
 - (void)download:(TCBlobDownload *)blobDownload didReceiveData:(uint64_t)received onTotal:(uint64_t)total
