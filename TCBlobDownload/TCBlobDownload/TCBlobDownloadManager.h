@@ -11,24 +11,24 @@
 
 @property (retain, nonatomic, setter = setDefaultDownloadPath:) NSString *defaultDownloadPath;
 
-//
-// Retrieve the singleton
-//
+/**
+* Retrieve the singleton
+*/
 + (id)sharedDownloadManager;
 
-//
-// Start a download with the specified URL, an optional download path (default if nil)
-// and an optional delegate.
-//
-// The download will be added to a NSOperationQueue and will run in background.
-//
+/**
+* Start a download with the specified URL, an optional download path (default if nil)
+* and an optional delegate.
+*
+* The download will be added to a NSOperationQueue and will run in background.
+*/
 - (void)startDownloadWithURL:(NSURL *)url
                   customPath:(NSString *)customPathOrNil
                  andDelegate:(id<TCBlobDownloadDelegate>)delegateOrNil;
 
-//
-// Same but with completion blocks
-//
+/**
+* Same but with completion blocks
+*/
 - (void)startDownloadWithURL:(NSURL *)url
                   customPath:(NSString *)customPathOrNil
           firstResponseBlock:(FirstResponseBlock)firstResponseBlock
@@ -36,30 +36,30 @@
                   errorBlock:(ErrorBlock)errorBlock
        downloadFinishedBlock:(DownloadFinishedBlock)downloadFinishedBlock;
 
-//
-// Start an already initialized download
-//
+/**
+* Start an already initialized download
+*/
 - (void)startDownload:(TCBlobDownload *)blobDownload;
 
-//
-// Specify the default download repository. It can be a non existant path,
-// if so, it will be created.
-//
+/**
+* Specify the default download repository. It can be a non existant path,
+* if so, it will be created.
+*/
 - (void)setDefaultDownloadPath:(NSString *)pathToDL;
 
-//
-// Set the maximum concurrent downloads allowed.
-//
+/**
+* Set the maximum concurrent downloads allowed.
+*/
 - (void)setMaxConcurrentDownloads:(NSInteger)max;
 
-//
-// Return the number of downloads currently in progress.
-//
+/**
+* Return the number of downloads currently in progress.
+*/
 - (NSUInteger)downloadCount;
 
-//
-// Cancel all downloads.
-//
+/**
+* Cancel all downloads.
+*/
 - (void)cancelAllDownloadsAndRemoveFiles:(BOOL)remove;
 
 @end

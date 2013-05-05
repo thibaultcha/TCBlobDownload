@@ -55,6 +55,8 @@ firstResponseBlock:(void (^)(NSURLResponse *response))firstResponseBlock
 downloadFinishedBlock:(void (^)(NSString *pathToFile))downloadFinishedBlock;
 
 - (void)cancelDownloadAndRemoveFile:(BOOL)remove;
+
+- (void)addDependentDownload:(TCBlobDownload *)blobDownload
 ```
 
 ## Usage
@@ -131,15 +133,12 @@ You can either set a delegate which can implement those optional methods if dele
 ### 3. Other things you should know
 **Cool thing 1:** If a download has been stopped and the local file has not been deleted, when you will restart the download to the same local path, the download will start where it has stopped using the HTTP `Range=bytes` header.
 
-**Cool thing 2:** You can also set dependencies in your downloads. See [NSOperation Class Reference](http://developer.apple.com/library/mac/#documentation/Cocoa/Reference/NSOperation_class/Reference/Reference.html) and the `addDependency:` method in particular.
+**Cool thing 2:** You can also set dependencies in your downloads using the `addDependentDownload:` method from TCBlobDownload. (See [NSOperation Class Reference](http://developer.apple.com/library/mac/#documentation/Cocoa/Reference/NSOperation_class/Reference/Reference.html) and the `addDependency:` method in particular.)
 
 ## Roadmap
 If you have any idea, please suggest it! :)
 
-- Encapsulate dependencies
-
 ## Licence
-
 ```
 Copyright (C) 2013 by Thibault Charbonnier.
 
