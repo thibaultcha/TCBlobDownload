@@ -188,9 +188,8 @@ downloadFinishedBlock:(DownloadFinishedBlock)downloadFinishedBlock
     _receivedDataLength += [data length];
     
 #ifdef DEBUG
-    float percent = (float) _receivedDataLength / _expectedDataLength * 100;
     NSLog(@"%@ | %.2f%% - Received: %lld - Total: %lld",
-          self.fileName, percent, _receivedDataLength, _expectedDataLength);
+          self.fileName, (float) _receivedDataLength / _expectedDataLength * 100, _receivedDataLength, _expectedDataLength);
 #endif
     
     if (_receivedDataBuffer.length > BUFFER_SIZE && _file) {
@@ -262,6 +261,11 @@ downloadFinishedBlock:(DownloadFinishedBlock)downloadFinishedBlock
     }
     
     [self finishOperation];
+}
+
+- (void)addDependentDownload:(TCBlobDownload *)blobDownload
+{
+    [self addDependency:blobDownload];
 }
 
 + (BOOL)createPathFromPath:(NSString *)path
