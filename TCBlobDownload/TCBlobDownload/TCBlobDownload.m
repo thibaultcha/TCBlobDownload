@@ -20,6 +20,7 @@
 @property (nonatomic, copy) FirstResponseBlock firstResponseBlock;
 @property (nonatomic, copy) ProgressBlock progressBlock;
 @property (nonatomic, copy) ErrorBlock errorBlock;
+@property (nonatomic, copy) DownloadCanceledBlock downloadCanceledBlock;
 @property (nonatomic, copy) DownloadFinishedBlock downloadFinishedBlock;
 
 + (uint64_t)freeDiskSpace;
@@ -50,6 +51,7 @@
 firstResponseBlock:(FirstResponseBlock)firstResponseBlock
     progressBlock:(ProgressBlock)progressBlock
        errorBlock:(ErrorBlock)errorBlock
+downloadCanceledBlock:(DownloadCanceledBlock)downloadCanceledBlock
 downloadFinishedBlock:(DownloadFinishedBlock)downloadFinishedBlock
 {
     self = [self initWithUrl:url downloadPath:pathToDL andDelegate:nil];
@@ -58,6 +60,7 @@ downloadFinishedBlock:(DownloadFinishedBlock)downloadFinishedBlock
         _firstResponseBlock = firstResponseBlock;
         _progressBlock = progressBlock;
         _errorBlock = errorBlock;
+        _downloadCanceledBlock = downloadCanceledBlock;
         _downloadFinishedBlock = downloadFinishedBlock;
     }
     
@@ -258,6 +261,12 @@ downloadFinishedBlock:(DownloadFinishedBlock)downloadFinishedBlock
         NSFileManager *fm = [NSFileManager defaultManager];
         NSString *pathToFile = [self.pathToDownloadDirectory stringByAppendingPathComponent:self.fileName];
         [fm removeItemAtPath:pathToFile error:nil];
+    }
+    
+    self.downloadCanceledBlock(remove);
+    
+    if ([self.delegate respondsToSelector:@selector(download:didCancelRemovingFile:)]) {
+        [self.delegate download:self didCancelRemovingFile:remove];
     }
     
     [self finishOperation];
