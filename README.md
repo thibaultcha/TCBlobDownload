@@ -28,6 +28,7 @@ Requires **iOS 5.0 or later**.
           firstResponseBlock:(void (^)(NSURLResponse *response))firstResponseBlock
                progressBlock:(void (^)(float receivedLength, float totalLength))progressBlock
                   errorBlock:(void (^)(NSError *error))errorBlock
+       downloadCanceledBlock:(void (^)(BOOL fileRemoved))downloadCanceledBlock
        downloadFinishedBlock:(void (^)(NSString *pathToFile))downloadFinishedBlock;
 
 - (void)startDownload:(TCBlobDownload *)blobDownload;
@@ -52,6 +53,7 @@ Requires **iOS 5.0 or later**.
 firstResponseBlock:(void (^)(NSURLResponse *response))firstResponseBlock
     progressBlock:(void (^)(float receivedLength, float totalLength))progressBlock
        errorBlock:(void (^)(NSError *error))errorBlock
+downloadCanceledBlock:(void (^)(fileRemoved))downloadCanceledBlock
 downloadFinishedBlock:(void (^)(NSString *pathToFile))downloadFinishedBlock;
 
 - (void)cancelDownloadAndRemoveFile:(BOOL)remove;
@@ -89,6 +91,9 @@ TCBlobDownloadManager *sharedManager = [TCBlobDownloadManager sharedDownloadMana
                  errorBlock:^(NSError *error){
                    // this not cool
                  }
+                 downloadCanceledBlock:^(BOOL fileRemoved) {
+                  // if file not removed, see "Cool thing 1" :)
+                 }
                  downloadFinishedBlock:^(NSString *pathToFile){
                    // this is cool
                  }];
@@ -117,6 +122,11 @@ You can either set a delegate which can implement those optional methods if dele
 - (void)download:(TCBlobDownload *)blobDownload didReceiveData:(uint64_t)received onTotal:(uint64_t)total
 {
   // wow moving progress bar! (bis)
+}
+
+- (void)download:(TCBlobDownload *)blobDownload didCancelRemovingFile:(BOOL)fileRemoved
+{
+  // if file not removed, see "Cool thing 1" :)
 }
 
 - (void)downloadDidFinishWithDownload:(TCBlobDownload *)blobDownload

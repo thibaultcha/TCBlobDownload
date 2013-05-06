@@ -14,6 +14,7 @@
 typedef void (^FirstResponseBlock)(NSURLResponse *response);
 typedef void (^ProgressBlock)(float receivedLength, float totalLength);
 typedef void (^ErrorBlock)(NSError *error);
+typedef void (^DownloadCanceledBlock)(BOOL fileRemoved);
 typedef void (^DownloadFinishedBlock)(NSString *pathToFile);
 
 @protocol TCBlobDownloadDelegate;
@@ -41,6 +42,7 @@ typedef void (^DownloadFinishedBlock)(NSString *pathToFile);
 firstResponseBlock:(FirstResponseBlock)firstResponseBlock
     progressBlock:(ProgressBlock)progressBlock
        errorBlock:(ErrorBlock)errorBlock
+downloadCanceledBlock:(DownloadCanceledBlock)downloadCanceledBlock
 downloadFinishedBlock:(DownloadFinishedBlock)downloadFinishedBlock;
 
 /**
@@ -72,8 +74,12 @@ downloadFinishedBlock:(DownloadFinishedBlock)downloadFinishedBlock;
 /**
 * Let you handle the error for a given download
 */
-- (void)download:(TCBlobDownload *)blobDownload
-didStopWithError:(NSError *)error;
+- (void)download:(TCBlobDownload *)blobDownload didStopWithError:(NSError *)error;
+
+/**
+* Called when download is canceled
+*/
+- (void)download:(TCBlobDownload *)blobDownload didCancelRemovingFile:(BOOL)fileRemoved;
 
 /**
 * On each response from the NSURLConnection

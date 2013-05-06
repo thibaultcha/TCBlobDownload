@@ -34,6 +34,7 @@
           firstResponseBlock:(FirstResponseBlock)firstResponseBlock
                progressBlock:(ProgressBlock)progressBlock
                   errorBlock:(ErrorBlock)errorBlock
+       downloadCanceledBlock:(DownloadCanceledBlock)downloadCanceledBlock
        downloadFinishedBlock:(DownloadFinishedBlock)downloadFinishedBlock;
 
 /**

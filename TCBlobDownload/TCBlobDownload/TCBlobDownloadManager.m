@@ -83,6 +83,7 @@
           firstResponseBlock:(FirstResponseBlock)firstResponseBlock
                progressBlock:(ProgressBlock)progressBlock
                   errorBlock:(ErrorBlock)errorBlock
+       downloadCanceledBlock:(DownloadCanceledBlock)downloadCanceledBlock
        downloadFinishedBlock:(DownloadFinishedBlock)downloadFinishedBlock
 {
     NSString *downloadPath = self.defaultDownloadPath;
@@ -94,6 +95,7 @@
                                                   firstResponseBlock:firstResponseBlock
                                                        progressBlock:progressBlock
                                                           errorBlock:errorBlock
+                                               downloadCanceledBlock:downloadCanceledBlock
                                                downloadFinishedBlock:downloadFinishedBlock];
     [_operationQueue addOperation:downloader];
 }
