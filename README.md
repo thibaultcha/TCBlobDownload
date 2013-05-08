@@ -53,7 +53,7 @@ Requires **iOS 5.0 or later**.
 firstResponseBlock:(void (^)(NSURLResponse *response))firstResponseBlock
     progressBlock:(void (^)(float receivedLength, float totalLength))progressBlock
        errorBlock:(void (^)(NSError *error))errorBlock
-downloadCanceledBlock:(void (^)(fileRemoved))downloadCanceledBlock
+downloadCanceledBlock:(void (^)(BOOL fileRemoved))downloadCanceledBlock
 downloadFinishedBlock:(void (^)(NSString *pathToFile))downloadFinishedBlock;
 
 - (void)cancelDownloadAndRemoveFile:(BOOL)remove;

@@ -150,7 +150,7 @@ downloadFinishedBlock:(DownloadFinishedBlock)downloadFinishedBlock
     _expectedDataLength = [response expectedContentLength];
     
     if ([TCBlobDownload freeDiskSpace] < _expectedDataLength) {
-        NSString *errorDesc = [NSString stringWithFormat:@"Not enough free space to download file %@", self.fileName];
+        NSString *errorDesc = [NSString stringWithFormat:NSLocalizedString(@"Not enough free disk space", @""), self.fileName];
         NSMutableDictionary *errorDetails = [NSMutableDictionary dictionary];
         [errorDetails setValue:errorDesc
                         forKey:NSLocalizedDescriptionKey];

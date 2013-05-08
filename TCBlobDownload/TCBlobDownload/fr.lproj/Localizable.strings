@@ -1,0 +1,9 @@
+/*
+ Localizable.strings
+ TCBlobDownload
+ 
+ Created by Thibault Charbonnier on 07/05/13.
+ Copyright (c) 2013 thibaultCha. All rights reserved.
+ */
+
+"Not enough free disk space" = "Pas assez d'espace disque pour télécharger %@";
