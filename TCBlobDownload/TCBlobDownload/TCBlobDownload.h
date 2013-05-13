@@ -5,10 +5,6 @@
 //  Copyright (c) 2013 Thibault Charbonnier. All rights reserved.
 //
 
-const double kBufferSize = 1024*1024; // 1 MB
-const NSTimeInterval kDefaultTimeout = 30;
-const NSString * kErrorDomain = @"myDomain";
-
 #import <Foundation/Foundation.h>
 
 typedef void (^FirstResponseBlock)(NSURLResponse *response);
@@ -27,15 +23,15 @@ typedef void (^DownloadFinishedBlock)(NSString *pathToFile);
 @property (nonatomic, retain) NSString *fileName;
 
 /**
-* Init. Will not start the download while you do not add the instanciated object to
-* TCBlobDownloadManager. pathToDL cannot be nil from here.
+ Init. Will not start the download while you do not add the instanciated object to
+ TCBlobDownloadManager. pathToDL cannot be nil from here.
 */
 - (id)initWithUrl:(NSURL *)url
      downloadPath:(NSString *)pathToDL
       andDelegate:(id<TCBlobDownloadDelegate>)delegateOrNil;
 
 /**
-* Same but with completion blocks
+ Same but with completion blocks
 */
 - (id)initWithUrl:(NSURL *)url
      downloadPath:(NSString *)pathToDL
@@ -46,17 +42,17 @@ downloadCanceledBlock:(DownloadCanceledBlock)downloadCanceledBlock
 downloadFinishedBlock:(DownloadFinishedBlock)downloadFinishedBlock;
 
 /**
-* Cancel a download and remove the file if specified.
+ Cancel a download and remove the file if specified.
 */
 - (void)cancelDownloadAndRemoveFile:(BOOL)remove;
 
 /**
-* Make the receiver download dependent of the given download
+ Make the receiver download dependent of the given download
 */
 - (void)addDependentDownload:(TCBlobDownload *)blobDownload;
 
 /**
-* Create a path from given string. You should not use this method directly.
+ Create a path from given string. You should not use this method directly.
 */
 + (BOOL)createPathFromPath:(NSString *)path;
 
@@ -67,29 +63,29 @@ downloadFinishedBlock:(DownloadFinishedBlock)downloadFinishedBlock;
 @optional
 
 /**
-* Received first response
+ Received first response
 */
 - (void)download:(TCBlobDownload *)blobDownload didReceiveFirstResponse:(NSURLResponse *)response;
 
 /**
-* Let you handle the error for a given download
+ Let you handle the error for a given download
 */
 - (void)download:(TCBlobDownload *)blobDownload didStopWithError:(NSError *)error;
 
 /**
-* Called when download is canceled
+ Called when download is canceled
 */
 - (void)download:(TCBlobDownload *)blobDownload didCancelRemovingFile:(BOOL)fileRemoved;
 
 /**
-* On each response from the NSURLConnection
+ On each response from the NSURLConnection
 */
 - (void)download:(TCBlobDownload *)blobDownload
   didReceiveData:(uint64_t)receivedLength
          onTotal:(uint64_t)totalLength;
 
 /**
-* When a download ends
+ When a download ends
 */
 - (void)downloadDidFinishWithDownload:(TCBlobDownload *)blobDownload;
 
