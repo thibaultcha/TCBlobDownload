@@ -75,7 +75,7 @@ downloadFinishedBlock:(DownloadFinishedBlock)downloadFinishedBlock
 {
     NSMutableURLRequest *fileRequest = [NSMutableURLRequest requestWithURL:self.urlAdress
                                                                cachePolicy:NSURLRequestUseProtocolCachePolicy
-                                                           timeoutInterval:DEFAULT_TIMEOUT];
+                                                           timeoutInterval:kDefaultTimeout];
     
     NSAssert([NSURLConnection canHandleRequest:fileRequest], @"NSURLConnection can't handle provided request");
     
@@ -154,7 +154,7 @@ downloadFinishedBlock:(DownloadFinishedBlock)downloadFinishedBlock
         NSMutableDictionary *errorDetails = [NSMutableDictionary dictionary];
         [errorDetails setValue:errorDesc
                         forKey:NSLocalizedDescriptionKey];
-        __autoreleasing NSError *error = [NSError errorWithDomain:ERROR_DOMAIN
+        __autoreleasing NSError *error = [NSError errorWithDomain:kErrorDomain
                                                              code:1
                                                          userInfo:errorDetails];
 
@@ -191,11 +191,10 @@ downloadFinishedBlock:(DownloadFinishedBlock)downloadFinishedBlock
     _receivedDataLength += [data length];
     
 #ifdef DEBUG
-    NSLog(@"%@ | %.2f%% - Received: %lld - Total: %lld",
-          self.fileName, (float) _receivedDataLength / _expectedDataLength * 100, _receivedDataLength, _expectedDataLength);
+    NSLog(@"%@ | %.2f%% - Received: %lld - Total: %lld", self.fileName, (float) _receivedDataLength / _expectedDataLength * 100, _receivedDataLength, _expectedDataLength);
 #endif
     
-    if (_receivedDataBuffer.length > BUFFER_SIZE && _file) {
+    if (_receivedDataBuffer.length > kBufferSize && _file) {
         [_file writeData:_receivedDataBuffer];
         [_receivedDataBuffer setData:nil];
     }

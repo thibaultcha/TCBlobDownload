@@ -5,9 +5,9 @@
 //  Copyright (c) 2013 Thibault Charbonnier. All rights reserved.
 //
 
-#define BUFFER_SIZE 1024*1024 // 1 MB
-#define DEFAULT_TIMEOUT 30
-#define ERROR_DOMAIN @"myDomain"
+const double kBufferSize = 1024*1024; // 1 MB
+const NSTimeInterval kDefaultTimeout = 30;
+const NSString * kErrorDomain = @"myDomain";
 
 #import <Foundation/Foundation.h>
 
