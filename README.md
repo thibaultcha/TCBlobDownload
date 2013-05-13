@@ -145,6 +145,21 @@ You can either set a delegate which can implement those optional methods if dele
 
 **Cool thing 2:** You can also set dependencies in your downloads using the `addDependentDownload:` method from TCBlobDownload. (See [NSOperation Class Reference](http://developer.apple.com/library/mac/#documentation/Cocoa/Reference/NSOperation_class/Reference/Reference.html) and the `addDependency:` method in particular.)
 
+## Updates
+### v1.2 (5/06/2013)
+* Now built as a static library
+* Download dependencies support
+* New block for download cancelled
+* New block for first response
+* Error localizations
+
+### v1.1 (4/26/2013)
+* Blocks support
+* Custom download path directory
+
+### v1.0 (4/18/2013)
+* Initial release
+
 ## Roadmap
 If you have any idea, please suggest it! :)
 
