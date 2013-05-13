@@ -5,6 +5,10 @@
 //  Copyright (c) 2013 Thibault Charbonnier. All rights reserved.
 //
 
+const double kBufferSize = 1024*1024; // 1 MB
+const NSTimeInterval kDefaultTimeout = 30;
+NSString * const kErrorDomain = @"com.thibaultcha.tcblobdownload";
+
 #import "TCBlobDownload.h"
 
 @interface TCBlobDownload ()
@@ -154,7 +158,7 @@ downloadFinishedBlock:(DownloadFinishedBlock)downloadFinishedBlock
         NSMutableDictionary *errorDetails = [NSMutableDictionary dictionary];
         [errorDetails setValue:errorDesc
                         forKey:NSLocalizedDescriptionKey];
-        __autoreleasing NSError *error = [NSError errorWithDomain:kErrorDomain
+        __autoreleasing NSError *error = [NSError errorWithDomain:@""
                                                              code:1
                                                          userInfo:errorDetails];
 
@@ -302,7 +306,7 @@ downloadFinishedBlock:(DownloadFinishedBlock)downloadFinishedBlock
 
 + (uint64_t)freeDiskSpace
 {
-    uint64_t totalSpace = 0;
+    //uint64_t totalSpace = 0;
     uint64_t totalFreeSpace = 0;
     
     __autoreleasing NSError *error = nil;
@@ -310,9 +314,9 @@ downloadFinishedBlock:(DownloadFinishedBlock)downloadFinishedBlock
     NSDictionary *dictionary = [[NSFileManager defaultManager] attributesOfFileSystemForPath:[paths lastObject]
                                                                                        error: &error];
     if (dictionary) {
-        NSNumber *fileSystemSizeInBytes = [dictionary objectForKey: NSFileSystemSize];
+        //NSNumber *fileSystemSizeInBytes = [dictionary objectForKey: NSFileSystemSize];
         NSNumber *freeFileSystemSizeInBytes = [dictionary objectForKey:NSFileSystemFreeSize];
-        totalSpace = [fileSystemSizeInBytes unsignedLongLongValue];
+        //totalSpace = [fileSystemSizeInBytes unsignedLongLongValue];
         totalFreeSpace = [freeFileSystemSizeInBytes unsignedLongLongValue];
         //NSLog(@"Memory Capacity of %llu MiB with %llu MiB Free memory available.", ((totalSpace/1024ll)/1024ll), ((totalFreeSpace/1024ll)/1024ll));
     } else {
