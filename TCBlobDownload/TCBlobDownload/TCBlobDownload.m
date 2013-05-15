@@ -266,8 +266,9 @@ downloadFinishedBlock:(DownloadFinishedBlock)downloadFinishedBlock
         [fm removeItemAtPath:pathToFile error:nil];
     }
     
-    self.downloadCanceledBlock(remove);
-    
+    if (self.downloadCanceledBlock) {
+        self.downloadCanceledBlock(remove);
+    }
     if ([self.delegate respondsToSelector:@selector(download:didCancelRemovingFile:)]) {
         [self.delegate download:self didCancelRemovingFile:remove];
     }
