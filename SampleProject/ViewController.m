@@ -53,28 +53,22 @@
                                            andDelegate:self];*/
     
     // BLOCK POWA
-    [self.sharedDownloadManager startDownloadWithURL:self.urlField.text
-                                          customPath:nil
-                                  firstResponseBlock:^(NSURLResponse *response) {
-                                      
-                                      NSLog(@"first response");
-                                      
-                                  } 
-                                  progressBlock:^(float receivedLength, float totalLength) {
-                                           
-                                      //NSLog(@"Incoming!");
-                                           
-                                  }
-                                  errorBlock:^(NSError *error) {
-                                              
-                                      NSLog(@"Shit happens.");
-                                              
-                                  }
-                                  downloadFinishedBlock:^(NSString *pathToFile){
-                                         
-                                      NSLog(@"Done.");
-                                         
-                                  }];
+    [self.sharedDownloadManager startDownloadWithURL:[NSURL URLWithString:self.urlField.text]
+                                          customPath:nil firstResponseBlock:^(NSURLResponse *response) {
+        
+                                          }
+                                       progressBlock:^(float receivedLength, float totalLength) {
+        
+                                       }
+                                          errorBlock:^(NSError *error) {
+        
+                                          }
+                               downloadCanceledBlock:^(BOOL fileRemoved) {
+                                   
+                               }
+                               downloadFinishedBlock:^(NSString *pathToFile) {
+        
+                               }];
     
     [self.urlField resignFirstResponder];
 }
@@ -105,6 +99,10 @@
 
 }
 
+- (void)download:(TCBlobDownload *)blobDownload didCancelRemovingFile:(BOOL)fileRemoved
+{
+    
+}
 
 - (void)downloadDidFinishWithDownload:(TCBlobDownload *)blobDownload
 {
