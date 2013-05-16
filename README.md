@@ -163,6 +163,8 @@ You can either set a delegate which can implement those optional methods if dele
 ## Roadmap
 If you have any idea, please suggest it! :)
 
+* Multi segmented downloads.
+
 ## Licence
 ```
 Copyright (C) 2013 by Thibault Charbonnier.
