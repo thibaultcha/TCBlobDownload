@@ -8,13 +8,11 @@
 #import "TCBlobDownloadManager.h"
 
 @interface TCBlobDownloadManager ()
-{
-    NSOperationQueue *_operationQueue;
-}
-
+@property (nonatomic, strong) NSOperationQueue *operationQueue;
 @end
 
 @implementation TCBlobDownloadManager
+@dynamic downloadCount;
 
 
 #pragma mark - Init
@@ -22,13 +20,13 @@
 
 - (id)init
 {
-    if (self = [super init]) {
+    self = [super init];
+    if (self) {
         _operationQueue = [[NSOperationQueue alloc] init];
         //NSArray *paths = NSSearchPathForDirectoriesInDomains(NSCachesDirectory, NSUserDomainMask, YES);
         //_defaultDownloadPath = [paths objectAtIndex:0];
         _defaultDownloadPath = [NSString stringWithString:NSTemporaryDirectory()];
     }
-    
     return self;
 }
 
@@ -54,14 +52,18 @@
         _defaultDownloadPath = pathToDL;
 }
 
+- (void)setMaxConcurrentDownloads:(NSInteger)maxConcurrent
+{
+    [self.operationQueue setMaxConcurrentOperationCount:maxConcurrent];
+}
+
+
+#pragma mark - Getters
+
+
 - (NSUInteger)downloadCount
 {
     return [_operationQueue operationCount];
-}
-
-- (void)setMaxConcurrentDownloads:(NSInteger)maxConcurrent
-{
-    [_operationQueue setMaxConcurrentOperationCount:maxConcurrent];
 }
 
 
@@ -99,17 +101,17 @@
                                                             progress:progressBlock
                                                                error:errorBlock
                                                             complete:completeBlock];
-    [_operationQueue addOperation:downloader];
+    [self.operationQueue addOperation:downloader];
 }
 
 - (void)startDownload:(TCBlobDownload *)blobDownload
 {
-    [_operationQueue addOperation:blobDownload];
+    [self.operationQueue addOperation:blobDownload];
 }
 
 - (void)cancelAllDownloadsAndRemoveFiles:(BOOL)remove
 {
-    for (TCBlobDownload *blob in [_operationQueue operations])
+    for (TCBlobDownload *blob in [self.operationQueue operations])
         [blob cancelDownloadAndRemoveFile:remove];
 #ifdef DEBUG
     NSLog(@"Cancelled all downloads.");
