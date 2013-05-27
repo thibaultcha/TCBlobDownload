@@ -25,11 +25,10 @@ Requires **iOS 5.0 or later**.
 
 - (void)startDownloadWithURL:(NSURL *)url
                 downloadPath:(NSString *)customPathOrNil
-          firstResponseBlock:(void (^)(NSURLResponse *response))firstResponseBlock
-               progressBlock:(void (^)(float receivedLength, float totalLength))progressBlock
-                  errorBlock:(void (^)(NSError *error))errorBlock
-       downloadCanceledBlock:(void (^)(BOOL fileRemoved))downloadCanceledBlock
-       downloadFinishedBlock:(void (^)(NSString *pathToFile))downloadFinishedBlock;
+               firstResponse:(void (^)(NSURLResponse *response))firstResponseBlock
+                    progress:(void (^)(float receivedLength, float totalLength))progressBlock
+                       error:(void (^)(NSError *error))errorBlock
+                    complete:(void (^)(BOOL downloadFinished, NSString *pathToFile))completeBlock;
 
 - (void)startDownload:(TCBlobDownload *)blobDownload;
 
@@ -50,11 +49,10 @@ Requires **iOS 5.0 or later**.
 
 - (id)initWithUrl:(NSURL *)url
      downloadPath:(NSString *)pathToDL // cannot be nil
-firstResponseBlock:(void (^)(NSURLResponse *response))firstResponseBlock
-    progressBlock:(void (^)(float receivedLength, float totalLength))progressBlock
-       errorBlock:(void (^)(NSError *error))errorBlock
-downloadCanceledBlock:(void (^)(BOOL fileRemoved))downloadCanceledBlock
-downloadFinishedBlock:(void (^)(NSString *pathToFile))downloadFinishedBlock;
+     firstResponse:(void (^)(NSURLResponse *response))firstResponseBlock
+          progress:(void (^)(float receivedLength, float totalLength))progressBlock
+             error:(void (^)(NSError *error))errorBlock
+          complete:(void (^)(BOOL downloadFinished, NSString *pathToFile))completeBlock;
 
 - (void)cancelDownloadAndRemoveFile:(BOOL)remove;
 
@@ -82,21 +80,18 @@ TCBlobDownloadManager *sharedManager = [TCBlobDownloadManager sharedDownloadMana
 
 [sharedManager startDownloadWithURL:@"http://give.me/bigfile.avi"
                        downloadPath:nil
-                 firstResponseBlock:^(NSURLResponse *response) {
+                 firstResponse:^(NSURLResponse *response) {
 		   // why not do [response expectedContentLength] for example?
                  }
-                 progressBlock:^(float receivedLength, float totalLength){
+                 progress:^(float receivedLength, float totalLength){
                    // wow moving progress bar!
                  }
-                 errorBlock:^(NSError *error){
+                 error:^(NSError *error){
                    // this not cool
                  }
-                 downloadCanceledBlock:^(BOOL fileRemoved) {
-                  // if file not removed, see "Cool thing 1" :)
-                 }
-                 downloadFinishedBlock:^(NSString *pathToFile){
-                   // this is cool
-                 }];
+                 complete:^(BOOL downloadFinished, NSString *pathToFile) {
+									// okay
+					       }];
 ```
 
 If you set a customPath:
@@ -107,7 +102,7 @@ NSString *customPath = [NSTemporaryDirectory() stringByAppendingPathComponent:@"
                   customPathOrNil:customPath // important
                       andDelegate:nil];
 ```
- 
+
 This will **create** the given path if needed and download the file in the `Path/` directory. **Remember that you should follow the [iOS Data Storage Guidelines](https://developer.apple.com/icloud/documentation/data-storage/)**.
 
 ### 2. Delegate
@@ -116,7 +111,7 @@ You can either set a delegate which can implement those optional methods if dele
 ```objective-c
 - (void)download:(TCBlobDownload *)blobDownload didReceiveFirstResponse:(NSURLResponse *)response
 {
-  // why not do [response expectedContentLength] for example?
+  // [response expectedContentLength]?
 }
 
 - (void)download:(TCBlobDownload *)blobDownload didReceiveData:(uint64_t)received onTotal:(uint64_t)total
@@ -124,19 +119,14 @@ You can either set a delegate which can implement those optional methods if dele
   // wow moving progress bar! (bis)
 }
 
-- (void)download:(TCBlobDownload *)blobDownload didCancelRemovingFile:(BOOL)fileRemoved
-{
-  // if file not removed, see "Cool thing 1" :)
-}
-
-- (void)downloadDidFinishWithDownload:(TCBlobDownload *)blobDownload
-{
-  // this is cool
-}
-
 - (void)download:(TCBlobDownload *)blobDownload didStopWithError:(NSError *)error
 {
   // this is not cool
+}
+
+- (void)download:(TCBlobDownload *)blobDownload didFinishWithSucces:(BOOL)downloadFinished atPath:(NSString *)pathToFile
+{
+  // okay, okay
 }
 ```
 
@@ -145,7 +135,12 @@ You can either set a delegate which can implement those optional methods if dele
 
 **Cool thing 2:** You can also set dependencies in your downloads using the `addDependentDownload:` method from TCBlobDownload. (See [NSOperation Class Reference](http://developer.apple.com/library/mac/#documentation/Cocoa/Reference/NSOperation_class/Reference/Reference.html) and the `addDependency:` method in particular.)
 
-## Updates
+## Change log
+### v1.3 (5/27/2013)
+* Removed downloadCancelled and downloadFinished blocks
+* Added a completion block : `completeBlock(BOOL downloadFinished, NSString *pathToFile)`
+* Updated codestyle
+
 ### v1.2 (5/06/2013)
 * Now built as a static library
 * Download dependencies support
