@@ -24,8 +24,7 @@ NSString * const kErrorDomain = @"com.thibaultcha.tcblobdownload";
 @property (nonatomic, copy) FirstResponseBlock firstResponseBlock;
 @property (nonatomic, copy) ProgressBlock progressBlock;
 @property (nonatomic, copy) ErrorBlock errorBlock;
-@property (nonatomic, copy) DownloadCanceledBlock downloadCanceledBlock;
-@property (nonatomic, copy) DownloadFinishedBlock downloadFinishedBlock;
+@property (nonatomic, copy) CompleteBlock completeBlock;
 
 + (uint64_t)freeDiskSpace;
 - (void)finishOperation;
@@ -34,40 +33,40 @@ NSString * const kErrorDomain = @"com.thibaultcha.tcblobdownload";
 
 @implementation TCBlobDownload
 
+
+#pragma mark - Init
+
+
 - (id)initWithUrl:(NSURL *)url
      downloadPath:(NSString *)pathToDL
       andDelegate:(id<TCBlobDownloadDelegate>)delegateOrNil
 
 {
-    if (self = [super init]) {
-        NSAssert(nil != pathToDL, @"Download path cannot be nil for TCBlobDownload.");
+    NSAssert(nil != pathToDL, @"Download path cannot be nil for TCBlobDownload.");
+    self = [super init];
+    if (self) {
         self.urlAdress = url;
         self.delegate = delegateOrNil;
         if ([TCBlobDownload createPathFromPath:pathToDL])
             self.pathToDownloadDirectory = pathToDL;
     }
-    
     return self;
 }
 
 - (id)initWithUrl:(NSURL *)url
      downloadPath:(NSString *)pathToDL
-firstResponseBlock:(FirstResponseBlock)firstResponseBlock
-    progressBlock:(ProgressBlock)progressBlock
-       errorBlock:(ErrorBlock)errorBlock
-downloadCanceledBlock:(DownloadCanceledBlock)downloadCanceledBlock
-downloadFinishedBlock:(DownloadFinishedBlock)downloadFinishedBlock
+    firstResponse:(FirstResponseBlock)firstResponseBlock
+         progress:(ProgressBlock)progressBlock
+            error:(ErrorBlock)errorBlock
+         complete:(CompleteBlock)completeBlock
 {
     self = [self initWithUrl:url downloadPath:pathToDL andDelegate:nil];
-    
     if (self) {
         _firstResponseBlock = firstResponseBlock;
         _progressBlock = progressBlock;
         _errorBlock = errorBlock;
-        _downloadCanceledBlock = downloadCanceledBlock;
-        _downloadFinishedBlock = downloadFinishedBlock;
+        _completeBlock = completeBlock;
     }
-    
     return self;
 }
 
@@ -154,7 +153,8 @@ downloadFinishedBlock:(DownloadFinishedBlock)downloadFinishedBlock
     _expectedDataLength = [response expectedContentLength];
     
     if ([TCBlobDownload freeDiskSpace] < _expectedDataLength) {
-        NSString *errorDesc = [NSString stringWithFormat:NSLocalizedString(@"Not enough free disk space", @""), self.fileName];
+        NSString *errorDesc = [NSString stringWithFormat
+                               :NSLocalizedString(@"Not enough free disk space", @""), self.fileName];
         NSMutableDictionary *errorDetails = [NSMutableDictionary dictionary];
         [errorDetails setValue:errorDesc
                         forKey:NSLocalizedDescriptionKey];
@@ -175,8 +175,8 @@ downloadFinishedBlock:(DownloadFinishedBlock)downloadFinishedBlock
         }
         
         [self cancelDownloadAndRemoveFile:NO];
-        
-    } else {
+    }
+    else {
         [_receivedDataBuffer setData:nil];
         
         if (self.firstResponseBlock) {
@@ -224,13 +224,13 @@ downloadFinishedBlock:(DownloadFinishedBlock)downloadFinishedBlock
     [_file writeData:_receivedDataBuffer];
     [_receivedDataBuffer setData:nil];
     
-    if (self.downloadFinishedBlock) {
-        NSString *pathToFile = [self.pathToDownloadDirectory stringByAppendingPathComponent:self.fileName];
-        self.downloadFinishedBlock(pathToFile);
+    NSString *pathToFile = [self.pathToDownloadDirectory stringByAppendingPathComponent:self.fileName];
+    if (self.completeBlock) {
+        self.completeBlock(YES, pathToFile);
     }
     
-    if ([self.delegate respondsToSelector:@selector(downloadDidFinishWithDownload:)]) {
-        [self.delegate downloadDidFinishWithDownload:self];
+    if ([self.delegate respondsToSelector:@selector(download:didFinishWithSucces:atPath:)]) {
+        [self.delegate download:self didFinishWithSucces:YES atPath:pathToFile];
     }
     
     [self finishOperation];
@@ -257,20 +257,18 @@ downloadFinishedBlock:(DownloadFinishedBlock)downloadFinishedBlock
 }
 
 - (void)cancelDownloadAndRemoveFile:(BOOL)remove
-{
-    self.downloadFinishedBlock = nil;
-    
+{    
     if (remove) {
         NSFileManager *fm = [NSFileManager defaultManager];
         NSString *pathToFile = [self.pathToDownloadDirectory stringByAppendingPathComponent:self.fileName];
         [fm removeItemAtPath:pathToFile error:nil];
     }
     
-    if (self.downloadCanceledBlock) {
-        self.downloadCanceledBlock(remove);
+    if (self.completeBlock) {
+        self.completeBlock(NO, nil);
     }
-    if ([self.delegate respondsToSelector:@selector(download:didCancelRemovingFile:)]) {
-        [self.delegate download:self didCancelRemovingFile:remove];
+    if ([self.delegate respondsToSelector:@selector(download:didFinishWithSucces:atPath:)]) {
+        [self.delegate download:self didFinishWithSucces:NO atPath:nil];
     }
     
     [self finishOperation];
