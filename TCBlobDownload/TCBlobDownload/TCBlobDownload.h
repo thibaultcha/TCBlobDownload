@@ -10,10 +10,13 @@
 typedef void (^FirstResponseBlock)(NSURLResponse *response);
 typedef void (^ProgressBlock)(float receivedLength, float totalLength);
 typedef void (^ErrorBlock)(NSError *error);
-typedef void (^DownloadCanceledBlock)(BOOL fileRemoved);
-typedef void (^DownloadFinishedBlock)(NSString *pathToFile);
+typedef void (^CompleteBlock)(BOOL downloadFinished, NSString *pathToFile);
 
 @protocol TCBlobDownloadDelegate;
+
+
+#pragma mark - TCBlobDownload
+
 
 @interface TCBlobDownload : NSOperation <NSURLConnectionDelegate>
 
@@ -23,7 +26,7 @@ typedef void (^DownloadFinishedBlock)(NSString *pathToFile);
 @property (nonatomic, retain) NSString *fileName;
 
 /**
- Init. Will not start the download while you do not add the instanciated object to
+ Init. Will not start the download until you add the instanciated object to
  TCBlobDownloadManager. pathToDL cannot be nil from here.
 */
 - (id)initWithUrl:(NSURL *)url
@@ -35,11 +38,10 @@ typedef void (^DownloadFinishedBlock)(NSString *pathToFile);
 */
 - (id)initWithUrl:(NSURL *)url
      downloadPath:(NSString *)pathToDL
-firstResponseBlock:(FirstResponseBlock)firstResponseBlock
-    progressBlock:(ProgressBlock)progressBlock
-       errorBlock:(ErrorBlock)errorBlock
-downloadCanceledBlock:(DownloadCanceledBlock)downloadCanceledBlock
-downloadFinishedBlock:(DownloadFinishedBlock)downloadFinishedBlock;
+    firstResponse:(FirstResponseBlock)firstResponseBlock
+         progress:(ProgressBlock)progressBlock
+            error:(ErrorBlock)errorBlock
+         complete:(CompleteBlock)completeBlock;
 
 /**
  Cancel a download and remove the file if specified.
@@ -58,24 +60,16 @@ downloadFinishedBlock:(DownloadFinishedBlock)downloadFinishedBlock;
 
 @end
 
+
+#pragma mark - TCBlobDownload Delegate
+
+
 @protocol TCBlobDownloadDelegate <NSObject>
-
 @optional
-
 /**
  Received first response
 */
 - (void)download:(TCBlobDownload *)blobDownload didReceiveFirstResponse:(NSURLResponse *)response;
-
-/**
- Let you handle the error for a given download
-*/
-- (void)download:(TCBlobDownload *)blobDownload didStopWithError:(NSError *)error;
-
-/**
- Called when download is canceled
-*/
-- (void)download:(TCBlobDownload *)blobDownload didCancelRemovingFile:(BOOL)fileRemoved;
 
 /**
  On each response from the NSURLConnection
@@ -85,8 +79,15 @@ downloadFinishedBlock:(DownloadFinishedBlock)downloadFinishedBlock;
          onTotal:(uint64_t)totalLength;
 
 /**
+ Let you handle the error for a given download
+ */
+- (void)download:(TCBlobDownload *)blobDownload didStopWithError:(NSError *)error;
+
+/**
  When a download ends
 */
-- (void)downloadDidFinishWithDownload:(TCBlobDownload *)blobDownload;
+- (void)download:(TCBlobDownload *)blobDownload
+didFinishWithSucces:(BOOL)downloadFinished
+          atPath:(NSString *)pathToFile;
 
 @end

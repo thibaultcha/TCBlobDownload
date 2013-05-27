@@ -31,11 +31,10 @@
 */
 - (void)startDownloadWithURL:(NSURL *)url
                   customPath:(NSString *)customPathOrNil
-          firstResponseBlock:(FirstResponseBlock)firstResponseBlock
-               progressBlock:(ProgressBlock)progressBlock
-                  errorBlock:(ErrorBlock)errorBlock
-       downloadCanceledBlock:(DownloadCanceledBlock)downloadCanceledBlock
-       downloadFinishedBlock:(DownloadFinishedBlock)downloadFinishedBlock;
+               firstResponse:(FirstResponseBlock)firstResponseBlock
+                    progress:(ProgressBlock)progressBlock
+                       error:(ErrorBlock)errorBlock
+                    complete:(CompleteBlock)completeBlock;
 
 /**
  Start an already initialized download

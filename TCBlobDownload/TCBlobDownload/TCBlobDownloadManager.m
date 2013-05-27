@@ -17,7 +17,7 @@
 @implementation TCBlobDownloadManager
 
 
-#pragma mark - Init and utilities
+#pragma mark - Init
 
 
 - (id)init
@@ -43,6 +43,10 @@
     
     return sharedManager;
 }
+
+
+#pragma mark - Utilities
+
 
 - (void)setDefaultDownloadPath:(NSString *)pathToDL
 {
@@ -80,11 +84,10 @@
 
 - (void)startDownloadWithURL:(NSURL *)url
                   customPath:(NSString *)customPathOrNil
-          firstResponseBlock:(FirstResponseBlock)firstResponseBlock
-               progressBlock:(ProgressBlock)progressBlock
-                  errorBlock:(ErrorBlock)errorBlock
-       downloadCanceledBlock:(DownloadCanceledBlock)downloadCanceledBlock
-       downloadFinishedBlock:(DownloadFinishedBlock)downloadFinishedBlock
+               firstResponse:(FirstResponseBlock)firstResponseBlock
+                    progress:(ProgressBlock)progressBlock
+                       error:(ErrorBlock)errorBlock
+                    complete:(CompleteBlock)completeBlock
 {
     NSString *downloadPath = self.defaultDownloadPath;
     if (nil != customPathOrNil && [TCBlobDownload createPathFromPath:customPathOrNil])
@@ -92,11 +95,10 @@
     
     TCBlobDownload *downloader = [[TCBlobDownload alloc] initWithUrl:url
                                                         downloadPath:downloadPath
-                                                  firstResponseBlock:firstResponseBlock
-                                                       progressBlock:progressBlock
-                                                          errorBlock:errorBlock
-                                               downloadCanceledBlock:downloadCanceledBlock
-                                               downloadFinishedBlock:downloadFinishedBlock];
+                                                       firstResponse:firstResponseBlock
+                                                            progress:progressBlock
+                                                               error:errorBlock
+                                                            complete:completeBlock];
     [_operationQueue addOperation:downloader];
 }
 
