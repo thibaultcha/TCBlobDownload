@@ -77,11 +77,10 @@ To immediately start a download in the default TCBlobDownloadManager directory (
 #import "TCBlobDownloadManager.h"
 
 TCBlobDownloadManager *sharedManager = [TCBlobDownloadManager sharedDownloadManager];
-
-[sharedManager startDownloadWithURL:@"http://give.me/bigfile.avi"
+[sharedManager startDownloadWithURL:@"http://give.me/abigfile.avi"
                        downloadPath:nil
                  firstResponse:^(NSURLResponse *response) {
-		   // why not do [response expectedContentLength] for example?
+		               // [response expectedContentLength]?
                  }
                  progress:^(float receivedLength, float totalLength){
                    // wow moving progress bar!
@@ -98,7 +97,7 @@ If you set a customPath:
 
 ```objective-c
 NSString *customPath = [NSTemporaryDirectory() stringByAppendingPathComponent:@"My/Custom/Path/"];
-[sharedManager addDownloadWithURL:@"http://give.me/bigfile.avi"
+[sharedManager addDownloadWithURL:@"http://give.me/abigfile.avi"
                   customPathOrNil:customPath // important
                       andDelegate:nil];
 ```
