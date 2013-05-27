@@ -9,7 +9,8 @@
 
 @interface TCBlobDownloadManager : NSObject
 
-@property (retain, nonatomic, setter = setDefaultDownloadPath:) NSString *defaultDownloadPath;
+@property (nonatomic, strong, setter = setDefaultDownloadPath:) NSString *defaultDownloadPath;
+@property (nonatomic, getter = downloadCount) NSUInteger downloadCount;
 
 /**
  Retrieve the singleton

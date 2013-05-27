@@ -20,10 +20,10 @@ typedef void (^CompleteBlock)(BOOL downloadFinished, NSString *pathToFile);
 
 @interface TCBlobDownload : NSOperation <NSURLConnectionDelegate>
 
-@property (nonatomic, assign) id<TCBlobDownloadDelegate> delegate;
-@property (nonatomic, copy) NSURL *urlAdress;
+@property (nonatomic, unsafe_unretained) id<TCBlobDownloadDelegate> delegate;
+@property (nonatomic, copy) NSURL *downloadURL;
 @property (nonatomic, copy) NSString *pathToDownloadDirectory;
-@property (nonatomic, retain) NSString *fileName;
+@property (nonatomic, getter = fileName) NSString *fileName;
 
 /**
  Init. Will not start the download until you add the instanciated object to

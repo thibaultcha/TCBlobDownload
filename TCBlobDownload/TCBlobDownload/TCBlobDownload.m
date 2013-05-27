@@ -13,25 +13,22 @@ NSString * const kErrorDomain = @"com.thibaultcha.tcblobdownload";
 
 @interface TCBlobDownload ()
 {
-    NSURLConnection *_connection;
-    NSMutableData *_receivedDataBuffer;
-    NSFileHandle *_file;
-    
     uint64_t _receivedDataLength;
     uint64_t _expectedDataLength;
 }
-
+@property (nonatomic, strong) NSURLConnection *connection;
+@property (nonatomic, strong) NSMutableData *receivedDataBuffer;
+@property (nonatomic, strong) NSFileHandle *file;
 @property (nonatomic, copy) FirstResponseBlock firstResponseBlock;
 @property (nonatomic, copy) ProgressBlock progressBlock;
 @property (nonatomic, copy) ErrorBlock errorBlock;
 @property (nonatomic, copy) CompleteBlock completeBlock;
-
 + (uint64_t)freeDiskSpace;
 - (void)finishOperation;
-
 @end
 
 @implementation TCBlobDownload
+@dynamic fileName;
 
 
 #pragma mark - Init
@@ -42,13 +39,13 @@ NSString * const kErrorDomain = @"com.thibaultcha.tcblobdownload";
       andDelegate:(id<TCBlobDownloadDelegate>)delegateOrNil
 
 {
-    NSAssert(nil != pathToDL, @"Download path cannot be nil for TCBlobDownload.");
+    NSAssert(pathToDL != nil, @"Download path cannot be nil for TCBlobDownload.");
     self = [super init];
     if (self) {
-        self.urlAdress = url;
-        self.delegate = delegateOrNil;
+        _downloadURL = url;
+        _delegate = delegateOrNil;
         if ([TCBlobDownload createPathFromPath:pathToDL])
-            self.pathToDownloadDirectory = pathToDL;
+            _pathToDownloadDirectory = pathToDL;
     }
     return self;
 }
@@ -76,13 +73,12 @@ NSString * const kErrorDomain = @"com.thibaultcha.tcblobdownload";
 
 - (void)start
 {
-    NSMutableURLRequest *fileRequest = [NSMutableURLRequest requestWithURL:self.urlAdress
+    NSMutableURLRequest *fileRequest = [NSMutableURLRequest requestWithURL:self.downloadURL
                                                                cachePolicy:NSURLRequestUseProtocolCachePolicy
                                                            timeoutInterval:kDefaultTimeout];
     
     NSAssert([NSURLConnection canHandleRequest:fileRequest], @"NSURLConnection can't handle provided request");
     
-    self.fileName = [[[NSURL URLWithString:[self.urlAdress absoluteString]] path] lastPathComponent];
     NSFileManager *fm = [NSFileManager defaultManager];
     NSString *filePath = [self.pathToDownloadDirectory stringByAppendingPathComponent:self.fileName];
     
@@ -97,31 +93,33 @@ NSString * const kErrorDomain = @"com.thibaultcha.tcblobdownload";
         [fileRequest setValue:range forHTTPHeaderField:@"Range"];
     }
     
-    _receivedDataBuffer = [[NSMutableData alloc] init];
     _file = [NSFileHandle fileHandleForWritingAtPath:filePath];
-    [_file seekToEndOfFile];
+    [self.file seekToEndOfFile];
+    _receivedDataBuffer = [[NSMutableData alloc] init];
     _connection = [[NSURLConnection alloc] initWithRequest:fileRequest
                                                   delegate:self
                                           startImmediately:NO];
     
-    if (_connection) {
+    if (self.connection) {
 #ifdef DEBUG
         NSLog(@"Operation started for file:\n%@", filePath);
 #endif
-        [_connection scheduleInRunLoop:[NSRunLoop mainRunLoop]
+        [self.connection scheduleInRunLoop:[NSRunLoop mainRunLoop]
                                forMode:NSDefaultRunLoopMode];
         [self willChangeValueForKey:@"isExecuting"];
-        [_connection start];
+        [self.connection start];
         [self didChangeValueForKey:@"isExecuting"];
     }
 }
 
-- (BOOL)isExecuting {
-    return _connection != nil;
+- (BOOL)isExecuting
+{
+    return self.connection != nil;
 }
 
-- (BOOL)isFinished {
-    return _connection == nil;
+- (BOOL)isFinished
+{
+    return self.connection == nil;
 }
 
 
@@ -177,7 +175,7 @@ NSString * const kErrorDomain = @"com.thibaultcha.tcblobdownload";
         [self cancelDownloadAndRemoveFile:NO];
     }
     else {
-        [_receivedDataBuffer setData:nil];
+        [self.receivedDataBuffer setData:nil];
         
         if (self.firstResponseBlock) {
             self.firstResponseBlock(response);
@@ -191,16 +189,16 @@ NSString * const kErrorDomain = @"com.thibaultcha.tcblobdownload";
 
 - (void)connection:(NSURLConnection*)connection didReceiveData:(NSData *)data
 {
-    [_receivedDataBuffer appendData:data];
+    [self.receivedDataBuffer appendData:data];
     _receivedDataLength += [data length];
     
 #ifdef DEBUG
     NSLog(@"%@ | %.2f%% - Received: %lld - Total: %lld", self.fileName, (float) _receivedDataLength / _expectedDataLength * 100, _receivedDataLength, _expectedDataLength);
 #endif
     
-    if (_receivedDataBuffer.length > kBufferSize && _file) {
-        [_file writeData:_receivedDataBuffer];
-        [_receivedDataBuffer setData:nil];
+    if (self.receivedDataBuffer.length > kBufferSize && self.file) {
+        [self.file writeData:self.receivedDataBuffer];
+        [self.receivedDataBuffer setData:nil];
     }
     
     if (self.progressBlock) {
@@ -221,8 +219,8 @@ NSString * const kErrorDomain = @"com.thibaultcha.tcblobdownload";
     NSLog(@"Download succeeded. Bytes received: %lld", _receivedDataLength);
 #endif
     
-    [_file writeData:_receivedDataBuffer];
-    [_receivedDataBuffer setData:nil];
+    [self.file writeData:self.receivedDataBuffer];
+    [self.receivedDataBuffer setData:nil];
     
     NSString *pathToFile = [self.pathToDownloadDirectory stringByAppendingPathComponent:self.fileName];
     if (self.completeBlock) {
@@ -244,16 +242,15 @@ NSString * const kErrorDomain = @"com.thibaultcha.tcblobdownload";
 {
     [self willChangeValueForKey:@"isExecuting"];
     [self willChangeValueForKey:@"isFinished"];
-    [_connection cancel];
-    _connection = nil;
-    [_file closeFile];
+    [self.connection cancel];
+    self.connection = nil;
+    [self.file closeFile];
     [self didChangeValueForKey:@"isFinished"];
     [self didChangeValueForKey:@"isExecuting"];
     
 #ifdef DEBUG
     NSLog(@"Operation ended for file %@", self.fileName);
 #endif
-    
 }
 
 - (void)cancelDownloadAndRemoveFile:(BOOL)remove
@@ -325,8 +322,16 @@ NSString * const kErrorDomain = @"com.thibaultcha.tcblobdownload";
               [error code]);
 #endif
     }
-    
     return totalFreeSpace;
+}
+
+
+#pragma mark - Getters
+
+
+- (NSString *)fileName
+{
+    return [[[NSURL URLWithString:[self.downloadURL absoluteString]] path] lastPathComponent];
 }
 
 @end
