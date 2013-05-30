@@ -61,7 +61,7 @@ Requires **iOS 5.0 or later**.
 
 ## Usage
 ### Import library
-1. Clone project (better if you want to pull latest updates) **OR** Download zip, then drag and drop `TCBlobDownload.xcodeproj` from Finder to your opened project.
+1. Drag and drop `TCBlobDownload.xcodeproj` from Finder to your opened project.
 2. Open your Project's Target -> Build Phases -> **Target Dependencies** and add `TCBlobDownload`. Then, click **Link binary with libraries** and add `libTCBlobDownload.a` (no worries if it's red).
 3. Go to **build settings**, switch "always search user paths" to `YES` and add `$(PROJECT_TEMP_DIR)/../UninstalledProducts/include` to "User Header Search Paths".
 4. Import in each file where you want to use the lib. (no worries if no autocomplete)
