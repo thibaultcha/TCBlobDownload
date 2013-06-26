@@ -68,7 +68,7 @@ NSString * const kErrorDomain = @"com.thibaultcha.tcblobdownload";
 }
 
 
-#pragma mark - NSOperation override
+#pragma mark - NSOperation Override
 
 
 - (void)start
@@ -99,7 +99,6 @@ NSString * const kErrorDomain = @"com.thibaultcha.tcblobdownload";
     _connection = [[NSURLConnection alloc] initWithRequest:fileRequest
                                                   delegate:self
                                           startImmediately:NO];
-    
     if (self.connection) {
 #ifdef DEBUG
         NSLog(@"Operation started for file:\n%@", filePath);
@@ -156,14 +155,12 @@ NSString * const kErrorDomain = @"com.thibaultcha.tcblobdownload";
         NSMutableDictionary *errorDetails = [NSMutableDictionary dictionary];
         [errorDetails setValue:errorDesc
                         forKey:NSLocalizedDescriptionKey];
-        __autoreleasing NSError *error = [NSError errorWithDomain:@""
+        __autoreleasing NSError *error = [NSError errorWithDomain:kErrorDomain
                                                              code:1
                                                          userInfo:errorDetails];
-
 #ifdef DEBUG
         NSLog(@"Download failed. Error - %@", [error localizedDescription]);
 #endif
-        
         if (self.errorBlock) {
             self.errorBlock(error);
         }
@@ -295,7 +292,6 @@ NSString * const kErrorDomain = @"com.thibaultcha.tcblobdownload";
                   [error code]);
 #endif
         }
-        
         return created;
     }
 }
