@@ -44,8 +44,9 @@ NSString * const kErrorDomain = @"com.thibaultcha.tcblobdownload";
     if (self) {
         _downloadURL = url;
         _delegate = delegateOrNil;
-        if ([TCBlobDownload createPathFromPath:pathToDL])
+        if ([TCBlobDownload createPathFromPath:pathToDL]) {
             _pathToDownloadDirectory = pathToDL;
+        }
     }
     return self;
 }
@@ -127,17 +128,14 @@ NSString * const kErrorDomain = @"com.thibaultcha.tcblobdownload";
 
 - (void)connection:(NSURLConnection*)connection didFailWithError:(NSError *)error
 {
-    
 #ifdef DEBUG
     NSLog(@"Download failed. Error - %@ %@",
           [error localizedDescription],
           [error userInfo][NSURLErrorFailingURLStringErrorKey]);
 #endif
-    
     if (self.errorBlock) {
         self.errorBlock(error);
     }
-    
     if ([self.delegate respondsToSelector:@selector(download:didStopWithError:)]) {
         [self.delegate download:self didStopWithError:error];
     }
@@ -149,22 +147,20 @@ NSString * const kErrorDomain = @"com.thibaultcha.tcblobdownload";
 {
     _expectedDataLength = [response expectedContentLength];
     
-    if ([TCBlobDownload freeDiskSpace] < _expectedDataLength) {
-        NSString *errorDesc = [NSString stringWithFormat
-                               :NSLocalizedString(@"Not enough free disk space", @""), self.fileName];
-        NSMutableDictionary *errorDetails = [NSMutableDictionary dictionary];
-        [errorDetails setValue:errorDesc
-                        forKey:NSLocalizedDescriptionKey];
+    if ([TCBlobDownload freeDiskSpace] < _expectedDataLength
+        && _expectedDataLength != -1) {
         __autoreleasing NSError *error = [NSError errorWithDomain:kErrorDomain
                                                              code:1
-                                                         userInfo:errorDetails];
+                                                         userInfo:@{NSLocalizedDescriptionKey:
+                                                                    NSLocalizedString(@"Not enough free disk space", @"")}];
 #ifdef DEBUG
-        NSLog(@"Download failed. Error - %@", [error localizedDescription]);
+        NSLog(@"Download failed. Error - %@ %@",
+              [error localizedDescription],
+              [error userInfo][NSURLErrorFailingURLStringErrorKey]);
 #endif
         if (self.errorBlock) {
             self.errorBlock(error);
         }
-        
         if ([self.delegate respondsToSelector:@selector(download:didStopWithError:)]) {
             [self.delegate download:self didStopWithError:error];
         }
@@ -177,7 +173,6 @@ NSString * const kErrorDomain = @"com.thibaultcha.tcblobdownload";
         if (self.firstResponseBlock) {
             self.firstResponseBlock(response);
         }
-        
         if ([self.delegate respondsToSelector:@selector(download:didReceiveFirstResponse:)]) {
             [self.delegate download:self didReceiveFirstResponse:response];
         }
@@ -201,7 +196,6 @@ NSString * const kErrorDomain = @"com.thibaultcha.tcblobdownload";
     if (self.progressBlock) {
         self.progressBlock(_receivedDataLength, _expectedDataLength);
     }
-    
     if ([self.delegate respondsToSelector:@selector(download:didReceiveData:onTotal:)]) {
         [self.delegate download:self
                  didReceiveData:_receivedDataLength
@@ -211,11 +205,9 @@ NSString * const kErrorDomain = @"com.thibaultcha.tcblobdownload";
 
 - (void)connectionDidFinishLoading:(NSURLConnection*)connection
 {
-    
 #ifdef DEBUG
     NSLog(@"Download succeeded. Bytes received: %lld", _receivedDataLength);
 #endif
-    
     [self.file writeData:self.receivedDataBuffer];
     [self.receivedDataBuffer setData:nil];
     
@@ -223,7 +215,6 @@ NSString * const kErrorDomain = @"com.thibaultcha.tcblobdownload";
     if (self.completeBlock) {
         self.completeBlock(YES, pathToFile);
     }
-    
     if ([self.delegate respondsToSelector:@selector(download:didFinishWithSucces:atPath:)]) {
         [self.delegate download:self didFinishWithSucces:YES atPath:pathToFile];
     }
@@ -244,7 +235,6 @@ NSString * const kErrorDomain = @"com.thibaultcha.tcblobdownload";
     [self.file closeFile];
     [self didChangeValueForKey:@"isFinished"];
     [self didChangeValueForKey:@"isExecuting"];
-    
 #ifdef DEBUG
     NSLog(@"Operation ended for file %@", self.fileName);
 #endif
