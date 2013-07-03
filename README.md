@@ -135,6 +135,9 @@ You can either set a delegate which can implement those optional methods if dele
 **Cool thing 2:** You can also set dependencies in your downloads using the `addDependentDownload:` method from TCBlobDownload. (See [NSOperation Class Reference](http://developer.apple.com/library/mac/#documentation/Cocoa/Reference/NSOperation_class/Reference/Reference.html) and the `addDependency:` method in particular.)
 
 ## Change log
+### v1.3.1 (6/01/2013)
+* Bug fix
+
 ### v1.3 (5/27/2013)
 * Removed downloadCancelled and downloadFinished blocks
 * Added a completion block : `completeBlock(BOOL downloadFinished, NSString *pathToFile)`
