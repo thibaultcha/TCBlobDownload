@@ -54,22 +54,11 @@
     
     // BLOCK POWA
     [self.sharedDownloadManager startDownloadWithURL:[NSURL URLWithString:self.urlField.text]
-                                          customPath:nil firstResponseBlock:^(NSURLResponse *response) {
-        
-                                          }
-                                       progressBlock:^(float receivedLength, float totalLength) {
-        
-                                       }
-                                          errorBlock:^(NSError *error) {
-        
-                                          }
-                               downloadCanceledBlock:^(BOOL fileRemoved) {
-                                   
-                               }
-                               downloadFinishedBlock:^(NSString *pathToFile) {
-        
-                               }];
-    
+                                          customPath:nil
+                                       firstResponse:NULL
+                                            progress:NULL
+                                               error:NULL
+                                            complete:NULL];
     [self.urlField resignFirstResponder];
 }
 

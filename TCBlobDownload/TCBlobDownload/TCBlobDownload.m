@@ -317,7 +317,7 @@ NSString * const kErrorDomain = @"com.thibaultcha.tcblobdownload";
 
 - (NSString *)fileName
 {
-    return [[[NSURL URLWithString:[self.downloadURL absoluteString]] path] lastPathComponent];
+    return [[NSURL URLWithString:[self.downloadURL absoluteString]] lastPathComponent];
 }
 
 @end

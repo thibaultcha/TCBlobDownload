@@ -7,6 +7,13 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		21203AD6178C593900C19335 /* XCTest.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 21203AD5178C593900C19335 /* XCTest.framework */; };
+		21203AD7178C593900C19335 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 217761FF172FFBBB001956C7 /* Foundation.framework */; };
+		21203AD9178C593900C19335 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 21203AD8178C593900C19335 /* UIKit.framework */; };
+		21203ADF178C593900C19335 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 21203ADD178C593900C19335 /* InfoPlist.strings */; };
+		21203AE1178C593900C19335 /* TCBlobDownloadTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 21203AE0178C593900C19335 /* TCBlobDownloadTests.m */; };
+		21203AEC178C63AB00C19335 /* TCBlobDownloadManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 21776210172FFBD9001956C7 /* TCBlobDownloadManager.m */; };
+		21203AED178C63AE00C19335 /* TCBlobDownload.m in Sources */ = {isa = PBXBuildFile; fileRef = 2177620E172FFBD9001956C7 /* TCBlobDownload.m */; };
 		21776200172FFBBB001956C7 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 217761FF172FFBBB001956C7 /* Foundation.framework */; };
 		21776211172FFBD9001956C7 /* TCBlobDownload.m in Sources */ = {isa = PBXBuildFile; fileRef = 2177620E172FFBD9001956C7 /* TCBlobDownload.m */; };
 		21776212172FFBD9001956C7 /* TCBlobDownloadManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 21776210172FFBD9001956C7 /* TCBlobDownloadManager.m */; };
@@ -14,6 +21,16 @@
 		21776215172FFC56001956C7 /* TCBlobDownload.h in Headers */ = {isa = PBXBuildFile; fileRef = 2177620D172FFBD9001956C7 /* TCBlobDownload.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		21776220172FFE64001956C7 /* TCBlobDownload-Prefix.pch in Headers */ = {isa = PBXBuildFile; fileRef = 2177621F172FFE64001956C7 /* TCBlobDownload-Prefix.pch */; };
 /* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		21203AE3178C593900C19335 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 217761F4172FFBBB001956C7 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 217761FB172FFBBB001956C7;
+			remoteInfo = TCBlobDownload;
+		};
+/* End PBXContainerItemProxy section */
 
 /* Begin PBXCopyFilesBuildPhase section */
 		217761FA172FFBBB001956C7 /* CopyFiles */ = {
@@ -28,6 +45,13 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		21203AD4178C593900C19335 /* TCBlobDownloadTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = TCBlobDownloadTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		21203AD5178C593900C19335 /* XCTest.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = XCTest.framework; path = Library/Frameworks/XCTest.framework; sourceTree = DEVELOPER_DIR; };
+		21203AD8178C593900C19335 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = Library/Frameworks/UIKit.framework; sourceTree = DEVELOPER_DIR; };
+		21203ADC178C593900C19335 /* TCBlobDownloadTests-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "TCBlobDownloadTests-Info.plist"; sourceTree = "<group>"; };
+		21203ADE178C593900C19335 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
+		21203AE0178C593900C19335 /* TCBlobDownloadTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = TCBlobDownloadTests.m; sourceTree = "<group>"; };
+		21203AE2178C593900C19335 /* TCBlobDownloadTests-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "TCBlobDownloadTests-Prefix.pch"; sourceTree = "<group>"; };
 		217761FC172FFBBB001956C7 /* libTCBlobDownload.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libTCBlobDownload.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		217761FF172FFBBB001956C7 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		2177620D172FFBD9001956C7 /* TCBlobDownload.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TCBlobDownload.h; sourceTree = "<group>"; };
@@ -40,6 +64,16 @@
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
+		21203AD1178C593900C19335 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				21203AD6178C593900C19335 /* XCTest.framework in Frameworks */,
+				21203AD9178C593900C19335 /* UIKit.framework in Frameworks */,
+				21203AD7178C593900C19335 /* Foundation.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		217761F9172FFBBB001956C7 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
@@ -51,11 +85,31 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		21203ADA178C593900C19335 /* TCBlobDownloadTests */ = {
+			isa = PBXGroup;
+			children = (
+				21203AE0178C593900C19335 /* TCBlobDownloadTests.m */,
+				21203ADB178C593900C19335 /* Supporting Files */,
+			);
+			path = TCBlobDownloadTests;
+			sourceTree = "<group>";
+		};
+		21203ADB178C593900C19335 /* Supporting Files */ = {
+			isa = PBXGroup;
+			children = (
+				21203ADC178C593900C19335 /* TCBlobDownloadTests-Info.plist */,
+				21203ADD178C593900C19335 /* InfoPlist.strings */,
+				21203AE2178C593900C19335 /* TCBlobDownloadTests-Prefix.pch */,
+			);
+			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
 		217761F3172FFBBB001956C7 = {
 			isa = PBXGroup;
 			children = (
 				21776201172FFBBB001956C7 /* TCBlobDownload */,
 				21776221172FFE8F001956C7 /* Supporting Files */,
+				21203ADA178C593900C19335 /* TCBlobDownloadTests */,
 				217761FE172FFBBB001956C7 /* Frameworks */,
 				217761FD172FFBBB001956C7 /* Products */,
 			);
@@ -65,6 +119,7 @@
 			isa = PBXGroup;
 			children = (
 				217761FC172FFBBB001956C7 /* libTCBlobDownload.a */,
+				21203AD4178C593900C19335 /* TCBlobDownloadTests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -73,6 +128,8 @@
 			isa = PBXGroup;
 			children = (
 				217761FF172FFBBB001956C7 /* Foundation.framework */,
+				21203AD5178C593900C19335 /* XCTest.framework */,
+				21203AD8178C593900C19335 /* UIKit.framework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -113,6 +170,24 @@
 /* End PBXHeadersBuildPhase section */
 
 /* Begin PBXNativeTarget section */
+		21203AD3178C593900C19335 /* TCBlobDownloadTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 21203AE7178C593900C19335 /* Build configuration list for PBXNativeTarget "TCBlobDownloadTests" */;
+			buildPhases = (
+				21203AD0178C593900C19335 /* Sources */,
+				21203AD1178C593900C19335 /* Frameworks */,
+				21203AD2178C593900C19335 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				21203AE4178C593900C19335 /* PBXTargetDependency */,
+			);
+			name = TCBlobDownloadTests;
+			productName = TCBlobDownloadTests;
+			productReference = 21203AD4178C593900C19335 /* TCBlobDownloadTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
 		217761FB172FFBBB001956C7 /* TCBlobDownload */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = 2177620A172FFBBB001956C7 /* Build configuration list for PBXNativeTarget "TCBlobDownload" */;
@@ -139,6 +214,11 @@
 			attributes = {
 				LastUpgradeCheck = 0460;
 				ORGANIZATIONNAME = thibaultCha;
+				TargetAttributes = {
+					21203AD3178C593900C19335 = {
+						TestTargetID = 217761FB172FFBBB001956C7;
+					};
+				};
 			};
 			buildConfigurationList = 217761F7172FFBBB001956C7 /* Build configuration list for PBXProject "TCBlobDownload" */;
 			compatibilityVersion = "Xcode 3.2";
@@ -154,11 +234,33 @@
 			projectRoot = "";
 			targets = (
 				217761FB172FFBBB001956C7 /* TCBlobDownload */,
+				21203AD3178C593900C19335 /* TCBlobDownloadTests */,
 			);
 		};
 /* End PBXProject section */
 
+/* Begin PBXResourcesBuildPhase section */
+		21203AD2178C593900C19335 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				21203ADF178C593900C19335 /* InfoPlist.strings in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
 /* Begin PBXSourcesBuildPhase section */
+		21203AD0178C593900C19335 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				21203AED178C63AE00C19335 /* TCBlobDownload.m in Sources */,
+				21203AE1178C593900C19335 /* TCBlobDownloadTests.m in Sources */,
+				21203AEC178C63AB00C19335 /* TCBlobDownloadManager.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		217761F8172FFBBB001956C7 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -170,7 +272,23 @@
 		};
 /* End PBXSourcesBuildPhase section */
 
+/* Begin PBXTargetDependency section */
+		21203AE4178C593900C19335 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 217761FB172FFBBB001956C7 /* TCBlobDownload */;
+			targetProxy = 21203AE3178C593900C19335 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
 /* Begin PBXVariantGroup section */
+		21203ADD178C593900C19335 /* InfoPlist.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				21203ADE178C593900C19335 /* en */,
+			);
+			name = InfoPlist.strings;
+			sourceTree = "<group>";
+		};
 		21EE597C17395AA10084CF48 /* Localizable.strings */ = {
 			isa = PBXVariantGroup;
 			children = (
@@ -183,6 +301,59 @@
 /* End PBXVariantGroup section */
 
 /* Begin XCBuildConfiguration section */
+		21203AE5178C593900C19335 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(SDKROOT)/Developer/Library/Frameworks",
+					"$(inherited)",
+					"$(SYSTEM_APPS_DIR)/Xcode5-DP3.app/Contents/Developer/Library/Frameworks",
+				);
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "TCBlobDownloadTests/TCBlobDownloadTests-Prefix.pch";
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				INFOPLIST_FILE = "TCBlobDownloadTests/TCBlobDownloadTests-Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				WRAPPER_EXTENSION = xctest;
+			};
+			name = Debug;
+		};
+		21203AE6178C593900C19335 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				ENABLE_NS_ASSERTIONS = NO;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(SDKROOT)/Developer/Library/Frameworks",
+					"$(inherited)",
+					"$(SYSTEM_APPS_DIR)/Xcode5-DP3.app/Contents/Developer/Library/Frameworks",
+				);
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "TCBlobDownloadTests/TCBlobDownloadTests-Prefix.pch";
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				INFOPLIST_FILE = "TCBlobDownloadTests/TCBlobDownloadTests-Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				WRAPPER_EXTENSION = xctest;
+			};
+			name = Release;
+		};
 		21776208172FFBBB001956C7 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -265,6 +436,14 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
+		21203AE7178C593900C19335 /* Build configuration list for PBXNativeTarget "TCBlobDownloadTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				21203AE5178C593900C19335 /* Debug */,
+				21203AE6178C593900C19335 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+		};
 		217761F7172FFBBB001956C7 /* Build configuration list for PBXProject "TCBlobDownload" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
