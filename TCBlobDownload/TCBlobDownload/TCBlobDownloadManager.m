@@ -75,8 +75,9 @@
                  andDelegate:(id<TCBlobDownloadDelegate>)delegateOrNil
 {
     NSString *downloadPath = self.defaultDownloadPath;
-    if (nil != customPathOrNil && [TCBlobDownload createPathFromPath:customPathOrNil])
+    if (customPathOrNil != nil && [TCBlobDownload createPathFromPath:customPathOrNil]) {
         downloadPath = customPathOrNil;
+    }
     
     TCBlobDownload *downloader = [[TCBlobDownload alloc] initWithUrl:url
                                                         downloadPath:downloadPath
