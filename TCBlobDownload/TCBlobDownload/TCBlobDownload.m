@@ -29,6 +29,7 @@ NSString * const kErrorDomain = @"com.thibaultcha.tcblobdownload";
 
 @implementation TCBlobDownload
 @dynamic fileName;
+@dynamic pathToFile;
 
 
 #pragma mark - Init
@@ -81,20 +82,22 @@ NSString * const kErrorDomain = @"com.thibaultcha.tcblobdownload";
     NSAssert([NSURLConnection canHandleRequest:fileRequest], @"NSURLConnection can't handle provided request");
     
     NSFileManager *fm = [NSFileManager defaultManager];
-    NSString *filePath = [self.pathToDownloadDirectory stringByAppendingPathComponent:self.fileName];
-    
     // File already exists or not
-    if (![fm fileExistsAtPath:filePath]) {
-        [fm createFileAtPath:filePath
+    if (![fm fileExistsAtPath:self.pathToFile]) {
+        [fm createFileAtPath:self.pathToFile
                     contents:nil
                   attributes:nil];
-    } else {
-        uint64_t fileSize = [[fm attributesOfItemAtPath:filePath error:nil] fileSize];
+#ifdef DEBUG 
+        NSLog(@"Created file at path: %@", self.pathToFile);
+#endif
+    }
+    else {
+        uint64_t fileSize = [[fm attributesOfItemAtPath:self.pathToFile error:nil] fileSize];
         NSString *range = [NSString stringWithFormat:@"bytes=%lld-", fileSize];
         [fileRequest setValue:range forHTTPHeaderField:@"Range"];
     }
     
-    _file = [NSFileHandle fileHandleForWritingAtPath:filePath];
+    _file = [NSFileHandle fileHandleForWritingAtPath:self.pathToFile];
     [self.file seekToEndOfFile];
     _receivedDataBuffer = [[NSMutableData alloc] init];
     _connection = [[NSURLConnection alloc] initWithRequest:fileRequest
@@ -102,7 +105,7 @@ NSString * const kErrorDomain = @"com.thibaultcha.tcblobdownload";
                                           startImmediately:NO];
     if (self.connection) {
 #ifdef DEBUG
-        NSLog(@"Operation started for file:\n%@", filePath);
+        NSLog(@"Operation started for file:\n%@", self.pathToFile);
 #endif
         [self.connection scheduleInRunLoop:[NSRunLoop mainRunLoop]
                                forMode:NSDefaultRunLoopMode];
@@ -211,12 +214,11 @@ NSString * const kErrorDomain = @"com.thibaultcha.tcblobdownload";
     [self.file writeData:self.receivedDataBuffer];
     [self.receivedDataBuffer setData:nil];
     
-    NSString *pathToFile = [self.pathToDownloadDirectory stringByAppendingPathComponent:self.fileName];
     if (self.completeBlock) {
-        self.completeBlock(YES, pathToFile);
+        self.completeBlock(YES, self.pathToFile);
     }
     if ([self.delegate respondsToSelector:@selector(download:didFinishWithSucces:atPath:)]) {
-        [self.delegate download:self didFinishWithSucces:YES atPath:pathToFile];
+        [self.delegate download:self didFinishWithSucces:YES atPath:self.pathToFile];
     }
     
     [self finishOperation];
@@ -243,9 +245,11 @@ NSString * const kErrorDomain = @"com.thibaultcha.tcblobdownload";
 - (void)cancelDownloadAndRemoveFile:(BOOL)remove
 {    
     if (remove) {
-        NSFileManager *fm = [NSFileManager defaultManager];
-        NSString *pathToFile = [self.pathToDownloadDirectory stringByAppendingPathComponent:self.fileName];
-        [fm removeItemAtPath:pathToFile error:nil];
+        NSError *fileError;
+        [[NSFileManager defaultManager] removeItemAtPath:self.pathToFile error:&fileError];
+        if (fileError) {
+            NSLog(@"An error occured while removing file - %@", fileError);
+        }
     }
     
     if (self.completeBlock) {
@@ -270,16 +274,14 @@ NSString * const kErrorDomain = @"com.thibaultcha.tcblobdownload";
     if ([fm fileExistsAtPath:path]) {
         return true;
     } else {
-        NSError *error = nil;
+        NSError *error;
         BOOL created = [fm createDirectoryAtPath:path
                      withIntermediateDirectories:YES
                                       attributes:nil
                                            error:&error];
         if (error) {
 #ifdef DEBUG
-            NSLog(@"Error creating download directory - %@ %d",
-                  [error localizedDescription],
-                  [error code]);
+            NSLog(@"Error creating download directory - %@", error);
 #endif
         }
         return created;
@@ -291,10 +293,10 @@ NSString * const kErrorDomain = @"com.thibaultcha.tcblobdownload";
     //uint64_t totalSpace = 0;
     uint64_t totalFreeSpace = 0;
     
-    __autoreleasing NSError *error = nil;
+    __autoreleasing NSError *error;
     NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
     NSDictionary *dictionary = [[NSFileManager defaultManager] attributesOfFileSystemForPath:[paths lastObject]
-                                                                                       error: &error];
+                                                                                       error:&error];
     if (dictionary) {
         //NSNumber *fileSystemSizeInBytes = [dictionary objectForKey: NSFileSystemSize];
         NSNumber *freeFileSystemSizeInBytes = dictionary[NSFileSystemFreeSize];
@@ -318,6 +320,11 @@ NSString * const kErrorDomain = @"com.thibaultcha.tcblobdownload";
 - (NSString *)fileName
 {
     return [[NSURL URLWithString:[self.downloadURL absoluteString]] lastPathComponent];
+}
+
+- (NSString *)pathToFile
+{
+    return [self.pathToDownloadDirectory stringByAppendingPathComponent:self.fileName];
 }
 
 @end

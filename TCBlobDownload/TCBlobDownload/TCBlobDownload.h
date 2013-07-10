@@ -23,6 +23,7 @@ typedef void (^CompleteBlock)(BOOL downloadFinished, NSString *pathToFile);
 @property (nonatomic, unsafe_unretained) id<TCBlobDownloadDelegate> delegate;
 @property (nonatomic, copy) NSURL *downloadURL;
 @property (nonatomic, copy) NSString *pathToDownloadDirectory;
+@property (nonatomic, getter = pathToFile) NSString *pathToFile;
 @property (nonatomic, getter = fileName) NSString *fileName;
 
 /**
