@@ -5,6 +5,13 @@
 //  Copyright (c) 2013 Thibault Charbonnier. All rights reserved.
 //
 
+
+#if defined(DEBUG) && !defined(NO_LOG)
+    #define TCLog(format, ...) NSLog(format, ## __VA_ARGS__)
+#else
+    #define TCLog(format, ...)
+#endif
+
 #import <Foundation/Foundation.h>
 
 typedef void (^FirstResponseBlock)(NSURLResponse *response);
@@ -30,14 +37,14 @@ typedef void (^CompleteBlock)(BOOL downloadFinished, NSString *pathToFile);
  Init. Will not start the download until you add the instanciated object to
  TCBlobDownloadManager. pathToDL cannot be nil from here.
 */
-- (id)initWithUrl:(NSURL *)url
+- (id)initWithURL:(NSURL *)url
      downloadPath:(NSString *)pathToDL
-      andDelegate:(id<TCBlobDownloadDelegate>)delegateOrNil;
+         delegate:(id<TCBlobDownloadDelegate>)delegateOrNil;
 
 /**
  Same but with completion blocks
 */
-- (id)initWithUrl:(NSURL *)url
+- (id)initWithURL:(NSURL *)url
      downloadPath:(NSString *)pathToDL
     firstResponse:(FirstResponseBlock)firstResponseBlock
          progress:(ProgressBlock)progressBlock
