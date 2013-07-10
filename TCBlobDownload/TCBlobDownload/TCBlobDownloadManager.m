@@ -73,16 +73,16 @@
 
 - (void)startDownloadWithURL:(NSURL *)url
                   customPath:(NSString *)customPathOrNil
-                 andDelegate:(id<TCBlobDownloadDelegate>)delegateOrNil
+                    delegate:(id<TCBlobDownloadDelegate>)delegateOrNil
 {
     NSString *downloadPath = self.defaultDownloadPath;
     if (customPathOrNil != nil && [TCBlobDownload createPathFromPath:customPathOrNil]) {
         downloadPath = customPathOrNil;
     }
     
-    TCBlobDownload *downloader = [[TCBlobDownload alloc] initWithUrl:url
+    TCBlobDownload *downloader = [[TCBlobDownload alloc] initWithURL:url
                                                         downloadPath:downloadPath
-                                                         andDelegate:delegateOrNil];
+                                                         delegate:delegateOrNil];
     [_operationQueue addOperation:downloader];
 }
 
@@ -94,10 +94,11 @@
                     complete:(CompleteBlock)completeBlock
 {
     NSString *downloadPath = self.defaultDownloadPath;
-    if (nil != customPathOrNil && [TCBlobDownload createPathFromPath:customPathOrNil])
+    if (nil != customPathOrNil && [TCBlobDownload createPathFromPath:customPathOrNil]) {
         downloadPath = customPathOrNil;
+    }
     
-    TCBlobDownload *downloader = [[TCBlobDownload alloc] initWithUrl:url
+    TCBlobDownload *downloader = [[TCBlobDownload alloc] initWithURL:url
                                                         downloadPath:downloadPath
                                                        firstResponse:firstResponseBlock
                                                             progress:progressBlock
@@ -116,9 +117,7 @@
     for (TCBlobDownload *blob in [self.operationQueue operations]) {
         [blob cancelDownloadAndRemoveFile:remove];
     }
-#ifdef DEBUG
-    NSLog(@"Cancelled all downloads.");
-#endif
+    TCLog(@"Cancelled all downloads.");
 }
 
 @end

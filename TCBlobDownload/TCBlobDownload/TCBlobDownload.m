@@ -35,9 +35,9 @@ NSString * const kErrorDomain = @"com.thibaultcha.tcblobdownload";
 #pragma mark - Init
 
 
-- (id)initWithUrl:(NSURL *)url
+- (id)initWithURL:(NSURL *)url
      downloadPath:(NSString *)pathToDL
-      andDelegate:(id<TCBlobDownloadDelegate>)delegateOrNil
+      delegate:(id<TCBlobDownloadDelegate>)delegateOrNil
 
 {
     NSAssert(pathToDL != nil, @"Download path cannot be nil for TCBlobDownload.");
@@ -52,14 +52,14 @@ NSString * const kErrorDomain = @"com.thibaultcha.tcblobdownload";
     return self;
 }
 
-- (id)initWithUrl:(NSURL *)url
+- (id)initWithURL:(NSURL *)url
      downloadPath:(NSString *)pathToDL
     firstResponse:(FirstResponseBlock)firstResponseBlock
          progress:(ProgressBlock)progressBlock
             error:(ErrorBlock)errorBlock
          complete:(CompleteBlock)completeBlock
 {
-    self = [self initWithUrl:url downloadPath:pathToDL andDelegate:nil];
+    self = [self initWithURL:url downloadPath:pathToDL delegate:nil];
     if (self) {
         self.firstResponseBlock = firstResponseBlock;
         self.progressBlock = progressBlock;
@@ -87,9 +87,7 @@ NSString * const kErrorDomain = @"com.thibaultcha.tcblobdownload";
         [fm createFileAtPath:self.pathToFile
                     contents:nil
                   attributes:nil];
-#ifdef DEBUG 
-        NSLog(@"Created file at path: %@", self.pathToFile);
-#endif
+        TCLog(@"Created file at path: %@", self.pathToFile);
     }
     else {
         uint64_t fileSize = [[fm attributesOfItemAtPath:self.pathToFile error:nil] fileSize];
@@ -104,9 +102,7 @@ NSString * const kErrorDomain = @"com.thibaultcha.tcblobdownload";
                                                   delegate:self
                                           startImmediately:NO];
     if (self.connection) {
-#ifdef DEBUG
-        NSLog(@"Operation started for file:\n%@", self.pathToFile);
-#endif
+        TCLog(@"Operation started for file:\n%@", self.pathToFile);
         [self.connection scheduleInRunLoop:[NSRunLoop mainRunLoop]
                                forMode:NSDefaultRunLoopMode];
         [self willChangeValueForKey:@"isExecuting"];
@@ -131,11 +127,9 @@ NSString * const kErrorDomain = @"com.thibaultcha.tcblobdownload";
 
 - (void)connection:(NSURLConnection*)connection didFailWithError:(NSError *)error
 {
-#ifdef DEBUG
-    NSLog(@"Download failed. Error - %@ %@",
+    TCLog(@"Download failed. Error - %@ %@",
           [error localizedDescription],
           [error userInfo][NSURLErrorFailingURLStringErrorKey]);
-#endif
     if (self.errorBlock) {
         self.errorBlock(error);
     }
@@ -156,11 +150,9 @@ NSString * const kErrorDomain = @"com.thibaultcha.tcblobdownload";
                                                              code:1
                                                          userInfo:@{NSLocalizedDescriptionKey:
                                                                     NSLocalizedString(@"Not enough free disk space", @"")}];
-#ifdef DEBUG
-        NSLog(@"Download failed. Error - %@ %@",
+        TCLog(@"Download failed. Error - %@ %@",
               [error localizedDescription],
               [error userInfo][NSURLErrorFailingURLStringErrorKey]);
-#endif
         if (self.errorBlock) {
             self.errorBlock(error);
         }
@@ -187,9 +179,8 @@ NSString * const kErrorDomain = @"com.thibaultcha.tcblobdownload";
     [self.receivedDataBuffer appendData:data];
     _receivedDataLength += [data length];
     
-#ifdef DEBUG
-    NSLog(@"%@ | %.2f%% - Received: %lld - Total: %lld", self.fileName, (float) _receivedDataLength / _expectedDataLength * 100, _receivedDataLength, _expectedDataLength);
-#endif
+    TCLog(@"%@ | %.2f%% - Received: %lld - Total: %lld",
+          self.fileName, (float) _receivedDataLength / _expectedDataLength * 100, _receivedDataLength, _expectedDataLength);
     
     if (self.receivedDataBuffer.length > kBufferSize && self.file) {
         [self.file writeData:self.receivedDataBuffer];
@@ -208,9 +199,7 @@ NSString * const kErrorDomain = @"com.thibaultcha.tcblobdownload";
 
 - (void)connectionDidFinishLoading:(NSURLConnection*)connection
 {
-#ifdef DEBUG
-    NSLog(@"Download succeeded. Bytes received: %lld", _receivedDataLength);
-#endif
+    TCLog(@"Download succeeded. Bytes received: %lld", _receivedDataLength);
     [self.file writeData:self.receivedDataBuffer];
     [self.receivedDataBuffer setData:nil];
     
@@ -237,18 +226,17 @@ NSString * const kErrorDomain = @"com.thibaultcha.tcblobdownload";
     [self.file closeFile];
     [self didChangeValueForKey:@"isFinished"];
     [self didChangeValueForKey:@"isExecuting"];
-#ifdef DEBUG
-    NSLog(@"Operation ended for file %@", self.fileName);
-#endif
+    TCLog(@"Operation ended for file %@", self.fileName);
 }
 
 - (void)cancelDownloadAndRemoveFile:(BOOL)remove
-{    
+{
+    TCLog(@"Cancel download received for file%@", self.pathToFile);
     if (remove) {
         NSError *fileError;
         [[NSFileManager defaultManager] removeItemAtPath:self.pathToFile error:&fileError];
         if (fileError) {
-            NSLog(@"An error occured while removing file - %@", fileError);
+            TCLog(@"An error occured while removing file - %@", fileError);
         }
     }
     
@@ -281,9 +269,7 @@ NSString * const kErrorDomain = @"com.thibaultcha.tcblobdownload";
                                       attributes:nil
                                            error:&error];
         if (error) {
-#ifdef DEBUG
-            NSLog(@"Error creating download directory - %@", error);
-#endif
+            TCLog(@"Error creating download directory - %@", error);
         }
         return created;
     }
@@ -303,14 +289,12 @@ NSString * const kErrorDomain = @"com.thibaultcha.tcblobdownload";
         NSNumber *freeFileSystemSizeInBytes = dictionary[NSFileSystemFreeSize];
         //totalSpace = [fileSystemSizeInBytes unsignedLongLongValue];
         totalFreeSpace = [freeFileSystemSizeInBytes unsignedLongLongValue];
-        //NSLog(@"Memory Capacity of %llu MiB with %llu MiB Free memory available.", ((totalSpace/1024ll)/1024ll), ((totalFreeSpace/1024ll)/1024ll));
+        //TCLog(@"Memory Capacity of %llu MiB with %llu MiB Free memory available.", ((totalSpace/1024ll)/1024ll), ((totalFreeSpace/1024ll)/1024ll));
     }
     else {
-#ifdef DEBUG
-        NSLog(@"Error obtaining system memory infos: Domain = %@, Code = %d",
+        TCLog(@"Error obtaining system memory infos: Domain = %@, Code = %d",
               [error domain],
               [error code]);
-#endif
     }
     return totalFreeSpace;
 }

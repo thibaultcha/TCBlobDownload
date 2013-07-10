@@ -25,7 +25,7 @@
 */
 - (void)startDownloadWithURL:(NSURL *)url
                   customPath:(NSString *)customPathOrNil
-                 andDelegate:(id<TCBlobDownloadDelegate>)delegateOrNil;
+                    delegate:(id<TCBlobDownloadDelegate>)delegateOrNil;
 
 /**
  Same but with completion blocks
