@@ -20,8 +20,6 @@
 		21776214172FFC4A001956C7 /* TCBlobDownloadManager.h in Headers */ = {isa = PBXBuildFile; fileRef = 2177620F172FFBD9001956C7 /* TCBlobDownloadManager.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		21776215172FFC56001956C7 /* TCBlobDownload.h in Headers */ = {isa = PBXBuildFile; fileRef = 2177620D172FFBD9001956C7 /* TCBlobDownload.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		21776220172FFE64001956C7 /* TCBlobDownload-Prefix.pch in Headers */ = {isa = PBXBuildFile; fileRef = 2177621F172FFE64001956C7 /* TCBlobDownload-Prefix.pch */; };
-		21F2790E178D74CA000FA7FF /* TCBlobDownloadSettings.h in Headers */ = {isa = PBXBuildFile; fileRef = 21F2790C178D74CA000FA7FF /* TCBlobDownloadSettings.h */; };
-		21F2790F178D74CA000FA7FF /* TCBlobDownloadSettings.m in Sources */ = {isa = PBXBuildFile; fileRef = 21F2790D178D74CA000FA7FF /* TCBlobDownloadSettings.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -63,8 +61,6 @@
 		2177621F172FFE64001956C7 /* TCBlobDownload-Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "TCBlobDownload-Prefix.pch"; path = "TCBlobDownload/TCBlobDownload-Prefix.pch"; sourceTree = "<group>"; };
 		217AB36D17395D0700A174C5 /* fr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = fr; path = TCBlobDownload/fr.lproj/Localizable.strings; sourceTree = "<group>"; };
 		21EE597D17395AA10084CF48 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = TCBlobDownload/en.lproj/Localizable.strings; sourceTree = "<group>"; };
-		21F2790C178D74CA000FA7FF /* TCBlobDownloadSettings.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TCBlobDownloadSettings.h; sourceTree = "<group>"; };
-		21F2790D178D74CA000FA7FF /* TCBlobDownloadSettings.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TCBlobDownloadSettings.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -145,8 +141,6 @@
 				2177620E172FFBD9001956C7 /* TCBlobDownload.m */,
 				2177620F172FFBD9001956C7 /* TCBlobDownloadManager.h */,
 				21776210172FFBD9001956C7 /* TCBlobDownloadManager.m */,
-				21F2790C178D74CA000FA7FF /* TCBlobDownloadSettings.h */,
-				21F2790D178D74CA000FA7FF /* TCBlobDownloadSettings.m */,
 			);
 			path = TCBlobDownload;
 			sourceTree = "<group>";
@@ -168,7 +162,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				21776215172FFC56001956C7 /* TCBlobDownload.h in Headers */,
-				21F2790E178D74CA000FA7FF /* TCBlobDownloadSettings.h in Headers */,
 				21776214172FFC4A001956C7 /* TCBlobDownloadManager.h in Headers */,
 				21776220172FFE64001956C7 /* TCBlobDownload-Prefix.pch in Headers */,
 			);
@@ -273,7 +266,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				21776211172FFBD9001956C7 /* TCBlobDownload.m in Sources */,
-				21F2790F178D74CA000FA7FF /* TCBlobDownloadSettings.m in Sources */,
 				21776212172FFBD9001956C7 /* TCBlobDownloadManager.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

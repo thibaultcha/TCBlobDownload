@@ -48,8 +48,9 @@
 
 - (void)setDefaultDownloadPath:(NSString *)pathToDL
 {
-    if ([TCBlobDownload createPathFromPath:pathToDL])
+    if ([TCBlobDownload createPathFromPath:pathToDL]) {
         _defaultDownloadPath = pathToDL;
+    }
 }
 
 - (void)setMaxConcurrentDownloads:(NSInteger)maxConcurrent
@@ -112,8 +113,9 @@
 
 - (void)cancelAllDownloadsAndRemoveFiles:(BOOL)remove
 {
-    for (TCBlobDownload *blob in [self.operationQueue operations])
+    for (TCBlobDownload *blob in [self.operationQueue operations]) {
         [blob cancelDownloadAndRemoveFile:remove];
+    }
 #ifdef DEBUG
     NSLog(@"Cancelled all downloads.");
 #endif
