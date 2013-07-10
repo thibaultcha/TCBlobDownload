@@ -61,10 +61,10 @@ NSString * const kErrorDomain = @"com.thibaultcha.tcblobdownload";
 {
     self = [self initWithUrl:url downloadPath:pathToDL andDelegate:nil];
     if (self) {
-        _firstResponseBlock = firstResponseBlock;
-        _progressBlock = progressBlock;
-        _errorBlock = errorBlock;
-        _completeBlock = completeBlock;
+        self.firstResponseBlock = firstResponseBlock;
+        self.progressBlock = progressBlock;
+        self.errorBlock = errorBlock;
+        self.completeBlock = completeBlock;
     }
     return self;
 }
@@ -233,7 +233,7 @@ NSString * const kErrorDomain = @"com.thibaultcha.tcblobdownload";
     [self willChangeValueForKey:@"isExecuting"];
     [self willChangeValueForKey:@"isFinished"];
     [self.connection cancel];
-    self.connection = nil;
+    [self setConnection:nil];
     [self.file closeFile];
     [self didChangeValueForKey:@"isFinished"];
     [self didChangeValueForKey:@"isExecuting"];
@@ -273,7 +273,8 @@ NSString * const kErrorDomain = @"com.thibaultcha.tcblobdownload";
     
     if ([fm fileExistsAtPath:path]) {
         return true;
-    } else {
+    }
+    else {
         NSError *error;
         BOOL created = [fm createDirectoryAtPath:path
                      withIntermediateDirectories:YES
@@ -303,7 +304,8 @@ NSString * const kErrorDomain = @"com.thibaultcha.tcblobdownload";
         //totalSpace = [fileSystemSizeInBytes unsignedLongLongValue];
         totalFreeSpace = [freeFileSystemSizeInBytes unsignedLongLongValue];
         //NSLog(@"Memory Capacity of %llu MiB with %llu MiB Free memory available.", ((totalSpace/1024ll)/1024ll), ((totalFreeSpace/1024ll)/1024ll));
-    } else {
+    }
+    else {
 #ifdef DEBUG
         NSLog(@"Error obtaining system memory infos: Domain = %@, Code = %d",
               [error domain],
