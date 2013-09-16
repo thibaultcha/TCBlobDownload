@@ -7,15 +7,13 @@ I've implemented **TCBlobDownload** which extends NSOperation and use **TCBlobDo
 
 Requires **iOS 5.0 or later**.
 
-Built with :heart:, doing my best, fellf ree to provide feedback!
+Built with :heart:, doing my best, fell free to provide feedback!
   
-======
-  
-## [Features](#features)
-## [Methods](#methods)
-## [Usage](#usage)
-## [Change Log](#change-log)
-## [Licence](#licence)
+#### [Features](#features)
+#### [Methods](#methods)
+#### [Usage](#usage)
+#### [Change Log](#change-log)
+#### [Licence](#licence)
 
 ======
 
@@ -170,7 +168,7 @@ You can either set a delegate which can implement those optional methods if dele
 * Initial release
 
 ## Roadmap
-If you have any idea, please suggest it! :)
+If you have any idea or request, please suggest it! :smiley:
 
 * Multi segmented downloads.
 
