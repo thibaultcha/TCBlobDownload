@@ -7,7 +7,17 @@ I've implemented **TCBlobDownload** which extends NSOperation and use **TCBlobDo
 
 Requires **iOS 5.0 or later**.
 
-[Features](#features)
+Built with :heart:, doing my best, fellf ree to provide feedback!
+  
+======
+  
+## [Features](#features)
+## [Methods](#methods)
+## [Usage](#usage)
+## [Change Log](#change-log)
+## [Licence](#licence)
+
+======
 
 ## Features
 1. Download files in background threads.
