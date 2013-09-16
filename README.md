@@ -9,11 +9,11 @@ Requires **iOS 5.0 or later**.
 
 Built with :heart:, doing my best, fell free to provide feedback!
   
-- [Features](#features)
-- [Methods](#methods)
-- [Usage](#usage)
-- [Change Log](#change-log)
-- [Licence](#licence)
+- **[Features](#features)**
+- **[Methods](#methods)**
+- **[Usage](#usage)**
+- **[Change Log](#change-log)**
+- **[Licence](#licence)**
 
 ======
 
