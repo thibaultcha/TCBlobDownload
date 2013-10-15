@@ -137,3 +137,6 @@ Podfile.lock
 # UNKNOWN: recommended by others, but I can't discover what these files are
 #
 # ...none. Everything is now explained.
+SampleProject.xcodeproj/project.xcworkspace/xcshareddata/SampleProject.xccheckout
+
+SampleProject.xcodeproj/project.xcworkspace/xcshareddata/SampleProject.xccheckout
