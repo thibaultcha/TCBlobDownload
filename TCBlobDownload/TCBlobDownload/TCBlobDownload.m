@@ -143,13 +143,28 @@ NSString * const kErrorDomain = @"com.thibaultcha.tcblobdownload";
 - (void)connection:(NSURLConnection*)connection didReceiveResponse:(NSURLResponse *)response
 {
     _expectedDataLength = [response expectedContentLength];
+    NSHTTPURLResponse *httpUrlResponse = (NSHTTPURLResponse *)response;
+    
+    __autoreleasing NSError *error;
+    
+    if (httpUrlResponse.statusCode >= 400) {
+        error = [NSError errorWithDomain:kErrorDomain
+                                    code:2
+                                userInfo:@{NSLocalizedDescriptionKey:[NSString stringWithFormat:NSLocalizedString(@"HTTP error code %d (%@) ", @"HTTP error code {satus code} ({status code description})"),
+                                                                      httpUrlResponse.statusCode,
+                                                                      [NSHTTPURLResponse localizedStringForStatusCode:httpUrlResponse.statusCode]]}];
+    }
     
     if ([TCBlobDownload freeDiskSpace] < _expectedDataLength
         && _expectedDataLength != -1) {
-        __autoreleasing NSError *error = [NSError errorWithDomain:kErrorDomain
-                                                             code:1
-                                                         userInfo:@{NSLocalizedDescriptionKey:
-                                                                    NSLocalizedString(@"Not enough free disk space", @"")}];
+        error = [NSError errorWithDomain:kErrorDomain
+                                    code:1
+                                userInfo:@{NSLocalizedDescriptionKey:
+                                               NSLocalizedString(@"Not enough free disk space", @"")}];
+        
+    }
+    
+    if (error) {
         TCLog(@"Download failed. Error - %@ %@",
               [error localizedDescription],
               [error userInfo][NSURLErrorFailingURLStringErrorKey]);
@@ -161,8 +176,7 @@ NSString * const kErrorDomain = @"com.thibaultcha.tcblobdownload";
         }
         
         [self cancelDownloadAndRemoveFile:NO];
-    }
-    else {
+    } else {
         [self.receivedDataBuffer setData:nil];
         
         if (self.firstResponseBlock) {
@@ -172,6 +186,8 @@ NSString * const kErrorDomain = @"com.thibaultcha.tcblobdownload";
             [self.delegate download:self didReceiveFirstResponse:response];
         }
     }
+    
+    
 }
 
 - (void)connection:(NSURLConnection*)connection didReceiveData:(NSData *)data
