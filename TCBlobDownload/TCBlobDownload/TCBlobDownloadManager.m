@@ -71,7 +71,7 @@
 #pragma mark - TCBlobDownloads Management
 
 
-- (void)startDownloadWithURL:(NSURL *)url
+- (TCBlobDownload *)startDownloadWithURL:(NSURL *)url
                   customPath:(NSString *)customPathOrNil
                     delegate:(id<TCBlobDownloadDelegate>)delegateOrNil
 {
@@ -84,9 +84,11 @@
                                                         downloadPath:downloadPath
                                                          delegate:delegateOrNil];
     [_operationQueue addOperation:downloader];
+    
+    return downloader;
 }
 
-- (void)startDownloadWithURL:(NSURL *)url
+- (TCBlobDownload *)startDownloadWithURL:(NSURL *)url
                   customPath:(NSString *)customPathOrNil
                firstResponse:(FirstResponseBlock)firstResponseBlock
                     progress:(ProgressBlock)progressBlock
@@ -105,6 +107,8 @@
                                                                error:errorBlock
                                                             complete:completeBlock];
     [self.operationQueue addOperation:downloader];
+    
+    return downloader;
 }
 
 - (void)startDownload:(TCBlobDownload *)blobDownload

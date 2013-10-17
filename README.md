@@ -30,11 +30,11 @@ Requires **iOS 5.0 or later**.
 ## Methods
 #### TCBlobDownloadManager
 ```objective-c
-- (void)startDownloadWithURL:(NSURL *)url
+- (TCBlobDownload *)startDownloadWithURL:(NSURL *)url
                 downloadPath:(NSString *)customPathOrNil
                  andDelegate:(id<TCBlobDownloadDelegate>)delegateOrNil;
 
-- (void)startDownloadWithURL:(NSURL *)url
+- (TCBlobDownload *)startDownloadWithURL:(NSURL *)url
                 downloadPath:(NSString *)customPathOrNil
                firstResponse:(void (^)(NSURLResponse *response))firstResponseBlock
                     progress:(void (^)(float receivedLength, float totalLength))progressBlock
@@ -88,7 +88,8 @@ To immediately start a download in the default TCBlobDownloadManager directory (
 #import "TCBlobDownloadManager.h"
 
 TCBlobDownloadManager *sharedManager = [TCBlobDownloadManager sharedDownloadManager];
-[sharedManager startDownloadWithURL:@"http://give.me/abigfile.avi"
+
+TCBlobDownload *downloader = [sharedManager startDownloadWithURL:@"http://give.me/abigfile.avi"
                        downloadPath:nil
                  firstResponse:^(NSURLResponse *response) {
 		               // [response expectedContentLength]?
@@ -108,7 +109,8 @@ If you set a customPath:
 
 ```objective-c
 NSString *customPath = [NSTemporaryDirectory() stringByAppendingPathComponent:@"My/Custom/Path/"];
-[sharedManager addDownloadWithURL:@"http://give.me/abigfile.avi"
+
+TCBlobDownload *downloader = [sharedManager startDownloadWithURL:@"http://give.me/abigfile.avi"
                   customPathOrNil:customPath // important
                       andDelegate:nil];
 ```
