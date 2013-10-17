@@ -174,7 +174,8 @@ You can either set a delegate which can implement those optional methods if dele
 If you have any idea or request, please suggest it! :smiley:
 
 * Unit tests
-* Multi segmented downloads.
+* Cocoapod support
+* Multi segmented downloads
 
 ## Licence
 Copyright (C) 2013 by Thibault Charbonnier.
