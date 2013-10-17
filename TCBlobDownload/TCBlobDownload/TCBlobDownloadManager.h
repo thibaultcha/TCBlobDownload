@@ -23,14 +23,14 @@
  
  The download will be added to a NSOperationQueue and will run in background.
 */
-- (void)startDownloadWithURL:(NSURL *)url
+- (TCBlobDownload *)startDownloadWithURL:(NSURL *)url
                   customPath:(NSString *)customPathOrNil
                     delegate:(id<TCBlobDownloadDelegate>)delegateOrNil;
 
 /**
  Same but with completion blocks
 */
-- (void)startDownloadWithURL:(NSURL *)url
+- (TCBlobDownload *)startDownloadWithURL:(NSURL *)url
                   customPath:(NSString *)customPathOrNil
                firstResponse:(FirstResponseBlock)firstResponseBlock
                     progress:(ProgressBlock)progressBlock
