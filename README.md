@@ -171,6 +171,7 @@ You can either set a delegate which can implement those optional methods if dele
 ## Roadmap
 If you have any idea or request, please suggest it! :smiley:
 
+* Unit tests
 * Multi segmented downloads.
 
 ## Licence
