@@ -155,19 +155,18 @@ NSString * const kErrorDomain = @"com.thibaultcha.tcblobdownload";
                                                                       [NSHTTPURLResponse localizedStringForStatusCode:httpUrlResponse.statusCode]]}];
     }
     
-    if ([TCBlobDownload freeDiskSpace] < _expectedDataLength
-        && _expectedDataLength != -1) {
+    if ([TCBlobDownload freeDiskSpace] < _expectedDataLength && _expectedDataLength != -1) {
         error = [NSError errorWithDomain:kErrorDomain
                                     code:1
                                 userInfo:@{NSLocalizedDescriptionKey:
                                                NSLocalizedString(@"Not enough free disk space", @"")}];
-        
     }
     
     if (error) {
         TCLog(@"Download failed. Error - %@ %@",
               [error localizedDescription],
               [error userInfo][NSURLErrorFailingURLStringErrorKey]);
+        
         if (self.errorBlock) {
             self.errorBlock(error);
         }
@@ -176,7 +175,8 @@ NSString * const kErrorDomain = @"com.thibaultcha.tcblobdownload";
         }
         
         [self cancelDownloadAndRemoveFile:NO];
-    } else {
+    }
+    else {
         [self.receivedDataBuffer setData:nil];
         
         if (self.firstResponseBlock) {
@@ -186,8 +186,6 @@ NSString * const kErrorDomain = @"com.thibaultcha.tcblobdownload";
             [self.delegate download:self didReceiveFirstResponse:response];
         }
     }
-    
-    
 }
 
 - (void)connection:(NSURLConnection*)connection didReceiveData:(NSData *)data
