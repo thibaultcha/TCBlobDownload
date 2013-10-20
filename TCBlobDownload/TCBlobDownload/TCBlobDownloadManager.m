@@ -80,7 +80,7 @@
     
     TCBlobDownload *downloader = [[TCBlobDownload alloc] initWithURL:url
                                                         downloadPath:downloadPath
-                                                         delegate:delegateOrNil];
+                                                            delegate:delegateOrNil];
     [_operationQueue addOperation:downloader];
     
     return downloader;

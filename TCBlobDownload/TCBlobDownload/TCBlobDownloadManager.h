@@ -21,26 +21,21 @@
  Start a download with the specified URL, an optional download path (default if nil)
  and an optional delegate.
  
- The download will be added to a NSOperationQueue and will run in background.
+ The download will be added to an NSOperationQueue and will run in background.
 */
 - (TCBlobDownload *)startDownloadWithURL:(NSURL *)url
-                  customPath:(NSString *)customPathOrNil
-                    delegate:(id<TCBlobDownloadDelegate>)delegateOrNil;
+                              customPath:(NSString *)customPathOrNil
+                                delegate:(id<TCBlobDownloadDelegate>)delegateOrNil;
 
 /**
  Same but with completion blocks
 */
 - (TCBlobDownload *)startDownloadWithURL:(NSURL *)url
-                  customPath:(NSString *)customPathOrNil
-               firstResponse:(FirstResponseBlock)firstResponseBlock
-                    progress:(ProgressBlock)progressBlock
-                       error:(ErrorBlock)errorBlock
-                    complete:(CompleteBlock)completeBlock;
-
-/**
- Start an already initialized download
-*/
-- (void)startDownload:(TCBlobDownload *)blobDownload;
+                              customPath:(NSString *)customPathOrNil
+                           firstResponse:(FirstResponseBlock)firstResponseBlock
+                                progress:(ProgressBlock)progressBlock
+                                   error:(ErrorBlock)errorBlock
+                                complete:(CompleteBlock)completeBlock;
 
 /**
  Specify the default download repository. It can be a non existant path,

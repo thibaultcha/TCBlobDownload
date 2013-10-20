@@ -104,7 +104,7 @@ NSString * const kErrorDomain = @"com.thibaultcha.tcblobdownload";
     if (self.connection) {
         TCLog(@"Operation started for file:\n%@", self.pathToFile);
         [self.connection scheduleInRunLoop:[NSRunLoop mainRunLoop]
-                               forMode:NSDefaultRunLoopMode];
+                                   forMode:NSDefaultRunLoopMode];
         [self willChangeValueForKey:@"isExecuting"];
         [self.connection start];
         [self didChangeValueForKey:@"isExecuting"];
@@ -245,12 +245,15 @@ NSString * const kErrorDomain = @"com.thibaultcha.tcblobdownload";
 
 - (void)cancelDownloadAndRemoveFile:(BOOL)remove
 {
-    TCLog(@"Cancel download received for file%@", self.pathToFile);
-    if (remove) {
+    TCLog(@"Cancel download received for file %@", self.pathToFile);
+    NSFileManager *fm = [NSFileManager defaultManager];
+    
+    if (remove && [fm fileExistsAtPath:self.pathToFile]) {
         __autoreleasing NSError *fileError;
-        [[NSFileManager defaultManager] removeItemAtPath:self.pathToFile error:&fileError];
+        [fm removeItemAtPath:self.pathToFile error:&fileError];
         if (fileError) {
             TCLog(@"An error occured while removing file - %@", fileError);
+            // TODO handle error
         }
     }
     
