@@ -23,8 +23,6 @@
     self = [super init];
     if (self) {
         _operationQueue = [[NSOperationQueue alloc] init];
-        //NSArray *paths = NSSearchPathForDirectoriesInDomains(NSCachesDirectory, NSUserDomainMask, YES);
-        //_defaultDownloadPath = [paths objectAtIndex:0];
         _defaultDownloadPath = [NSString stringWithString:NSTemporaryDirectory()];
     }
     return self;
@@ -72,8 +70,8 @@
 
 
 - (TCBlobDownload *)startDownloadWithURL:(NSURL *)url
-                  customPath:(NSString *)customPathOrNil
-                    delegate:(id<TCBlobDownloadDelegate>)delegateOrNil
+                              customPath:(NSString *)customPathOrNil
+                                delegate:(id<TCBlobDownloadDelegate>)delegateOrNil
 {
     NSString *downloadPath = self.defaultDownloadPath;
     if (customPathOrNil != nil && [TCBlobDownload createPathFromPath:customPathOrNil]) {
@@ -89,11 +87,11 @@
 }
 
 - (TCBlobDownload *)startDownloadWithURL:(NSURL *)url
-                  customPath:(NSString *)customPathOrNil
-               firstResponse:(FirstResponseBlock)firstResponseBlock
-                    progress:(ProgressBlock)progressBlock
-                       error:(ErrorBlock)errorBlock
-                    complete:(CompleteBlock)completeBlock
+                              customPath:(NSString *)customPathOrNil
+                           firstResponse:(FirstResponseBlock)firstResponseBlock
+                                progress:(ProgressBlock)progressBlock
+                                   error:(ErrorBlock)errorBlock
+                                complete:(CompleteBlock)completeBlock
 {
     NSString *downloadPath = self.defaultDownloadPath;
     if (nil != customPathOrNil && [TCBlobDownload createPathFromPath:customPathOrNil]) {

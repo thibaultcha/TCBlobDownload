@@ -247,7 +247,7 @@ NSString * const kErrorDomain = @"com.thibaultcha.tcblobdownload";
 {
     TCLog(@"Cancel download received for file%@", self.pathToFile);
     if (remove) {
-        NSError *fileError;
+        __autoreleasing NSError *fileError;
         [[NSFileManager defaultManager] removeItemAtPath:self.pathToFile error:&fileError];
         if (fileError) {
             TCLog(@"An error occured while removing file - %@", fileError);
@@ -277,7 +277,7 @@ NSString * const kErrorDomain = @"com.thibaultcha.tcblobdownload";
         return true;
     }
     else {
-        NSError *error;
+        __autoreleasing NSError *error;
         BOOL created = [fm createDirectoryAtPath:path
                      withIntermediateDirectories:YES
                                       attributes:nil
