@@ -37,17 +37,14 @@ NSString * const kErrorDomain = @"com.thibaultcha.tcblobdownload";
 
 - (id)initWithURL:(NSURL *)url
      downloadPath:(NSString *)pathToDL
-      delegate:(id<TCBlobDownloadDelegate>)delegateOrNil
+         delegate:(id<TCBlobDownloadDelegate>)delegateOrNil
 
 {
-    NSAssert(pathToDL != nil, @"Download path cannot be nil for TCBlobDownload.");
     self = [super init];
     if (self) {
-        _downloadURL = url;
-        _delegate = delegateOrNil;
-        if ([TCBlobDownload createPathFromPath:pathToDL]) {
-            _pathToDownloadDirectory = pathToDL;
-        }
+        self.downloadURL = url;
+        self.delegate = delegateOrNil;
+        self.pathToDownloadDirectory = pathToDL;
     }
     return self;
 }
@@ -245,6 +242,7 @@ NSString * const kErrorDomain = @"com.thibaultcha.tcblobdownload";
 
 - (void)cancelDownloadAndRemoveFile:(BOOL)remove
 {
+    [self finishOperation];
     TCLog(@"Cancel download received for file %@", self.pathToFile);
     NSFileManager *fm = [NSFileManager defaultManager];
     
@@ -263,33 +261,11 @@ NSString * const kErrorDomain = @"com.thibaultcha.tcblobdownload";
     if ([self.delegate respondsToSelector:@selector(download:didFinishWithSucces:atPath:)]) {
         [self.delegate download:self didFinishWithSucces:NO atPath:nil];
     }
-    
-    [self finishOperation];
 }
 
 - (void)addDependentDownload:(TCBlobDownload *)blobDownload
 {
     [self addDependency:blobDownload];
-}
-
-+ (BOOL)createPathFromPath:(NSString *)path
-{
-    NSFileManager *fm = [NSFileManager defaultManager];
-    
-    if ([fm fileExistsAtPath:path]) {
-        return true;
-    }
-    else {
-        __autoreleasing NSError *error;
-        BOOL created = [fm createDirectoryAtPath:path
-                     withIntermediateDirectories:YES
-                                      attributes:nil
-                                           error:&error];
-        if (error) {
-            TCLog(@"Error creating download directory - %@", error);
-        }
-        return created;
-    }
 }
 
 + (uint64_t)freeDiskSpace

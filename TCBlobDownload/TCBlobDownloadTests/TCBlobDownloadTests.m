@@ -9,11 +9,12 @@
 #import <XCTest/XCTest.h>
 #import "TCBlobDownloadManager.h"
 
-static NSString * const pathToDownloadTests = @"com.thibaultcha.tcblobdl";
+static NSString * const pathToDownloadTests = @"com.thibaultcha.tcblobdltests";
 static NSString * const kValidURLToDownload = @"https://github.com/thibaultCha/TCBlobDownload/archive/master.zip";
 
 @interface TCBlobDownloadTests : XCTestCase
 @property (nonatomic, strong) TCBlobDownloadManager *manager;
+@property (nonatomic, copy) NSURL *validURL;
 @end
 
 @implementation TCBlobDownloadTests
@@ -23,6 +24,7 @@ static NSString * const kValidURLToDownload = @"https://github.com/thibaultCha/T
     [super setUp];
     
     _manager = [[TCBlobDownloadManager alloc] init];
+    self.validURL = [NSURL URLWithString:kValidURLToDownload];
     
     __autoreleasing NSError *error;
     [[NSFileManager defaultManager] createDirectoryAtPath:[NSString pathWithComponents:@[NSTemporaryDirectory(), pathToDownloadTests]]
@@ -40,13 +42,12 @@ static NSString * const kValidURLToDownload = @"https://github.com/thibaultCha/T
 - (void)tearDown
 {
     self.manager = nil;
-    
 
     __autoreleasing NSError *error;
     [[NSFileManager defaultManager]removeItemAtPath:[NSString pathWithComponents:@[NSTemporaryDirectory(), pathToDownloadTests]]
                                               error:&error];
     if (error) {
-        XCTFail(@"Error while deleting tests directory");
+        XCTFail(@"Error while removing tests directory");
         NSLog(@"Error : %d - %@", error.code, error.localizedDescription);
     }
     
@@ -85,22 +86,48 @@ static NSString * const kValidURLToDownload = @"https://github.com/thibaultCha/T
 - (void)testAllOperationsCorrectlyCancelled
 {
     for (NSInteger i = 0; i < 10; i++) {
-        [self.manager startDownloadWithURL:[NSURL URLWithString:kValidURLToDownload]
+        [self.manager startDownloadWithURL:self.validURL
                                 customPath:nil
                                   delegate:nil];
     }
     [self.manager cancelAllDownloadsAndRemoveFiles:YES];
     XCTAssert(self.manager.downloadCount == 0,
-                  @"TCBlobDownloadManager cancelAllDownload did not properly finished all operations.");
+              @"TCBlobDownloadManager cancelAllDownload did not properly finished all operations.");
 }
 
 
 #pragma mark - TCBlobDownload
 
 
+- (void)testShouldCreateDownloadDirectory
+{
+    TCBlobDownload *download1 = [[TCBlobDownload alloc] initWithURL:self.validURL
+                                                       downloadPath:nil
+                                                           delegate:nil];
+    [self.manager startDownload:download1];
+    XCTAssertEqualObjects(self.manager.defaultDownloadPath, download1.pathToDownloadDirectory,
+                          @"TCBlobDownloadManager did not set defaultPath in startDownload:");
+    
+    TCBlobDownload *download2 = [self.manager startDownloadWithURL:self.validURL
+                                                        customPath:nil
+                                                          delegate:nil];
+    XCTAssertEqualObjects(self.manager.defaultDownloadPath, download2.pathToDownloadDirectory,
+                          @"TCBlobDownloadManager did not set defaultPath in startDownloadWithURL:customPath:delegate:");
+    
+    TCBlobDownload *download3 = [self.manager startDownloadWithURL:self.validURL
+                                                        customPath:nil
+                                                     firstResponse:NULL
+                                                          progress:NULL
+                                                             error:NULL
+                                                          complete:NULL];
+    XCTAssertEqualObjects(self.manager.defaultDownloadPath, download3.pathToDownloadDirectory,
+                          @"TCBlobDownloadManager did not set defaultPath in startDownloadWithURL:customPath:firstResponse:progress:error:complete:");
+    
+}
+
 - (void)testOperationCorrectlyCancelled
 {
-    TCBlobDownload *download = [self.manager startDownloadWithURL:[NSURL URLWithString:kValidURLToDownload]
+    TCBlobDownload *download = [self.manager startDownloadWithURL:self.validURL
                                                        customPath:nil
                                                          delegate:nil];
     [download cancelDownloadAndRemoveFile:YES];
@@ -109,30 +136,22 @@ static NSString * const kValidURLToDownload = @"https://github.com/thibaultCha/T
 
 - (void)testFileIsRemovedOnCancel
 {
+    TCBlobDownload *download = [self.manager startDownloadWithURL:self.validURL
+                                                       customPath:nil
+                                                         delegate:nil];
+    [download cancelDownloadAndRemoveFile:YES];
     
-    /*__block TCBlobDownload *download = [self.manager startDownloadWithURL:[NSURL URLWithString:kValidURLToDownload]
-                                                       customPath:[NSString pathWithComponents:@[NSTemporaryDirectory(), pathToDownloadTests]]
-                                                    firstResponse:NULL
-                                                         progress:^(float receivedLength, float totalLength)
-    {
-        [download cancelDownloadAndRemoveFile:YES];
+    __autoreleasing NSError *fileError;
+    NSArray *content = [[NSFileManager defaultManager]contentsOfDirectoryAtPath:download.pathToDownloadDirectory
+                                                                          error:&fileError];
+    if (fileError) {
+        XCTFail(@"An error occured while listing files in test downloads directory.");
+        NSLog(@"Error : %d - %@", fileError.code, fileError.localizedDescription);
     }
-                                                            error:NULL
-                                                         complete:^(BOOL downloadFinished, NSString *pathToFile)
-    {
-        __autoreleasing NSError *fileError;
-        NSArray *content = [[NSFileManager defaultManager]contentsOfDirectoryAtPath:download.pathToDownloadDirectory
-                                                                              error:&fileError];
-        if (fileError) {
-            XCTFail(@"An error occured while listing files in test downloads directory.");
-            NSLog(@"Error : %d - %@", fileError.code, fileError.localizedDescription);
-        }
-        
-        if (content.count > 0) {
-            XCTFail(@"Files not removed from disk after download cancellation.");
-            NSLog(@"%d file(s) located at %@", content.count, download.pathToDownloadDirectory);
-        }
-    }];*/
+    if (content.count > 0) {
+        XCTFail(@"Files not removed from disk after download cancellation.");
+        NSLog(@"%d file(s) located at %@", content.count, download.pathToDownloadDirectory);
+    }
 }
 
 @end

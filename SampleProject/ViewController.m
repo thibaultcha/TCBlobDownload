@@ -8,10 +8,6 @@
 
 #import "ViewController.h"
 
-@interface ViewController ()
-
-@end
-
 @implementation ViewController
 
 
@@ -52,7 +48,7 @@
                                             customPath:nil
                                            andDelegate:self];*/
     
-    // BLOCK POWA
+    // Blocks
     [self.sharedDownloadManager startDownloadWithURL:[NSURL URLWithString:self.urlField.text]
                                           customPath:nil
                                        firstResponse:NULL

@@ -30,8 +30,8 @@ typedef void (^CompleteBlock)(BOOL downloadFinished, NSString *pathToFile);
 @property (nonatomic, unsafe_unretained) id<TCBlobDownloadDelegate> delegate;
 @property (nonatomic, copy) NSURL *downloadURL;
 @property (nonatomic, copy) NSString *pathToDownloadDirectory;
-@property (nonatomic, getter = pathToFile) NSString *pathToFile;
-@property (nonatomic, getter = fileName) NSString *fileName;
+@property (nonatomic, copy, getter = pathToFile) NSString *pathToFile;
+@property (nonatomic, copy, getter = fileName) NSString *fileName;
 
 /**
  Init. Will not start the download until you add the instanciated object to
@@ -60,11 +60,6 @@ typedef void (^CompleteBlock)(BOOL downloadFinished, NSString *pathToFile);
  Make the receiver download dependent of the given download
 */
 - (void)addDependentDownload:(TCBlobDownload *)blobDownload;
-
-/**
- Create a path from given string. You should not use this method directly.
-*/
-+ (BOOL)createPathFromPath:(NSString *)path;
 
 @end
 

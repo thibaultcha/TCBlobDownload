@@ -36,7 +36,6 @@
     dispatch_once(&onceToken, ^{
         sharedManager = [[[self class] alloc] init];
     });
-    
     return sharedManager;
 }
 
@@ -46,7 +45,7 @@
 
 - (void)setDefaultDownloadPath:(NSString *)pathToDL
 {
-    if ([TCBlobDownload createPathFromPath:pathToDL]) {
+    if ([TCBlobDownloadManager createPathFromPath:pathToDL]) {
         _defaultDownloadPath = pathToDL;
     }
 }
@@ -74,7 +73,7 @@
                                 delegate:(id<TCBlobDownloadDelegate>)delegateOrNil
 {
     NSString *downloadPath = self.defaultDownloadPath;
-    if (customPathOrNil != nil && [TCBlobDownload createPathFromPath:customPathOrNil]) {
+    if ([TCBlobDownloadManager createPathFromPath:customPathOrNil]) {
         downloadPath = customPathOrNil;
     }
     
@@ -94,7 +93,7 @@
                                 complete:(CompleteBlock)completeBlock
 {
     NSString *downloadPath = self.defaultDownloadPath;
-    if (nil != customPathOrNil && [TCBlobDownload createPathFromPath:customPathOrNil]) {
+    if ([TCBlobDownloadManager createPathFromPath:customPathOrNil]) {
         downloadPath = customPathOrNil;
     }
     
@@ -109,9 +108,12 @@
     return downloader;
 }
 
-- (void)startDownload:(TCBlobDownload *)blobDownload
+- (void)startDownload:(TCBlobDownload *)download
 {
-    [self.operationQueue addOperation:blobDownload];
+    if (download.pathToDownloadDirectory == nil) {
+        download.pathToDownloadDirectory = self.defaultDownloadPath;
+    }
+    [self.operationQueue addOperation:download];
 }
 
 - (void)cancelAllDownloadsAndRemoveFiles:(BOOL)remove
@@ -120,6 +122,31 @@
         [blob cancelDownloadAndRemoveFile:remove];
     }
     TCLog(@"Cancelled all downloads.");
+}
+
+
+#pragma mark - Custom
+
+
+
++ (BOOL)createPathFromPath:(NSString *)path
+{
+    NSFileManager *fm = [NSFileManager defaultManager];
+    
+    if ([fm fileExistsAtPath:path]) {
+        return true;
+    }
+    else {
+        __autoreleasing NSError *error;
+        BOOL created = [fm createDirectoryAtPath:path
+                     withIntermediateDirectories:YES
+                                      attributes:nil
+                                           error:&error];
+        if (error) {
+            TCLog(@"Error creating download directory - %@", error);
+        }
+        return created;
+    }
 }
 
 @end

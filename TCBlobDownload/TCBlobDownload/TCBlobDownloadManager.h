@@ -36,6 +36,10 @@
                                 progress:(ProgressBlock)progressBlock
                                    error:(ErrorBlock)errorBlock
                                 complete:(CompleteBlock)completeBlock;
+/**
+ Start an already initialized TCBlobDownload
+*/
+- (void)startDownload:(TCBlobDownload *)download;
 
 /**
  Specify the default download repository. It can be a non existant path,
@@ -57,5 +61,10 @@
  Cancel all downloads.
 */
 - (void)cancelAllDownloadsAndRemoveFiles:(BOOL)remove;
+
+/**
+ Create a path from given string. You should not use this method directly.
+ */
++ (BOOL)createPathFromPath:(NSString *)path;
 
 @end
