@@ -5,7 +5,7 @@
 //  Copyright (c) 2013 Thibault Charbonnier. All rights reserved.
 //
 
-
+//#define NO_LOG
 #if defined(DEBUG) && !defined(NO_LOG)
     #define TCLog(format, ...) NSLog(format, ## __VA_ARGS__)
 #else
@@ -13,6 +13,8 @@
 #endif
 
 #import <Foundation/Foundation.h>
+
+extern NSString * const HTTPErrorCode;
 
 typedef void (^FirstResponseBlock)(NSURLResponse *response);
 typedef void (^ProgressBlock)(float receivedLength, float totalLength);

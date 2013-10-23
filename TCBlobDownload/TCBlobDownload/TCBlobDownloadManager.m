@@ -121,7 +121,6 @@
     for (TCBlobDownload *blob in [self.operationQueue operations]) {
         [blob cancelDownloadAndRemoveFile:remove];
     }
-    TCLog(@"Cancelled all downloads.");
 }
 
 
@@ -133,6 +132,11 @@
 {
     NSFileManager *fm = [NSFileManager defaultManager];
     
+    if (path == nil || [path isEqualToString:@""]) {
+        // handle error
+        return false;
+    }
+    
     if ([fm fileExistsAtPath:path]) {
         return true;
     }
@@ -143,7 +147,8 @@
                                       attributes:nil
                                            error:&error];
         if (error) {
-            TCLog(@"Error creating download directory - %@", error);
+            TCLog(@"Error creating download directory %@ - %@", path, error);
+            // TODO handle error
         }
         return created;
     }

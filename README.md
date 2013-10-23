@@ -1,6 +1,6 @@
 # TCBlobDownload
 
-**Unit tests comming.**
+[![Build Status](https://api.travis-ci.org/thibaultCha/TCBlobDownload.png)](https://travis-ci.org/thibaultCha/TCBlobDownload)
 
 This library uses **NSOperations** to download big files (typically videos, music... well: BLOBs) using **NSURLConnection** in background threads. This is a static library, very easy to import in your project and it allows you to pull the latest updates. Installation steps are explained in usage section.
 

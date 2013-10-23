@@ -14,14 +14,13 @@ Pod::Spec.new do |s|
   s.license      = 'MIT (example)'
   s.author       = { "Thibault Charbonnier" => "thibaultcha@me.com" }
 
-  # s.platform     = :ios
-  # s.platform     = :ios, '5.0'
+  s.platform     = :ios
+  s.ios.deployment_target = '5.0'
 
-  #  When using multiple platforms
-  # s.ios.deployment_target = '5.0'
-  # s.osx.deployment_target = '10.7'
-
-  s.source       = { :git => "https://github.com/thibaultCha/TCBlobDownload", :tag => "1.3.1" }
-  s.source_files  = 'TCBlobDownload/TCBlobDownload/*.{h,m}'
+  s.source       = { 
+    :git => "https://github.com/thibaultCha/TCBlobDownload", 
+    :tag => "1.3.1"
+  }
+  s.source_files = 'TCBlobDownload/TCBlobDownload/*.{h,m}'
   s.requires_arc = true
 end

@@ -7,10 +7,10 @@
 //
 
 #import <XCTest/XCTest.h>
-#import "TCBlobDownloadManager.h"
+#import "XCTestCase+AsyncTesting.h"
 
-static NSString * const pathToDownloadTests = @"com.thibaultcha.tcblobdltests";
-static NSString * const kValidURLToDownload = @"https://github.com/thibaultCha/TCBlobDownload/archive/master.zip";
+#import "TestValues.h"
+#import "TCBlobDownloadManager.h"
 
 @interface TCBlobDownloadTests : XCTestCase
 @property (nonatomic, strong) TCBlobDownloadManager *manager;
@@ -42,7 +42,8 @@ static NSString * const kValidURLToDownload = @"https://github.com/thibaultCha/T
 - (void)tearDown
 {
     self.manager = nil;
-
+    self.validURL = nil;
+    
     __autoreleasing NSError *error;
     [[NSFileManager defaultManager]removeItemAtPath:[NSString pathWithComponents:@[NSTemporaryDirectory(), pathToDownloadTests]]
                                               error:&error];
@@ -80,7 +81,13 @@ static NSString * const kValidURLToDownload = @"https://github.com/thibaultCha/T
 {
     [self.manager setDefaultDownloadPath:NSHomeDirectory()];
     XCTAssertEqualObjects(self.manager.defaultDownloadPath, NSHomeDirectory(),
-                          @"Default download path is not setting correctly");
+                          @"Default download path is not set correctly");
+}
+
+- (void)testCreatePathFromPath
+{
+    // test if null
+    // test if exists
 }
 
 - (void)testAllOperationsCorrectlyCancelled
@@ -90,6 +97,9 @@ static NSString * const kValidURLToDownload = @"https://github.com/thibaultCha/T
                                 customPath:nil
                                   delegate:nil];
     }
+    
+    [self waitForTimeout:kDefaultAsyncTimeout];
+    
     [self.manager cancelAllDownloadsAndRemoveFiles:YES];
     XCTAssert(self.manager.downloadCount == 0,
               @"TCBlobDownloadManager cancelAllDownload did not properly finished all operations.");
@@ -99,7 +109,7 @@ static NSString * const kValidURLToDownload = @"https://github.com/thibaultCha/T
 #pragma mark - TCBlobDownload
 
 
-- (void)testShouldCreateDownloadDirectory
+- (void)testShouldHandleNilDownloadPath
 {
     TCBlobDownload *download1 = [[TCBlobDownload alloc] initWithURL:self.validURL
                                                        downloadPath:nil
@@ -125,11 +135,32 @@ static NSString * const kValidURLToDownload = @"https://github.com/thibaultCha/T
     
 }
 
+- (void)testCreateDownloadDirectory
+{
+    NSString *testDirectory = [NSString pathWithComponents:@[self.manager.defaultDownloadPath, @"createme"]];
+    
+    [self.manager startDownloadWithURL:self.validURL
+                            customPath:testDirectory
+                         firstResponse:^(NSURLResponse *response) {
+                             BOOL exists = [[NSFileManager defaultManager] fileExistsAtPath:testDirectory];
+                             XCTAssert(exists, @"Custom download directory not created");
+                             
+                             [self notify:XCTAsyncTestCaseStatusSucceeded];
+                         }
+                              progress:NULL
+                                 error:NULL
+                              complete:NULL];
+    
+    [self waitForStatus:XCTAsyncTestCaseStatusSucceeded timeout:5];
+}
+
 - (void)testOperationCorrectlyCancelled
 {
     TCBlobDownload *download = [self.manager startDownloadWithURL:self.validURL
                                                        customPath:nil
                                                          delegate:nil];
+    [self waitForTimeout:kDefaultAsyncTimeout];
+    
     [download cancelDownloadAndRemoveFile:YES];
     XCTAssert(self.manager.downloadCount == 0, @"Operation TCBlobDownload did not finish properly.");
 }
@@ -139,6 +170,9 @@ static NSString * const kValidURLToDownload = @"https://github.com/thibaultCha/T
     TCBlobDownload *download = [self.manager startDownloadWithURL:self.validURL
                                                        customPath:nil
                                                          delegate:nil];
+    
+    [self waitForTimeout:kDefaultAsyncTimeout];
+    
     [download cancelDownloadAndRemoveFile:YES];
     
     __autoreleasing NSError *fileError;
