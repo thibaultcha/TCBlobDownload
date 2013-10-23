@@ -1,0 +1,390 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 46;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		217762391730025C001956C7 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 217762381730025C001956C7 /* UIKit.framework */; };
+		2177623B1730025C001956C7 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2177623A1730025C001956C7 /* Foundation.framework */; };
+		2177623D1730025C001956C7 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2177623C1730025C001956C7 /* CoreGraphics.framework */; };
+		21D06E0C181847F400CAADCD /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 21D06E00181847F400CAADCD /* AppDelegate.m */; };
+		21D06E0D181847F400CAADCD /* Default-568h@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 21D06E01181847F400CAADCD /* Default-568h@2x.png */; };
+		21D06E0E181847F400CAADCD /* Default.png in Resources */ = {isa = PBXBuildFile; fileRef = 21D06E02181847F400CAADCD /* Default.png */; };
+		21D06E0F181847F400CAADCD /* Default@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 21D06E03181847F400CAADCD /* Default@2x.png */; };
+		21D06E10181847F400CAADCD /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 21D06E04181847F400CAADCD /* InfoPlist.strings */; };
+		21D06E11181847F400CAADCD /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 21D06E06181847F400CAADCD /* main.m */; };
+		21D06E12181847F400CAADCD /* TCBlobDownloadExample-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 21D06E07181847F400CAADCD /* TCBlobDownloadExample-Info.plist */; };
+		21D06E13181847F400CAADCD /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 21D06E0A181847F400CAADCD /* ViewController.m */; };
+		21D06E14181847F400CAADCD /* ViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 21D06E0B181847F400CAADCD /* ViewController.xib */; };
+		21D06E2218184B3200CAADCD /* libTCBlobDownload.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 21D06E1D18184B1800CAADCD /* libTCBlobDownload.a */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		21D06E1C18184B1800CAADCD /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 21D06E1718184B1800CAADCD /* TCBlobDownload.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 217761FC172FFBBB001956C7;
+			remoteInfo = TCBlobDownload;
+		};
+		21D06E1E18184B1800CAADCD /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 21D06E1718184B1800CAADCD /* TCBlobDownload.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 21203AD4178C593900C19335;
+			remoteInfo = TCBlobDownloadTests;
+		};
+		21D06E2018184B2500CAADCD /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 21D06E1718184B1800CAADCD /* TCBlobDownload.xcodeproj */;
+			proxyType = 1;
+			remoteGlobalIDString = 217761FB172FFBBB001956C7;
+			remoteInfo = TCBlobDownload;
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXFileReference section */
+		217762351730025C001956C7 /* TCBlobDownloadExample.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = TCBlobDownloadExample.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		217762381730025C001956C7 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
+		2177623A1730025C001956C7 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
+		2177623C1730025C001956C7 /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
+		21D06DFF181847F400CAADCD /* AppDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
+		21D06E00181847F400CAADCD /* AppDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
+		21D06E01181847F400CAADCD /* Default-568h@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default-568h@2x.png"; sourceTree = "<group>"; };
+		21D06E02181847F400CAADCD /* Default.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Default.png; sourceTree = "<group>"; };
+		21D06E03181847F400CAADCD /* Default@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default@2x.png"; sourceTree = "<group>"; };
+		21D06E05181847F400CAADCD /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
+		21D06E06181847F400CAADCD /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
+		21D06E07181847F400CAADCD /* TCBlobDownloadExample-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "TCBlobDownloadExample-Info.plist"; sourceTree = "<group>"; };
+		21D06E08181847F400CAADCD /* TCBlobDownloadExample-Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "TCBlobDownloadExample-Prefix.pch"; sourceTree = "<group>"; };
+		21D06E09181847F400CAADCD /* ViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ViewController.h; sourceTree = "<group>"; };
+		21D06E0A181847F400CAADCD /* ViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ViewController.m; sourceTree = "<group>"; };
+		21D06E0B181847F400CAADCD /* ViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ViewController.xib; sourceTree = "<group>"; };
+		21D06E1718184B1800CAADCD /* TCBlobDownload.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = TCBlobDownload.xcodeproj; path = TCBlobDownload/TCBlobDownload.xcodeproj; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		217762321730025C001956C7 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				21D06E2218184B3200CAADCD /* libTCBlobDownload.a in Frameworks */,
+				217762391730025C001956C7 /* UIKit.framework in Frameworks */,
+				2177623B1730025C001956C7 /* Foundation.framework in Frameworks */,
+				2177623D1730025C001956C7 /* CoreGraphics.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		2177622C1730025C001956C7 = {
+			isa = PBXGroup;
+			children = (
+				21D06DFE181847F400CAADCD /* TCBlobDownloadExample */,
+				217762371730025C001956C7 /* Frameworks */,
+				217762361730025C001956C7 /* Products */,
+				21D06E1718184B1800CAADCD /* TCBlobDownload.xcodeproj */,
+			);
+			sourceTree = "<group>";
+		};
+		217762361730025C001956C7 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				217762351730025C001956C7 /* TCBlobDownloadExample.app */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		217762371730025C001956C7 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				217762381730025C001956C7 /* UIKit.framework */,
+				2177623A1730025C001956C7 /* Foundation.framework */,
+				2177623C1730025C001956C7 /* CoreGraphics.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		21D06DFE181847F400CAADCD /* TCBlobDownloadExample */ = {
+			isa = PBXGroup;
+			children = (
+				21D06DFF181847F400CAADCD /* AppDelegate.h */,
+				21D06E00181847F400CAADCD /* AppDelegate.m */,
+				21D06E09181847F400CAADCD /* ViewController.h */,
+				21D06E0A181847F400CAADCD /* ViewController.m */,
+				21D06E0B181847F400CAADCD /* ViewController.xib */,
+				21D06E15181847FF00CAADCD /* Ressources */,
+				21D06E161818480A00CAADCD /* Supporting Files */,
+			);
+			path = TCBlobDownloadExample;
+			sourceTree = "<group>";
+		};
+		21D06E15181847FF00CAADCD /* Ressources */ = {
+			isa = PBXGroup;
+			children = (
+				21D06E01181847F400CAADCD /* Default-568h@2x.png */,
+				21D06E02181847F400CAADCD /* Default.png */,
+				21D06E03181847F400CAADCD /* Default@2x.png */,
+			);
+			name = Ressources;
+			sourceTree = "<group>";
+		};
+		21D06E161818480A00CAADCD /* Supporting Files */ = {
+			isa = PBXGroup;
+			children = (
+				21D06E04181847F400CAADCD /* InfoPlist.strings */,
+				21D06E06181847F400CAADCD /* main.m */,
+				21D06E07181847F400CAADCD /* TCBlobDownloadExample-Info.plist */,
+				21D06E08181847F400CAADCD /* TCBlobDownloadExample-Prefix.pch */,
+			);
+			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		21D06E1818184B1800CAADCD /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				21D06E1D18184B1800CAADCD /* libTCBlobDownload.a */,
+				21D06E1F18184B1800CAADCD /* TCBlobDownloadTests.xctest */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		217762341730025C001956C7 /* TCBlobDownloadExample */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 217762521730025D001956C7 /* Build configuration list for PBXNativeTarget "TCBlobDownloadExample" */;
+			buildPhases = (
+				217762311730025C001956C7 /* Sources */,
+				217762321730025C001956C7 /* Frameworks */,
+				217762331730025C001956C7 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				21D06E2118184B2500CAADCD /* PBXTargetDependency */,
+			);
+			name = TCBlobDownloadExample;
+			productName = SampleProject;
+			productReference = 217762351730025C001956C7 /* TCBlobDownloadExample.app */;
+			productType = "com.apple.product-type.application";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		2177622D1730025C001956C7 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				LastUpgradeCheck = 0460;
+				ORGANIZATIONNAME = thibaultCha;
+				TargetAttributes = {
+					217762341730025C001956C7 = {
+						DevelopmentTeam = P7PMBGAHNP;
+					};
+				};
+			};
+			buildConfigurationList = 217762301730025C001956C7 /* Build configuration list for PBXProject "TCBlobDownloadExample" */;
+			compatibilityVersion = "Xcode 3.2";
+			developmentRegion = English;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+			);
+			mainGroup = 2177622C1730025C001956C7;
+			productRefGroup = 217762361730025C001956C7 /* Products */;
+			projectDirPath = "";
+			projectReferences = (
+				{
+					ProductGroup = 21D06E1818184B1800CAADCD /* Products */;
+					ProjectRef = 21D06E1718184B1800CAADCD /* TCBlobDownload.xcodeproj */;
+				},
+			);
+			projectRoot = "";
+			targets = (
+				217762341730025C001956C7 /* TCBlobDownloadExample */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXReferenceProxy section */
+		21D06E1D18184B1800CAADCD /* libTCBlobDownload.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = libTCBlobDownload.a;
+			remoteRef = 21D06E1C18184B1800CAADCD /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		21D06E1F18184B1800CAADCD /* TCBlobDownloadTests.xctest */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.cfbundle;
+			path = TCBlobDownloadTests.xctest;
+			remoteRef = 21D06E1E18184B1800CAADCD /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+/* End PBXReferenceProxy section */
+
+/* Begin PBXResourcesBuildPhase section */
+		217762331730025C001956C7 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				21D06E0F181847F400CAADCD /* Default@2x.png in Resources */,
+				21D06E10181847F400CAADCD /* InfoPlist.strings in Resources */,
+				21D06E0D181847F400CAADCD /* Default-568h@2x.png in Resources */,
+				21D06E0E181847F400CAADCD /* Default.png in Resources */,
+				21D06E14181847F400CAADCD /* ViewController.xib in Resources */,
+				21D06E12181847F400CAADCD /* TCBlobDownloadExample-Info.plist in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		217762311730025C001956C7 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				21D06E13181847F400CAADCD /* ViewController.m in Sources */,
+				21D06E11181847F400CAADCD /* main.m in Sources */,
+				21D06E0C181847F400CAADCD /* AppDelegate.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		21D06E2118184B2500CAADCD /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = TCBlobDownload;
+			targetProxy = 21D06E2018184B2500CAADCD /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
+/* Begin PBXVariantGroup section */
+		21D06E04181847F400CAADCD /* InfoPlist.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				21D06E05181847F400CAADCD /* en */,
+			);
+			name = InfoPlist.strings;
+			sourceTree = "<group>";
+		};
+/* End PBXVariantGroup section */
+
+/* Begin XCBuildConfiguration section */
+		217762501730025D001956C7 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				COPY_PHASE_STRIP = NO;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 5.1;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		217762511730025D001956C7 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				COPY_PHASE_STRIP = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 5.1;
+				OTHER_CFLAGS = "-DNS_BLOCK_ASSERTIONS=1";
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		217762531730025D001956C7 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = YES;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "TCBlobDownloadExample/TCBlobDownloadExample-Prefix.pch";
+				INFOPLIST_FILE = "$(SRCROOT)/TCBlobDownloadExample/TCBlobDownloadExample-Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 5.0;
+				PRODUCT_NAME = TCBlobDownloadExample;
+				WRAPPER_EXTENSION = app;
+			};
+			name = Debug;
+		};
+		217762541730025D001956C7 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = YES;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "TCBlobDownloadExample/TCBlobDownloadExample-Prefix.pch";
+				INFOPLIST_FILE = "$(SRCROOT)/TCBlobDownloadExample/TCBlobDownloadExample-Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 5.0;
+				PRODUCT_NAME = TCBlobDownloadExample;
+				WRAPPER_EXTENSION = app;
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		217762301730025C001956C7 /* Build configuration list for PBXProject "TCBlobDownloadExample" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				217762501730025D001956C7 /* Debug */,
+				217762511730025D001956C7 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		217762521730025D001956C7 /* Build configuration list for PBXNativeTarget "TCBlobDownloadExample" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				217762531730025D001956C7 /* Debug */,
+				217762541730025D001956C7 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = 2177622D1730025C001956C7 /* Project object */;
+}

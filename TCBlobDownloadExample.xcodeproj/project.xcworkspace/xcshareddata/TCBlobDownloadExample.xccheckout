@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>IDESourceControlProjectFavoriteDictionaryKey</key>
+	<false/>
+	<key>IDESourceControlProjectIdentifier</key>
+	<string>58B4167E-AFE9-44B9-8C89-85EDD0E61CDB</string>
+	<key>IDESourceControlProjectName</key>
+	<string>TCBlobDownloadExample</string>
+	<key>IDESourceControlProjectOriginsDictionary</key>
+	<dict>
+		<key>6B3F9DA0-0435-4817-BF82-396C64B119CB</key>
+		<string>https://github.com/thibaultCha/TCBlobDownload.git</string>
+	</dict>
+	<key>IDESourceControlProjectPath</key>
+	<string>TCBlobDownloadExample.xcodeproj/project.xcworkspace</string>
+	<key>IDESourceControlProjectRelativeInstallPathDictionary</key>
+	<dict>
+		<key>6B3F9DA0-0435-4817-BF82-396C64B119CB</key>
+		<string>../..</string>
+	</dict>
+	<key>IDESourceControlProjectURL</key>
+	<string>https://github.com/thibaultCha/TCBlobDownload.git</string>
+	<key>IDESourceControlProjectVersion</key>
+	<integer>110</integer>
+	<key>IDESourceControlProjectWCCIdentifier</key>
+	<string>6B3F9DA0-0435-4817-BF82-396C64B119CB</string>
+	<key>IDESourceControlProjectWCConfigurations</key>
+	<array>
+		<dict>
+			<key>IDESourceControlRepositoryExtensionIdentifierKey</key>
+			<string>public.vcs.git</string>
+			<key>IDESourceControlWCCIdentifierKey</key>
+			<string>6B3F9DA0-0435-4817-BF82-396C64B119CB</string>
+			<key>IDESourceControlWCCName</key>
+			<string>TC_BlobDownload</string>
+		</dict>
+	</array>
+</dict>
+</plist>

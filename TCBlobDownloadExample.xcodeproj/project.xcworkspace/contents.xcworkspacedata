@@ -2,6 +2,6 @@
 <Workspace
    version = "1.0">
    <FileRef
-      location = "self:SampleProject.xcodeproj">
+      location = "self:TCBlobDownloadExample.xcodeproj">
    </FileRef>
 </Workspace>
