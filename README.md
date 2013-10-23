@@ -72,6 +72,9 @@ Requires **iOS 5.0 or later**.
 
 ## Usage
 ### Import library
+
+Soon on Cocoapods.
+
 1. Drag and drop `TCBlobDownload.xcodeproj` from Finder to your opened project.
 2. Open your Project's Target -> Build Phases -> **Target Dependencies** and add `TCBlobDownload`. Then, click **Link binary with libraries** and add `libTCBlobDownload.a` (no worries if it's red).
 3. Go to **build settings**, switch "always search user paths" to `YES` and add `$(PROJECT_TEMP_DIR)/../UninstalledProducts/include` to "User Header Search Paths".

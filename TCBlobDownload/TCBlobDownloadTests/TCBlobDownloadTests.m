@@ -31,10 +31,8 @@
                               withIntermediateDirectories:YES
                                                attributes:nil
                                                     error:&error];
-    if (error) {
-        XCTFail(@"Error while creating tests directory");
-        NSLog(@"Error : %d - %@", error.code, error.localizedDescription);
-    }
+
+    XCTAssertNil(error, @"Error while creating tests directory - %@", error);
     
     [self.manager setDefaultDownloadPath:[NSString pathWithComponents:@[NSTemporaryDirectory(), pathToDownloadTests]]];
 }
@@ -47,10 +45,8 @@
     __autoreleasing NSError *error;
     [[NSFileManager defaultManager]removeItemAtPath:[NSString pathWithComponents:@[NSTemporaryDirectory(), pathToDownloadTests]]
                                               error:&error];
-    if (error) {
-        XCTFail(@"Error while removing tests directory");
-        NSLog(@"Error : %d - %@", error.code, error.localizedDescription);
-    }
+
+    XCTAssertNil(error, @"Error while removing tests directory - %@", error);
     
     [super tearDown];
 }
@@ -137,21 +133,32 @@
 
 - (void)testCreateDownloadDirectory
 {
-    NSString *testDirectory = [NSString pathWithComponents:@[self.manager.defaultDownloadPath, @"createme"]];
+    NSString *testDirectory = [NSString pathWithComponents:@[self.manager.defaultDownloadPath, @"create_me"]];
     
-    [self.manager startDownloadWithURL:self.validURL
+    /*[self.manager startDownloadWithURL:self.validURL
                             customPath:testDirectory
                          firstResponse:^(NSURLResponse *response) {
-                             BOOL exists = [[NSFileManager defaultManager] fileExistsAtPath:testDirectory];
-                             XCTAssert(exists, @"Custom download directory not created");
                              
-                             [self notify:XCTAsyncTestCaseStatusSucceeded];
                          }
-                              progress:NULL
+                              progress:^(float receivedLength, float totalLength) {
+                                  BOOL exists = [[NSFileManager defaultManager] fileExistsAtPath:testDirectory];
+                                  XCTAssert(exists, @"Custom download directory not created");
+                             
+                                  [self notify:XCTAsyncTestCaseStatusSucceeded];
+                              }
                                  error:NULL
                               complete:NULL];
     
-    [self waitForStatus:XCTAsyncTestCaseStatusSucceeded timeout:5];
+    [self waitForStatus:XCTAsyncTestCaseStatusSucceeded timeout:5];*/
+    
+    [self.manager startDownloadWithURL:self.validURL
+                            customPath:testDirectory
+                              delegate:nil];
+    
+    [self waitForTimeout:kDefaultAsyncTimeout];
+    
+    BOOL exists = [[NSFileManager defaultManager] fileExistsAtPath:testDirectory];
+    XCTAssert(exists, @"Custom download directory not created");
 }
 
 - (void)testOperationCorrectlyCancelled
