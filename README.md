@@ -77,7 +77,7 @@ Requires **iOS 5.0 or later**.
 Add the following to your Podfile and run `$ pod install`:
 
 ```ruby
-pod 'MSDynamicsDrawerViewController'
+pod 'TCBlobDownload'
 ```
 
 If you don't have CocoaPods installed or integrated into your project, you can learn how to do so [here](http://cocoapods.org).
