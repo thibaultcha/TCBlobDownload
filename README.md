@@ -2,7 +2,7 @@
 
 [![Build Status](https://api.travis-ci.org/thibaultCha/TCBlobDownload.png)](https://travis-ci.org/thibaultCha/TCBlobDownload)
 
-This library uses **NSOperations** to download big files (typically videos, music... well: BLOBs) using **NSURLConnection** in background threads. This is a static library, very easy to import in your project and it allows you to pull the latest updates. Installation steps are explained in usage section.
+This library uses **NSOperations** to download big files (typically videos, music... well: BLOBs) using **NSURLConnection** in background threads.
 
 Tested with files from ~150MB to ~1.2GB, mostly videos. It currently only supports ARC.
 
@@ -71,9 +71,18 @@ Requires **iOS 5.0 or later**.
 ```
 
 ## Usage
-### Import library
 
-Soon on Cocoapods.
+### Cocoapods
+
+Add the following to your Podfile and run `$ pod install`:
+
+```ruby
+pod 'MSDynamicsDrawerViewController'
+```
+
+If you don't have CocoaPods installed or integrated into your project, you can learn how to do so [here](http://cocoapods.org).
+
+### Import as static library
 
 1. Drag and drop `TCBlobDownload.xcodeproj` from Finder to your opened project.
 2. Open your Project's Target -> Build Phases -> **Target Dependencies** and add `TCBlobDownload`. Then, click **Link binary with libraries** and add `libTCBlobDownload.a` (no worries if it's red).
@@ -151,6 +160,13 @@ You can either set a delegate which can implement those optional methods if dele
 **Cool thing 2:** You can also set dependencies in your downloads using the `addDependentDownload:` method from TCBlobDownload. (See [NSOperation Class Reference](http://developer.apple.com/library/mac/#documentation/Cocoa/Reference/NSOperation_class/Reference/Reference.html) and the `addDependency:` method in particular.)
 
 ## Change log
+
+### v1.4.0 (11/19/2013)
+* Unit testing
+* HTTP error status code handling [#3](https://github.com/thibaultCha/TCBlobDownload/pull/3)
+* Manager returns created downloads [#5](https://github.com/thibaultCha/TCBlobDownload/pull/5)
+* Cocoapods relase
+
 ### v1.3.1 (6/01/2013)
 * Bug fix
 
