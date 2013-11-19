@@ -50,7 +50,7 @@
 
 - (void)testInvalidURL
 {
-    /*[self.manager startDownloadWithURL:[NSURL URLWithString:kInvalidURLToDownload]
+    [self.manager startDownloadWithURL:[NSURL URLWithString:kInvalidURLToDownload]
                             customPath:nil
                          firstResponse:NULL
                               progress:NULL
@@ -60,7 +60,7 @@
                                  }
                               complete:NULL];
     
-    [self waitForStatus:XCTAsyncTestCaseStatusSucceeded timeout:5];*/
+    [self waitForStatus:XCTAsyncTestCaseStatusSucceeded timeout:5];
 }
 
 - (void)testHTTPErrorStatusCode

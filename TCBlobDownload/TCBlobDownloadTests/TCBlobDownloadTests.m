@@ -15,6 +15,7 @@
 @interface TCBlobDownloadTests : XCTestCase
 @property (nonatomic, strong) TCBlobDownloadManager *manager;
 @property (nonatomic, copy) NSURL *validURL;
+@property (nonatomic, copy) NSString *testsDirectory;
 @end
 
 @implementation TCBlobDownloadTests
@@ -25,16 +26,17 @@
     
     _manager = [[TCBlobDownloadManager alloc] init];
     self.validURL = [NSURL URLWithString:kValidURLToDownload];
+    self.testsDirectory = [NSString pathWithComponents:@[NSHomeDirectory(), pathToDownloadTests]];
     
     __autoreleasing NSError *error;
-    [[NSFileManager defaultManager] createDirectoryAtPath:[NSString pathWithComponents:@[NSTemporaryDirectory(), pathToDownloadTests]]
+    [[NSFileManager defaultManager] createDirectoryAtPath:self.testsDirectory
                               withIntermediateDirectories:YES
                                                attributes:nil
                                                     error:&error];
 
     XCTAssertNil(error, @"Error while creating tests directory - %@", error);
     
-    [self.manager setDefaultDownloadPath:[NSString pathWithComponents:@[NSTemporaryDirectory(), pathToDownloadTests]]];
+    [self.manager setDefaultDownloadPath:self.testsDirectory];
 }
 
 - (void)tearDown
@@ -42,9 +44,10 @@
     self.manager = nil;
     self.validURL = nil;
     
+
     __autoreleasing NSError *error;
-    [[NSFileManager defaultManager]removeItemAtPath:[NSString pathWithComponents:@[NSTemporaryDirectory(), pathToDownloadTests]]
-                                              error:&error];
+    [[NSFileManager defaultManager] removeItemAtPath:self.testsDirectory
+                                                   error:&error];
 
     XCTAssertNil(error, @"Error while removing tests directory - %@", error);
     
@@ -135,7 +138,7 @@
 {
     NSString *testDirectory = [NSString pathWithComponents:@[self.manager.defaultDownloadPath, @"create_me"]];
     
-    /*[self.manager startDownloadWithURL:self.validURL
+    [self.manager startDownloadWithURL:self.validURL
                             customPath:testDirectory
                          firstResponse:^(NSURLResponse *response) {
                              
@@ -149,7 +152,7 @@
                                  error:NULL
                               complete:NULL];
     
-    [self waitForStatus:XCTAsyncTestCaseStatusSucceeded timeout:5];*/
+    [self waitForStatus:XCTAsyncTestCaseStatusSucceeded timeout:5];
     
     [self.manager startDownloadWithURL:self.validURL
                             customPath:testDirectory

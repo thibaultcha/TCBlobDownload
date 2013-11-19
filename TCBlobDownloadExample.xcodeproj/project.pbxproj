@@ -16,7 +16,6 @@
 		21D06E0F181847F400CAADCD /* Default@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 21D06E03181847F400CAADCD /* Default@2x.png */; };
 		21D06E10181847F400CAADCD /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 21D06E04181847F400CAADCD /* InfoPlist.strings */; };
 		21D06E11181847F400CAADCD /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 21D06E06181847F400CAADCD /* main.m */; };
-		21D06E12181847F400CAADCD /* TCBlobDownloadExample-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 21D06E07181847F400CAADCD /* TCBlobDownloadExample-Info.plist */; };
 		21D06E13181847F400CAADCD /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 21D06E0A181847F400CAADCD /* ViewController.m */; };
 		21D06E14181847F400CAADCD /* ViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 21D06E0B181847F400CAADCD /* ViewController.xib */; };
 		21D06E2218184B3200CAADCD /* libTCBlobDownload.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 21D06E1D18184B1800CAADCD /* libTCBlobDownload.a */; };
@@ -180,7 +179,7 @@
 		2177622D1730025C001956C7 /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
-				LastUpgradeCheck = 0460;
+				LastUpgradeCheck = 0500;
 				ORGANIZATIONNAME = thibaultCha;
 				TargetAttributes = {
 					217762341730025C001956C7 = {
@@ -238,7 +237,6 @@
 				21D06E0D181847F400CAADCD /* Default-568h@2x.png in Resources */,
 				21D06E0E181847F400CAADCD /* Default.png in Resources */,
 				21D06E14181847F400CAADCD /* ViewController.xib in Resources */,
-				21D06E12181847F400CAADCD /* TCBlobDownloadExample-Info.plist in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

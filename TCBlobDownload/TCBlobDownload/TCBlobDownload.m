@@ -263,7 +263,12 @@ NSString * const HTTPErrorCode = @"httpStatus";
         [fm removeItemAtPath:self.pathToFile error:&fileError];
         if (fileError) {
             TCLog(@"An error occured while removing file - %@", fileError);
-            // TODO handle error
+            if (self.errorBlock) {
+                self.errorBlock(fileError);
+            }
+            if ([self.delegate respondsToSelector:@selector(download:didStopWithError:)]) {
+                [self.delegate download:self didStopWithError:fileError];
+            }
         }
     }
     
