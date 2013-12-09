@@ -215,6 +215,7 @@ NSString * const HTTPErrorCode = @"httpStatus";
     if (self.progressBlock) {
         self.progressBlock(_receivedDataLength, _expectedDataLength);
     }
+    
     if ([self.delegate respondsToSelector:@selector(download:didReceiveData:onTotal:)]) {
         [self.delegate download:self
                  didReceiveData:_receivedDataLength
