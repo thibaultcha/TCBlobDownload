@@ -48,6 +48,12 @@
     [self.urlField resignFirstResponder];
 }
 
+- (void)cancelAll:(id)sender
+{
+    [self.sharedDownloadManager cancelAllDownloadsAndRemoveFiles:YES];
+    [self addLogOnTextView: @"\nDownload is canceled"];
+}
+
 -(IBAction)removeAll:(id)sender
 {
     NSMutableString *logMessage = [NSMutableString new];
@@ -133,12 +139,6 @@
                                                error:errorBlock
                                             complete:completeBlock];
     [self.urlField resignFirstResponder];
-}
-
-- (void)cancelAll:(id)sender
-{
-    [self.sharedDownloadManager cancelAllDownloadsAndRemoveFiles:YES];
-    [self addLogOnTextView: @"\nDownload is canceled"];
 }
 
 - (NSString *)getProgressingMessageReceived:(float)receivedLength andTotal:(float)totalLength
