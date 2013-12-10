@@ -32,6 +32,7 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    [self.urlField setText:DEFAULT_DOWNLOAD_URL];
 }
 
 - (void)didReceiveMemoryWarning
@@ -81,7 +82,6 @@
 
 - (void)download:(id)sender
 {
-    _printCount = 0;
     
     // Delegate
     /*[self.sharedDownloadManager startDownloadWithURL:[NSURL URLWithString:downloadStr]
@@ -92,12 +92,13 @@
     
     // How to use Blocks
     FirstResponseBlock firstBlock = ^(NSURLResponse *response) {
-        
         NSLog(@"%lld", [response expectedContentLength]);
         NSLog(@"%@", [response suggestedFilename]);
         NSLog(@"%@", [response MIMEType]);
         NSLog(@"%@", [response textEncodingName]);
         NSLog(@"%@", [response URL]);
+        
+        _printCount = 0;
     };
     
     ProgressBlock progressBlock = ^(float receivedLength, float totalLength) {
@@ -137,7 +138,6 @@
 - (void)cancelAll:(id)sender
 {
     [self.sharedDownloadManager cancelAllDownloadsAndRemoveFiles:YES];
-    
     [self addLogOnTextView: @"\nDownload is canceled"];
 }
 
@@ -189,40 +189,6 @@
 
 - (void)download:(TCBlobDownload *)blobDownload didFinishWithSucces:(BOOL)downloadFinished atPath:(NSString *)pathToFile
 {
-}
-
-
-#pragma mark - Table Data source & delegate
--(NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
-{
-    return 1;
-}
-
--(NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
-{
-    self.contents = [[NSFileManager defaultManager] contentsOfDirectoryAtPath:DEFAULT_PATH error:NULL];
-    
-    return [self.contents count];
-}
-
--(UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
-{
-    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"contentItem"];
-    
-    if (cell == nil) {
-        cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"contentItem"];
-    }
-    
-    [cell.textLabel setText:self.contents[indexPath.row]];
-    
-    return cell;
-}
-
--(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
-{
-    UITableViewCell *cell = [tableView cellForRowAtIndexPath:indexPath];
-    
-    [cell setSelected:NO];
 }
 
 
