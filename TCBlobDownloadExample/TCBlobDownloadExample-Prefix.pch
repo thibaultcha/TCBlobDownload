@@ -13,6 +13,7 @@
     #import <Foundation/Foundation.h>
 #endif
 
-#define DEFAUTL_DOWNLOAD_URL @"http://169.254.33.203:8080/DummyServerTest/Downloads/"
+#define DEFAULT_DOWNLOAD_URL @"http://169.254.33.203:8080/DummyServerTest/Downloads/"
 //#define DEFAUTL_DOWNLOAD_URL @"http://192.168.2.162:8080/DummyServerTest/Downloads/"
-#define DEFAULT_PATH [NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) objectAtIndex:0]
+
+#define DEFAULT_PATH NSTemporaryDirectory()

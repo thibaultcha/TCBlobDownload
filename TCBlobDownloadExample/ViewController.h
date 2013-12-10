@@ -13,7 +13,6 @@
 
 @property (nonatomic , unsafe_unretained) TCBlobDownloadManager *sharedDownloadManager;
 @property (weak, nonatomic) IBOutlet UITextField *urlField;
-@property (weak, nonatomic) IBOutlet UITextField *fileNameField;
 @property (weak, nonatomic) IBOutlet UIButton *downloadButton;
 @property (weak, nonatomic) IBOutlet UIButton *cancelButton;
 @property (weak, nonatomic) IBOutlet UIProgressView *progressView;

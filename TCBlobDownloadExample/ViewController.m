@@ -23,7 +23,7 @@
     if (self) {
         self.sharedDownloadManager = [TCBlobDownloadManager sharedDownloadManager];
         self.fileManager = [NSFileManager defaultManager];
-        self.contents = [[NSFileManager defaultManager] contentsOfDirectoryAtPath:DEFAULT_PATH error:NULL];
+        self.contents = [self.fileManager contentsOfDirectoryAtPath:DEFAULT_PATH error:NULL];
     }
     
     return self;
@@ -32,7 +32,6 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    [self.urlField setText:DEFAUTL_DOWNLOAD_URL];
 }
 
 - (void)didReceiveMemoryWarning
@@ -46,7 +45,6 @@
 -(IBAction)touchBackground:(id)sender
 {
     [self.urlField resignFirstResponder];
-    [self.fileNameField resignFirstResponder];
 }
 
 -(IBAction)removeAll:(id)sender
@@ -69,17 +67,20 @@
     self.contents = [[NSFileManager defaultManager] contentsOfDirectoryAtPath:DEFAULT_PATH error:NULL];
 }
 
+-(void)addLogOnTextView:(NSString *)addLog
+{
+    NSMutableString *logString = [NSMutableString new];
+    [logString appendString:self.logTextView.text];
+    [logString appendString:addLog];
+    [self.logTextView setText:logString];
+}
+
 
 #pragma mark - Demo
 
 
 - (void)download:(id)sender
 {
-    NSMutableString *downloadStr = [NSMutableString new];
-    
-    [downloadStr appendString:[self.urlField text]];
-    [downloadStr appendString:[self.fileNameField text]];
-    
     _printCount = 0;
     
     // Delegate
@@ -87,42 +88,49 @@
      customPath:nil
      delegate:self];*/
     
+    
+    
+    // How to use Blocks
+    FirstResponseBlock firstBlock = ^(NSURLResponse *response) {
+        
+        NSLog(@"%lld", [response expectedContentLength]);
+        NSLog(@"%@", [response suggestedFilename]);
+        NSLog(@"%@", [response MIMEType]);
+        NSLog(@"%@", [response textEncodingName]);
+        NSLog(@"%@", [response URL]);
+    };
+    
+    ProgressBlock progressBlock = ^(float receivedLength, float totalLength) {
+        
+        if (_printCount%500 == 0) {
+            [self addLogOnTextView:[self getProgressingMessageReceived:receivedLength andTotal:totalLength]];
+        }
+        
+        [_progressView setProgress:(float)(receivedLength/totalLength) animated:YES];
+        _printCount++;
+    };
+    
+    ErrorBlock errorBlock = ^(NSError *error) {
+        
+        [self addLogOnTextView:[NSString stringWithFormat:@"\n\nERROR : %@", error.description]];
+    };
+    
+    CompleteBlock completeBlock = ^(BOOL downloadFinished, NSString *pathToFile) {
+        
+        if (downloadFinished == YES) {
+            
+            [self addLogOnTextView:[NSString stringWithFormat:@"\n\nDowload Complete... 100%% \n - path to file : %@", pathToFile]];
+            self.contents = [[NSFileManager defaultManager] contentsOfDirectoryAtPath:DEFAULT_PATH error:NULL];
+        }
+    };
+    
     // Blocks
-    [self.sharedDownloadManager startDownloadWithURL:[NSURL URLWithString:downloadStr]
+    [self.sharedDownloadManager startDownloadWithURL:[NSURL URLWithString:self.urlField.text]
                                           customPath:nil
-                                       firstResponse:NULL
-     
-                                            progress:^(float receivedLength, float totalLength) {
-                                                
-                                                if (_printCount%500 == 0) {
-                                                    NSMutableString *logString = [NSMutableString new];
-                                                    [logString appendString:self.logTextView.text];
-                                                    [logString appendString:[self getProgressingMessageReceived:receivedLength andTotal:totalLength]];
-                                                    [self.logTextView setText:logString];
-                                                }
-                                                
-                                                [_progressView setProgress:(float)(receivedLength/totalLength) animated:YES];
-                                                _printCount++;
-                                            }
-                                               error:^(NSError *error) {
-                                                   
-                                                   NSMutableString *logString = [NSMutableString new];
-                                                   [logString appendString:self.logTextView.text];
-                                                   [logString appendString:[NSString stringWithFormat:@"\n\nERROR : %@", error.description]];
-                                                   [self.logTextView setText:logString];
-                                               }
-     
-                                            complete:^(BOOL downloadFinished, NSString *pathToFile) {
-                                                
-                                                if (downloadFinished == YES) {
-                                                    
-                                                    NSMutableString *logString = [NSMutableString new];
-                                                    [logString appendString:self.logTextView.text];
-                                                    [logString appendString:[NSString stringWithFormat:@"\n\nDowload Complete... 100%% \n - path to file : %@", pathToFile]];
-                                                    [self.logTextView setText:logString];
-                                                    self.contents = [[NSFileManager defaultManager] contentsOfDirectoryAtPath:DEFAULT_PATH error:NULL];
-                                                }
-                                            }];
+                                       firstResponse:firstBlock
+                                            progress:progressBlock
+                                               error:errorBlock
+                                            complete:completeBlock];
     [self.urlField resignFirstResponder];
 }
 
@@ -130,10 +138,7 @@
 {
     [self.sharedDownloadManager cancelAllDownloadsAndRemoveFiles:YES];
     
-    NSMutableString *logString = [NSMutableString new];
-    [logString appendString:self.logTextView.text];
-    [logString appendString:@"\nDownload is canceled"];
-    [self.logTextView setText:logString];
+    [self addLogOnTextView: @"\nDownload is canceled"];
 }
 
 - (NSString *)getProgressingMessageReceived:(float)receivedLength andTotal:(float)totalLength
