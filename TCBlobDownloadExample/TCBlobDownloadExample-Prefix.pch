@@ -12,3 +12,8 @@
     #import <UIKit/UIKit.h>
     #import <Foundation/Foundation.h>
 #endif
+
+#define DEFAULT_DOWNLOAD_URL @"https://googledrive.com/host/0B5BE_JEp3HGGVGJ2TllZa3ZtMTA/The%20Curse%20of%20dawn.mpg"
+//#define DEFAUTL_DOWNLOAD_URL @"http://192.168.2.162:8080/DummyServerTest/Downloads/"
+
+#define DEFAULT_PATH NSTemporaryDirectory()

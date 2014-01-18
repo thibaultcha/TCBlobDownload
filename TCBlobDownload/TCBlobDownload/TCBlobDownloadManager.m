@@ -23,7 +23,7 @@
     self = [super init];
     if (self) {
         _operationQueue = [[NSOperationQueue alloc] init];
-        _defaultDownloadPath = [NSString stringWithString:NSTemporaryDirectory()];
+        _defaultDownloadPath = [NSString stringWithString:DEFAULT_PATH];
     }
     return self;
 }

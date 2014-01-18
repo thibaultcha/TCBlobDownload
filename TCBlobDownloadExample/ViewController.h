@@ -15,8 +15,19 @@
 @property (weak, nonatomic) IBOutlet UITextField *urlField;
 @property (weak, nonatomic) IBOutlet UIButton *downloadButton;
 @property (weak, nonatomic) IBOutlet UIButton *cancelButton;
+@property (weak, nonatomic) IBOutlet UIProgressView *progressView;
+@property (weak, nonatomic) IBOutlet UITextView *logTextView;
+
+
+@property (strong, nonatomic) NSFileManager *fileManager;
+@property (strong, nonatomic) NSArray *contents;
+
+@property (assign, nonatomic) NSInteger printCount;
+
+
 
 - (IBAction)download:(id)sender;
 - (IBAction)cancelAll:(id)sender;
+- (IBAction)touchBackground:(id)sender;
 
 @end

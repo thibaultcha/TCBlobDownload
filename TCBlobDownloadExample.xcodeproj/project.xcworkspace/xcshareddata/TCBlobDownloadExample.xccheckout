@@ -5,36 +5,36 @@
 	<key>IDESourceControlProjectFavoriteDictionaryKey</key>
 	<false/>
 	<key>IDESourceControlProjectIdentifier</key>
-	<string>58B4167E-AFE9-44B9-8C89-85EDD0E61CDB</string>
+	<string>0788FE65-A100-42F5-89E3-85B4CA02A180</string>
 	<key>IDESourceControlProjectName</key>
 	<string>TCBlobDownloadExample</string>
 	<key>IDESourceControlProjectOriginsDictionary</key>
 	<dict>
-		<key>6B3F9DA0-0435-4817-BF82-396C64B119CB</key>
-		<string>https://github.com/thibaultCha/TCBlobDownload.git</string>
+		<key>8FB67B10-FB9B-4BB0-8E22-DCE6F6CF2C8C</key>
+		<string>https://github.com/MBKwon/TCBlobDownload.git</string>
 	</dict>
 	<key>IDESourceControlProjectPath</key>
 	<string>TCBlobDownloadExample.xcodeproj/project.xcworkspace</string>
 	<key>IDESourceControlProjectRelativeInstallPathDictionary</key>
 	<dict>
-		<key>6B3F9DA0-0435-4817-BF82-396C64B119CB</key>
+		<key>8FB67B10-FB9B-4BB0-8E22-DCE6F6CF2C8C</key>
 		<string>../..</string>
 	</dict>
 	<key>IDESourceControlProjectURL</key>
-	<string>https://github.com/thibaultCha/TCBlobDownload.git</string>
+	<string>https://github.com/MBKwon/TCBlobDownload.git</string>
 	<key>IDESourceControlProjectVersion</key>
 	<integer>110</integer>
 	<key>IDESourceControlProjectWCCIdentifier</key>
-	<string>6B3F9DA0-0435-4817-BF82-396C64B119CB</string>
+	<string>8FB67B10-FB9B-4BB0-8E22-DCE6F6CF2C8C</string>
 	<key>IDESourceControlProjectWCConfigurations</key>
 	<array>
 		<dict>
 			<key>IDESourceControlRepositoryExtensionIdentifierKey</key>
 			<string>public.vcs.git</string>
 			<key>IDESourceControlWCCIdentifierKey</key>
-			<string>6B3F9DA0-0435-4817-BF82-396C64B119CB</string>
+			<string>8FB67B10-FB9B-4BB0-8E22-DCE6F6CF2C8C</string>
 			<key>IDESourceControlWCCName</key>
-			<string>TC_BlobDownload</string>
+			<string>TCBlobDownload</string>
 		</dict>
 	</array>
 </dict>
