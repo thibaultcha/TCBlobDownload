@@ -5,32 +5,44 @@
 //  Copyright (c) 2013 Thibault Charbonnier. All rights reserved.
 //
 
-const double kBufferSize = 1024*1024; // 1 MB
-const NSTimeInterval kDefaultTimeout = 30;
-NSString * const kErrorDomain = @"com.thibaultcha.tcblobdownload";
-NSString * const HTTPErrorCode = @"httpStatus";
+static const double kBufferSize = 1024*1024; // 1 MB
+static const NSTimeInterval kDefaultTimeout = 30;
+static NSString * const kErrorDomain = @"com.thibaultcha.tcblobdownload";
+static NSString * const HTTPErrorCode = @"httpStatus";
 
 #import "TCBlobDownload.h"
 
 @interface TCBlobDownload ()
-{
-    uint64_t _receivedDataLength;
-    uint64_t _expectedDataLength;
-}
 @property (nonatomic, strong) NSURLConnection *connection;
 @property (nonatomic, strong) NSMutableData *receivedDataBuffer;
 @property (nonatomic, strong) NSFileHandle *file;
+
+@property (nonatomic, strong) NSTimer *speedTimer;
+@property (nonatomic, assign) NSInteger expectedDataLength;
+@property (nonatomic, assign) NSInteger receivedDataLength;
+@property (nonatomic, assign) NSInteger receivedSinceLastTick;
+@property (nonatomic, assign) NSTimeInterval startInterval;
+@property (nonatomic, assign) NSInteger speed;
+
 @property (nonatomic, copy) FirstResponseBlock firstResponseBlock;
 @property (nonatomic, copy) ProgressBlock progressBlock;
 @property (nonatomic, copy) ErrorBlock errorBlock;
 @property (nonatomic, copy) CompleteBlock completeBlock;
 + (uint64_t)freeDiskSpace;
+- (void)updateTransferRate;
 - (void)finishOperation;
 @end
 
 @implementation TCBlobDownload
-@dynamic fileName;
-@dynamic pathToFile;
+
+
+#pragma mark - Dealloc
+
+
+- (void)dealloc
+{
+    [self.speedTimer invalidate];
+}
 
 
 #pragma mark - Init
@@ -119,6 +131,15 @@ NSString * const HTTPErrorCode = @"httpStatus";
                                    forMode:NSDefaultRunLoopMode];
         [self willChangeValueForKey:@"isExecuting"];
         [self.connection start];
+        self.startInterval = [NSDate timeIntervalSinceReferenceDate];
+        self.speedTimer = [NSTimer scheduledTimerWithTimeInterval:1.0
+                                                           target:self
+                                                         selector:@selector(updateTransferRate)
+                                                         userInfo:nil
+                                                          repeats:YES];
+        NSRunLoop* runLoop = [NSRunLoop currentRunLoop];
+        [runLoop addTimer:self.speedTimer forMode:NSRunLoopCommonModes];
+        [runLoop run];
         [self didChangeValueForKey:@"isExecuting"];
     }
 }
@@ -156,7 +177,7 @@ NSString * const HTTPErrorCode = @"httpStatus";
 
 - (void)connection:(NSURLConnection*)connection didReceiveResponse:(NSURLResponse *)response
 {
-    _expectedDataLength = [response expectedContentLength];
+    self.expectedDataLength = [response expectedContentLength];
     NSHTTPURLResponse *httpUrlResponse = (NSHTTPURLResponse *)response;
     
     __autoreleasing NSError *error;
@@ -171,7 +192,7 @@ NSString * const HTTPErrorCode = @"httpStatus";
                                             HTTPErrorCode: @(httpUrlResponse.statusCode) }];
     }
     
-    if ([TCBlobDownload freeDiskSpace] < _expectedDataLength && _expectedDataLength != -1) {
+    if ([TCBlobDownload freeDiskSpace] < self.expectedDataLength && self.expectedDataLength != -1) {
         error = [NSError errorWithDomain:kErrorDomain
                                     code:3
                                 userInfo:@{ NSLocalizedDescriptionKey:NSLocalizedString(@"Not enough free disk space", @"") }];
@@ -202,10 +223,11 @@ NSString * const HTTPErrorCode = @"httpStatus";
 - (void)connection:(NSURLConnection*)connection didReceiveData:(NSData *)data
 {
     [self.receivedDataBuffer appendData:data];
-    _receivedDataLength += [data length];
+    self.receivedDataLength += [data length];
     
-    TCLog(@"%@ | %.2f%% - Received: %lld - Total: %lld",
-          self.fileName, (float) _receivedDataLength / _expectedDataLength * 100, _receivedDataLength, _expectedDataLength);
+    NSLog(@"%d", self.remainingTime);
+    TCLog(@"%@ | %.2f%% - Received: %ld - Total: %ld",
+          self.fileName, (float) _receivedDataLength / self.expectedDataLength * 100, (long)self.receivedDataLength, (long)self.expectedDataLength);
     
     if (self.receivedDataBuffer.length > kBufferSize && self.file) {
         [self.file writeData:self.receivedDataBuffer];
@@ -213,12 +235,12 @@ NSString * const HTTPErrorCode = @"httpStatus";
     }
     
     if (self.progressBlock) {
-        self.progressBlock(_receivedDataLength, _expectedDataLength);
+        self.progressBlock(self.receivedDataLength, self.expectedDataLength);
     }
     if ([self.delegate respondsToSelector:@selector(download:didReceiveData:onTotal:)]) {
         [self.delegate download:self
-                 didReceiveData:_receivedDataLength
-                        onTotal:_expectedDataLength];
+                 didReceiveData:self.receivedDataLength
+                        onTotal:self.expectedDataLength];
     }
 }
 
@@ -240,6 +262,13 @@ NSString * const HTTPErrorCode = @"httpStatus";
 
 #pragma mark - Utilities
 
+- (void)updateTransferRate
+{
+    self.receivedSinceLastTick = self.receivedDataLength - self.receivedSinceLastTick;
+    NSLog(@"received in this tick: %d", self.receivedSinceLastTick);
+    self.speed = self.receivedSinceLastTick / ([NSDate timeIntervalSinceReferenceDate] - self.startInterval);
+    NSLog(@"speed: %d b/s", self.speed);
+}
 
 - (void)finishOperation
 {
@@ -248,6 +277,7 @@ NSString * const HTTPErrorCode = @"httpStatus";
     [self.connection cancel];
     [self setConnection:nil];
     [self.file closeFile];
+    [self.speedTimer invalidate];
     [self didChangeValueForKey:@"isFinished"];
     [self didChangeValueForKey:@"isExecuting"];
 }
@@ -311,7 +341,7 @@ NSString * const HTTPErrorCode = @"httpStatus";
 }
 
 
-#pragma mark - Getters
+#pragma mark - Custom Getters
 
 
 - (NSString *)fileName
@@ -322,6 +352,14 @@ NSString * const HTTPErrorCode = @"httpStatus";
 - (NSString *)pathToFile
 {
     return [self.pathToDownloadDirectory stringByAppendingPathComponent:self.fileName];
+}
+
+- (NSInteger)remainingTime
+{
+    if (self.speed > 0)
+        return (self.expectedDataLength - self.receivedDataLength) / self.speed;
+    else
+        return -1;
 }
 
 @end

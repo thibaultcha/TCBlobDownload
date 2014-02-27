@@ -34,6 +34,7 @@ typedef void (^CompleteBlock)(BOOL downloadFinished, NSString *pathToFile);
 @property (nonatomic, copy) NSString *pathToDownloadDirectory;
 @property (nonatomic, copy, getter = pathToFile) NSString *pathToFile;
 @property (nonatomic, copy, getter = fileName) NSString *fileName;
+@property (nonatomic, getter = remainingTime) NSInteger remainingTime;
 
 /**
  Init. Will not start the download until you add the instanciated object to
