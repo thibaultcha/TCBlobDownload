@@ -13,17 +13,16 @@ static NSString * const HTTPErrorCode = @"httpStatus";
 #import "TCBlobDownload.h"
 
 @interface TCBlobDownload ()
+// Download
 @property (nonatomic, strong) NSURLConnection *connection;
 @property (nonatomic, strong) NSMutableData *receivedDataBuffer;
 @property (nonatomic, strong) NSFileHandle *file;
-
+// Speed rate and remaining time
 @property (nonatomic, strong) NSTimer *speedTimer;
-@property (nonatomic, assign) NSInteger expectedDataLength;
-@property (nonatomic, assign) NSInteger receivedDataLength;
-@property (nonatomic, assign) NSInteger receivedSinceLastTick;
-@property (nonatomic, assign) NSTimeInterval startInterval;
-@property (nonatomic, assign) NSInteger speed;
-
+@property (nonatomic, strong) NSMutableArray *samplesOfDownloadedBytes;
+@property (nonatomic, assign) uint64_t expectedDataLength;
+@property (nonatomic, assign) uint64_t receivedDataLength;
+// Blocks
 @property (nonatomic, copy) FirstResponseBlock firstResponseBlock;
 @property (nonatomic, copy) ProgressBlock progressBlock;
 @property (nonatomic, copy) ErrorBlock errorBlock;
@@ -131,7 +130,7 @@ static NSString * const HTTPErrorCode = @"httpStatus";
                                    forMode:NSDefaultRunLoopMode];
         [self willChangeValueForKey:@"isExecuting"];
         [self.connection start];
-        self.startInterval = [NSDate timeIntervalSinceReferenceDate];
+        self.samplesOfDownloadedBytes = [[NSMutableArray alloc] init];
         self.speedTimer = [NSTimer scheduledTimerWithTimeInterval:1.0
                                                            target:self
                                                          selector:@selector(updateTransferRate)
@@ -225,9 +224,8 @@ static NSString * const HTTPErrorCode = @"httpStatus";
     [self.receivedDataBuffer appendData:data];
     self.receivedDataLength += [data length];
     
-    NSLog(@"%d", self.remainingTime);
-    TCLog(@"%@ | %.2f%% - Received: %ld - Total: %ld",
-          self.fileName, (float) _receivedDataLength / self.expectedDataLength * 100, (long)self.receivedDataLength, (long)self.expectedDataLength);
+    //TCLog(@"%@ | %.2f%% - Received: %ld - Total: %ld",
+    //      self.fileName, (float) _receivedDataLength / self.expectedDataLength * 100, (long)self.receivedDataLength, (long)self.expectedDataLength);
     
     if (self.receivedDataBuffer.length > kBufferSize && self.file) {
         [self.file writeData:self.receivedDataBuffer];
@@ -237,11 +235,10 @@ static NSString * const HTTPErrorCode = @"httpStatus";
     if (self.progressBlock) {
         self.progressBlock(self.receivedDataLength, self.expectedDataLength, self.remainingTime);
     }
-    if ([self.delegate respondsToSelector:@selector(download:didReceiveData:onTotal:remainingTime:)]) {
+    if ([self.delegate respondsToSelector:@selector(download:didReceiveData:onTotal:)]) {
         [self.delegate download:self
                  didReceiveData:self.receivedDataLength
-                        onTotal:self.expectedDataLength
-                  remainingTime:self.remainingTime];
+                        onTotal:self.expectedDataLength];
     }
 }
 
@@ -263,22 +260,28 @@ static NSString * const HTTPErrorCode = @"httpStatus";
 
 #pragma mark - Utilities
 
+
 - (void)updateTransferRate
 {
-    self.receivedSinceLastTick = self.receivedDataLength - self.receivedSinceLastTick;
-    NSLog(@"received in this tick: %d", self.receivedSinceLastTick);
-    self.speed = self.receivedSinceLastTick / ([NSDate timeIntervalSinceReferenceDate] - self.startInterval);
-    NSLog(@"speed: %d b/s", self.speed);
+    if (self.samplesOfDownloadedBytes.count > 5) {
+        [self.samplesOfDownloadedBytes removeObjectAtIndex:0];
+    }
+    
+    static NSInteger totalReceived;
+    [self.samplesOfDownloadedBytes addObject:[NSNumber numberWithLong:self.receivedDataLength - totalReceived]];
+    totalReceived = self.receivedDataLength;
+    
+    self.speedRate = [[self.samplesOfDownloadedBytes valueForKeyPath:@"@avg.longValue"] longValue];
 }
 
 - (void)finishOperation
 {
     [self willChangeValueForKey:@"isExecuting"];
     [self willChangeValueForKey:@"isFinished"];
+    [self.speedTimer invalidate];
     [self.connection cancel];
     [self setConnection:nil];
     [self.file closeFile];
-    [self.speedTimer invalidate];
     [self didChangeValueForKey:@"isFinished"];
     [self didChangeValueForKey:@"isExecuting"];
 }
@@ -357,10 +360,7 @@ static NSString * const HTTPErrorCode = @"httpStatus";
 
 - (NSInteger)remainingTime
 {
-    if (self.speed > 0)
-        return (self.expectedDataLength - self.receivedDataLength) / self.speed;
-    else
-        return -1;
+    return self.speedRate > 0 ? (self.expectedDataLength - self.receivedDataLength) / self.speedRate : -1;
 }
 
 @end

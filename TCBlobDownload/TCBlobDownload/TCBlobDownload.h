@@ -34,6 +34,7 @@ typedef void (^CompleteBlock)(BOOL downloadFinished, NSString *pathToFile);
 @property (nonatomic, copy) NSString *pathToDownloadDirectory;
 @property (nonatomic, copy, getter = pathToFile) NSString *pathToFile;
 @property (nonatomic, copy, getter = fileName) NSString *fileName;
+@property (nonatomic, assign) NSInteger speedRate;
 @property (nonatomic, getter = remainingTime) NSInteger remainingTime;
 
 /**
@@ -81,9 +82,8 @@ typedef void (^CompleteBlock)(BOOL downloadFinished, NSString *pathToFile);
  On each response from the NSURLConnection
 */
 - (void)download:(TCBlobDownload *)blobDownload
-  didReceiveData:(NSInteger)receivedLength
-         onTotal:(NSInteger)totalLength
-   remainingTime:(NSInteger)remainingTile;
+  didReceiveData:(uint64_t)receivedLength
+         onTotal:(uint64_t)totalLength;
 
 /**
  Let you handle the error for a given download

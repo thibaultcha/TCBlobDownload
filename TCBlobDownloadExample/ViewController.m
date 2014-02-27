@@ -77,9 +77,8 @@
 }
 
 - (void)download:(TCBlobDownload *)blobDownload
-  didReceiveData:(NSInteger)receivedLength
-         onTotal:(NSInteger)totalLength
-   remainingTime:(NSInteger)remainingTile
+  didReceiveData:(uint64_t)receivedLength
+         onTotal:(uint64_t)totalLength
 {
 
 }
