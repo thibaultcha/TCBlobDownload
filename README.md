@@ -28,48 +28,9 @@ Requires **iOS 5.0 or later** and ARC.
 7. `[download cancelDownloadAndRemoveFile:BOOL]`
 8. Download dependencies.
 
-## Methods
-#### TCBlobDownloadManager
-```objective-c
-- (TCBlobDownload *)startDownloadWithURL:(NSURL *)url
-                downloadPath:(NSString *)customPathOrNil
-                 andDelegate:(id<TCBlobDownloadDelegate>)delegateOrNil;
+## Documentation
 
-- (TCBlobDownload *)startDownloadWithURL:(NSURL *)url
-                downloadPath:(NSString *)customPathOrNil
-               firstResponse:(void (^)(NSURLResponse *response))firstResponseBlock
-                    progress:(void (^)(float receivedLength, float totalLength))progressBlock
-                       error:(void (^)(NSError *error))errorBlock
-                    complete:(void (^)(BOOL downloadFinished, NSString *pathToFile))completeBlock;
-
-- (void)startDownload:(TCBlobDownload *)blobDownload;
-
-- (void)setDefaultDownloadDirectory:(NSString *)pathToDL;
-
-- (void)setMaxConcurrentDownloads:(NSInteger)max;
-
-- (NSUInteger)downloadCount;
-
-- (void)cancelAllDownloadsAndRemoveFiles:(BOOL)remove;
-```
-
-#### TCBlobDownload
-```objective-c
-- (id)initWithUrl:(NSURL *)url
-     downloadPath:(NSString *)pathToDL // cannot be nil
-      andDelegate:(id<TCBlobDownloadDelegate>)delegateOrNil;
-
-- (id)initWithUrl:(NSURL *)url
-     downloadPath:(NSString *)pathToDL // cannot be nil
-    firstResponse:(void (^)(NSURLResponse *response))firstResponseBlock
-         progress:(void (^)(float receivedLength, float totalLength))progressBlock
-            error:(void (^)(NSError *error))errorBlock
-         complete:(void (^)(BOOL downloadFinished, NSString *pathToFile))completeBlock;
-
-- (void)cancelDownloadAndRemoveFile:(BOOL)remove;
-
-- (void)addDependentDownload:(TCBlobDownload *)blobDownload
-```
+Browse the documentation on [Cocoadocs](http://cocoadocs.org/docsets/TCBlobDownload/1.4.0/) or add it directly to Xcode by downloading the docset and placing it into `~/Library/Developer/Shared/Documentation/DocSets/`
 
 ## Usage
 
@@ -165,6 +126,7 @@ You can either set a delegate which can implement those optional methods if dele
 ## Change log
 
 ### v1.5.0
+* Improved documentation and created a docset
 * Added a `speedRate` and `remainingTime` (in seconds) property on TCBlobDownload thanks to [#16](https://github.com/thibaultCha/TCBlobDownload/issues/16)
 * Updated TCBlobDownload properties to `readonly`
 * Renamed `sharedDownloadManager` to `sharedInstance`

@@ -1,0 +1,4 @@
+Documentation set was installed to Xcode!
+
+Path: /Users/thibaultcha/Library/Developer/Shared/Documentation/DocSets/com.thibaultcha.TCBlobDownload.docset
+Time: 2014-02-27 23:04:01 +0000
