@@ -1,0 +1,246 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Tokens version="1.0">
+	<File path="Classes/TCBlobDownloadManager.html">
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/cl/TCBlobDownloadManager</TokenIdentifier>
+			<Abstract type="html">TCBlobDownloadManager is a subclass of NSOperationQueue and is used to execute TCBlobDownload objects.</Abstract>
+			<DeclaredIn>TCBlobDownloadManager.h</DeclaredIn>
+            
+			
+			<NodeRef refid="2"/>
+		</Token>
+		
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instm/TCBlobDownloadManager/setDefaultDownloadPath:</TokenIdentifier>
+			<Abstract type="html">The default download path for a file if no customPath property is set at the creation of the TCBlobDownload object.</Abstract>
+			<DeclaredIn>TCBlobDownloadManager.h</DeclaredIn>
+			
+			<Declaration>@property (nonatomic, strong) NSString *defaultDownloadPath</Declaration>
+			
+			
+			<Anchor>//api/name/defaultDownloadPath</Anchor>
+            <NodeRef refid="2"/>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instm/TCBlobDownloadManager/defaultDownloadPath</TokenIdentifier>
+			<Abstract type="html">The default download path for a file if no customPath property is set at the creation of the TCBlobDownload object.</Abstract>
+			<DeclaredIn>TCBlobDownloadManager.h</DeclaredIn>
+			
+			<Declaration>@property (nonatomic, strong) NSString *defaultDownloadPath</Declaration>
+			
+			
+			<Anchor>//api/name/defaultDownloadPath</Anchor>
+            <NodeRef refid="2"/>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instp/TCBlobDownloadManager/defaultDownloadPath</TokenIdentifier>
+			<Abstract type="html">The default download path for a file if no customPath property is set at the creation of the TCBlobDownload object.</Abstract>
+			<DeclaredIn>TCBlobDownloadManager.h</DeclaredIn>
+			
+			<Declaration>@property (nonatomic, strong) NSString *defaultDownloadPath</Declaration>
+			
+			
+			<Anchor>//api/name/defaultDownloadPath</Anchor>
+            <NodeRef refid="2"/>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instm/TCBlobDownloadManager/setDownloadCount:</TokenIdentifier>
+			<Abstract type="html">The number of simultaneous active downloads at a given moment.</Abstract>
+			<DeclaredIn>TCBlobDownloadManager.h</DeclaredIn>
+			
+			<Declaration>@property (nonatomic, assign) NSUInteger downloadCount</Declaration>
+			
+			
+			<Anchor>//api/name/downloadCount</Anchor>
+            <NodeRef refid="2"/>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instm/TCBlobDownloadManager/downloadCount</TokenIdentifier>
+			<Abstract type="html">The number of simultaneous active downloads at a given moment.</Abstract>
+			<DeclaredIn>TCBlobDownloadManager.h</DeclaredIn>
+			
+			<Declaration>@property (nonatomic, assign) NSUInteger downloadCount</Declaration>
+			
+			
+			<Anchor>//api/name/downloadCount</Anchor>
+            <NodeRef refid="2"/>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instp/TCBlobDownloadManager/downloadCount</TokenIdentifier>
+			<Abstract type="html">The number of simultaneous active downloads at a given moment.</Abstract>
+			<DeclaredIn>TCBlobDownloadManager.h</DeclaredIn>
+			
+			<Declaration>@property (nonatomic, assign) NSUInteger downloadCount</Declaration>
+			
+			
+			<Anchor>//api/name/downloadCount</Anchor>
+            <NodeRef refid="2"/>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/clm/TCBlobDownloadManager/sharedInstance</TokenIdentifier>
+			<Abstract type="html">Creates and returns a TCBlobDownloadManager object. If the singleton has already been created, it just returns the object.</Abstract>
+			<DeclaredIn>TCBlobDownloadManager.h</DeclaredIn>
+			
+			<Declaration>+ (instancetype)sharedInstance</Declaration>
+			
+			
+			<Anchor>//api/name/sharedInstance</Anchor>
+            <NodeRef refid="2"/>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instm/TCBlobDownloadManager/startDownloadWithURL:customPath:delegate:</TokenIdentifier>
+			<Abstract type="html">Instanciates and runs instantly a TCBlobDownloadObject with the specified URL, an optional customPath and an optional delegate. Runs in background thread the TCBlobDownload object (a subclass of NSOperation) in the TCBlobDownloadManager instance.</Abstract>
+			<DeclaredIn>TCBlobDownloadManager.h</DeclaredIn>
+			
+			<Declaration>- (TCBlobDownload *)startDownloadWithURL:(NSURL *)url customPath:(NSString *)customPathOrNil delegate:(id&lt;TCBlobDownloadDelegate&gt;)delegateOrNil</Declaration>
+			<Parameters>
+				<Parameter>
+					<Name>url</Name>
+					<Abstract type="html">The URL of the file to download.</Abstract>
+				</Parameter><Parameter>
+					<Name>customPathOrNil</Name>
+					<Abstract type="html">An optional path to override the default download path of the TCBlobDownloadManager instance. Can be nil.</Abstract>
+				</Parameter><Parameter>
+					<Name>delegateOrNil</Name>
+					<Abstract type="html">An optional delegate. Can be nil.</Abstract>
+				</Parameter>
+			</Parameters>
+			<ReturnValue><Abstract type="html">The created and already running TCBlobDownloadObject.</Abstract></ReturnValue>
+			<Anchor>//api/name/startDownloadWithURL:customPath:delegate:</Anchor>
+            <NodeRef refid="2"/>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instm/TCBlobDownloadManager/startDownloadWithURL:customPath:firstResponse:progress:error:complete:</TokenIdentifier>
+			<Abstract type="html">Creates and runs instantly a TCBlobDownload object.</Abstract>
+			<DeclaredIn>TCBlobDownloadManager.h</DeclaredIn>
+			
+	<RelatedTokens>
+		<TokenIdentifier>//apple_ref/occ/instm/TCBlobDownloadManager/startDownloadWithURL:customPath:delegate:</TokenIdentifier>
+		
+	</RelatedTokens>
+	
+			<Declaration>- (TCBlobDownload *)startDownloadWithURL:(NSURL *)url customPath:(NSString *)customPathOrNil firstResponse:(FirstResponseBlock)firstResponseBlock progress:(ProgressBlock)progressBlock error:(ErrorBlock)errorBlock complete:(CompleteBlock)completeBlock</Declaration>
+			<Parameters>
+				<Parameter>
+					<Name>url</Name>
+					<Abstract type="html">The URL of the file to download.</Abstract>
+				</Parameter><Parameter>
+					<Name>customPathOrNil</Name>
+					<Abstract type="html">An optional path to override the default download path of the TCBlobDownloadManager instance. Can be nil.</Abstract>
+				</Parameter><Parameter>
+					<Name>firstResponseBlock</Name>
+					<Abstract type="html">This block is called when receiving the first response from the server. Can be nil.</Abstract>
+				</Parameter><Parameter>
+					<Name>progressBlock</Name>
+					<Abstract type="html">This block is called on each response from the server while the download is occurring. Can be nil.</Abstract>
+				</Parameter><Parameter>
+					<Name>errorBlock</Name>
+					<Abstract type="html">Called when an error occur during the download. If this block is called, the download will be cancelled just after. Can be nil.</Abstract>
+				</Parameter><Parameter>
+					<Name>completeBlock</Name>
+					<Abstract type="html">Called when the download is completed. Can be nil.</Abstract>
+				</Parameter>
+			</Parameters>
+			
+			<Anchor>//api/name/startDownloadWithURL:customPath:firstResponse:progress:error:complete:</Anchor>
+            <NodeRef refid="2"/>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instm/TCBlobDownloadManager/startDownload:</TokenIdentifier>
+			<Abstract type="html">Starts an already instanciated TCBlobDownload object.</Abstract>
+			<DeclaredIn>TCBlobDownloadManager.h</DeclaredIn>
+			
+			<Declaration>- (void)startDownload:(TCBlobDownload *)download</Declaration>
+			<Parameters>
+				<Parameter>
+					<Name>download</Name>
+					<Abstract type="html">A TCBlobDownload object.</Abstract>
+				</Parameter>
+			</Parameters>
+			
+			<Anchor>//api/name/startDownload:</Anchor>
+            <NodeRef refid="2"/>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instm/TCBlobDownloadManager/setDefaultDownloadPath:</TokenIdentifier>
+			<Abstract type="html">Specifies the default download path. (which is /tmp by default)</Abstract>
+			<DeclaredIn>TCBlobDownloadManager.h</DeclaredIn>
+			
+			<Declaration>- (void)setDefaultDownloadPath:(NSString *)pathToDL</Declaration>
+			<Parameters>
+				<Parameter>
+					<Name>pathToDL</Name>
+					<Abstract type="html">The new default path.</Abstract>
+				</Parameter>
+			</Parameters>
+			
+			<Anchor>//api/name/setDefaultDownloadPath:</Anchor>
+            <NodeRef refid="2"/>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instm/TCBlobDownloadManager/setMaxConcurrentDownloads:</TokenIdentifier>
+			<Abstract type="html">Set the maximum number of concurrent downloads allowed. If more downloads are passed to the TCBlobDownloadManager singleton, they will wait for an older one to end before starting.</Abstract>
+			<DeclaredIn>TCBlobDownloadManager.h</DeclaredIn>
+			
+			<Declaration>- (void)setMaxConcurrentDownloads:(NSInteger)max</Declaration>
+			<Parameters>
+				<Parameter>
+					<Name>max</Name>
+					<Abstract type="html">The maximum number of downloads.</Abstract>
+				</Parameter>
+			</Parameters>
+			
+			<Anchor>//api/name/setMaxConcurrentDownloads:</Anchor>
+            <NodeRef refid="2"/>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instm/TCBlobDownloadManager/cancelAllDownloadsAndRemoveFiles:</TokenIdentifier>
+			<Abstract type="html">Cancels all downloads. Remove already downloaded parts of the files from the disk is asked.</Abstract>
+			<DeclaredIn>TCBlobDownloadManager.h</DeclaredIn>
+			
+			<Declaration>- (void)cancelAllDownloadsAndRemoveFiles:(BOOL)remove</Declaration>
+			<Parameters>
+				<Parameter>
+					<Name>remove</Name>
+					<Abstract type="html">If YES, this method will remove all downloaded files parts from the disk. Files parts are left untouched if set to NO. This will allow TCBlobDownload to restart the download from where it has ended in a future operation.</Abstract>
+				</Parameter>
+			</Parameters>
+			
+			<Anchor>//api/name/cancelAllDownloadsAndRemoveFiles:</Anchor>
+            <NodeRef refid="2"/>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/clm/TCBlobDownloadManager/createPathFromPath:</TokenIdentifier>
+			<Abstract type="html">Creates a path from given string.</Abstract>
+			<DeclaredIn>TCBlobDownloadManager.h</DeclaredIn>
+			
+			<Declaration>+ (BOOL)createPathFromPath:(NSString *)path</Declaration>
+			<Parameters>
+				<Parameter>
+					<Name>path</Name>
+					<Abstract type="html">The path to create.</Abstract>
+				</Parameter>
+			</Parameters>
+			<ReturnValue><Abstract type="html">A boolean indicating if the path has been successfully created.</Abstract></ReturnValue>
+			<Anchor>//api/name/createPathFromPath:</Anchor>
+            <NodeRef refid="2"/>
+		</Token>
+		
+        
+	</File>
+</Tokens>

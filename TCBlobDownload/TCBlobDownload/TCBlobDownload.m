@@ -53,9 +53,9 @@ static NSString * const HTTPErrorCode = @"httpStatus";
 #pragma mark - Init
 
 
-- (id)initWithURL:(NSURL *)url
-     downloadPath:(NSString *)pathToDL
-         delegate:(id<TCBlobDownloadDelegate>)delegateOrNil
+- (instancetype)initWithURL:(NSURL *)url
+               downloadPath:(NSString *)pathToDL
+                   delegate:(id<TCBlobDownloadDelegate>)delegateOrNil
 
 {
     self = [super init];
@@ -67,12 +67,12 @@ static NSString * const HTTPErrorCode = @"httpStatus";
     return self;
 }
 
-- (id)initWithURL:(NSURL *)url
-     downloadPath:(NSString *)pathToDL
-    firstResponse:(FirstResponseBlock)firstResponseBlock
-         progress:(ProgressBlock)progressBlock
-            error:(ErrorBlock)errorBlock
-         complete:(CompleteBlock)completeBlock
+- (instancetype)initWithURL:(NSURL *)url
+               downloadPath:(NSString *)pathToDL
+              firstResponse:(FirstResponseBlock)firstResponseBlock
+                   progress:(ProgressBlock)progressBlock
+                      error:(ErrorBlock)errorBlock
+                   complete:(CompleteBlock)completeBlock
 {
     self = [self initWithURL:url downloadPath:pathToDL delegate:nil];
     if (self) {

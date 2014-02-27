@@ -4,11 +4,11 @@
 
 This library uses **NSOperations** to download big files (typically videos, music... well: BLOBs) using **NSURLConnection** in background threads.
 
-Tested with files from ~150MB to ~1.2GB, mostly videos. It currently only supports ARC.
+Tested with files from ~150MB to ~1.2GB, mostly videos.
 
 I've implemented **TCBlobDownload** which extends NSOperation and use **TCBlobDownloadManager** to execute it. You can set a delegate or use blocks (your choice) for each download to update your views etc…
 
-Requires **iOS 5.0 or later**.
+Requires **iOS 5.0 or later** and ARC.
   
 - **[Features](#features)**
 - **[Methods](#methods)**

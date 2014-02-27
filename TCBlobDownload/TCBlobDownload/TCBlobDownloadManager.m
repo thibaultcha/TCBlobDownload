@@ -27,7 +27,7 @@
     return self;
 }
 
-+ (id)sharedInstance
++ (instancetype)sharedInstance
 {
     static dispatch_once_t onceToken;
     static id sharedManager = nil;

@@ -1,0 +1,20 @@
+<?xml version="1.0" standalone="no"?>
+<feed xmlns="http://www.w3.org/2005/Atom" xmlns:docset="http://developer.apple.com/rss/docset_extensions" xml:lang="en">
+    <id>http://thibaultcha.me/thibaultCha/thibaultCha.atom/20140228000401</id>
+    <title type="text">TCBlobDownload Documentation</title>
+    <rights>Copyright © 2014 thibaultCha. All rights reserved.</rights>
+    <link rel="self" href="http://thibaultcha.me/thibaultCha/thibaultCha.atom"></link>
+    <docset:publisherName>thibaultCha</docset:publisherName>
+    <docset:publisherID>com.thibaultcha.documentation</docset:publisherID>
+    <updated>2014-02-28T00:04:01+01:00</updated>
+    <entry>
+        <id>tag:thibaultcha.me,2014-02-28:com.thibaultcha.TCBlobDownload/1.0.0</id>
+        <title type="text">TCBlobDownload Documentation</title>
+        <updated>2014-02-28T00:04:01+01:00</updated>
+        <content type="text">TCBlobDownload Documentation (v1.0.0)</content>
+        <link rel="enclosure" type="application/octet-stream" href="http:/thibaultcha.me/thibaultCha/com.thibaultcha.TCBlobDownload-1.0.xar" length="75183"></link>
+        <docset:identifier>com.thibaultcha.TCBlobDownload</docset:identifier>
+        <docset:version>1.0.0</docset:version>
+        <docset:minimumXcodeVersion>3.0.0</docset:minimumXcodeVersion>
+    </entry>
+</feed>

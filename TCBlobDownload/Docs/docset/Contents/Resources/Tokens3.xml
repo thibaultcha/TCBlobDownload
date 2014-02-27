@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Tokens version="1.0">
+	<File path="Protocols/TCBlobDownloadDelegate.html">
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/intf/TCBlobDownloadDelegate</TokenIdentifier>
+			<Abstract type="html">The TCBlobDownloadDelegate protocol defines the methods supported by TCBlobDownload to notify you of the state of the download.</Abstract>
+			<DeclaredIn>TCBlobDownload.h</DeclaredIn>
+            
+			
+			<NodeRef refid="3"/>
+		</Token>
+		
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/intfm/TCBlobDownloadDelegate/download:didReceiveFirstResponse:</TokenIdentifier>
+			<Abstract type="html">Optional. Called when the TCBlobDownload object has received the first response from the server.</Abstract>
+			<DeclaredIn>TCBlobDownload.h</DeclaredIn>
+			
+			<Declaration>- (void)download:(TCBlobDownload *)blobDownload didReceiveFirstResponse:(NSURLResponse *)response</Declaration>
+			<Parameters>
+				<Parameter>
+					<Name>blobDownload</Name>
+					<Abstract type="html">The TCBlobDownload object receiving the first response.</Abstract>
+				</Parameter><Parameter>
+					<Name>response</Name>
+					<Abstract type="html">The NSURLResponse from the server.</Abstract>
+				</Parameter>
+			</Parameters>
+			
+			<Anchor>//api/name/download:didReceiveFirstResponse:</Anchor>
+            <NodeRef refid="3"/>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/intfm/TCBlobDownloadDelegate/download:didReceiveData:onTotal:</TokenIdentifier>
+			<Abstract type="html">Optional. Called on each response from the server while the download is occurring.</Abstract>
+			<DeclaredIn>TCBlobDownload.h</DeclaredIn>
+			
+			<Declaration>- (void)download:(TCBlobDownload *)blobDownload didReceiveData:(uint64_t)receivedLength onTotal:(uint64_t)totalLength</Declaration>
+			<Parameters>
+				<Parameter>
+					<Name>blobDownload</Name>
+					<Abstract type="html">The TCBlobDownload object which received data.</Abstract>
+				</Parameter><Parameter>
+					<Name>receivedLength</Name>
+					<Abstract type="html">The total number of already received bytes.</Abstract>
+				</Parameter><Parameter>
+					<Name>totalLength</Name>
+					<Abstract type="html">The total number of bytes of the file.
+
+## Note
+
+If you pause and restart later a download, the new TCBlobDownload will resume it from where it has stopped (see fileName property for more explanations). Therefore, you might want to track yourself the total size of the file when you first tried to download it, otherwise the totalLength is the actual remaining length to download and might not suit your needs if you do something such as a progress bar.</Abstract>
+				</Parameter>
+			</Parameters>
+			
+			<Anchor>//api/name/download:didReceiveData:onTotal:</Anchor>
+            <NodeRef refid="3"/>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/intfm/TCBlobDownloadDelegate/download:didStopWithError:</TokenIdentifier>
+			<Abstract type="html">Optional. Called when an error occur during the download. If this method is called, the TCBlobDownload will be automatically cancelled just after.</Abstract>
+			<DeclaredIn>TCBlobDownload.h</DeclaredIn>
+			
+			<Declaration>- (void)download:(TCBlobDownload *)blobDownload didStopWithError:(NSError *)error</Declaration>
+			<Parameters>
+				<Parameter>
+					<Name>blobDownload</Name>
+					<Abstract type="html">The TCBlobDownload object which trigerred an error.</Abstract>
+				</Parameter><Parameter>
+					<Name>error</Name>
+					<Abstract type="html">The trigerred error.</Abstract>
+				</Parameter>
+			</Parameters>
+			
+			<Anchor>//api/name/download:didStopWithError:</Anchor>
+            <NodeRef refid="3"/>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/intfm/TCBlobDownloadDelegate/download:didFinishWithSucces:atPath:</TokenIdentifier>
+			<Abstract type="html">Optional. Called when the TCBlobDownload will be removed from the TCBlobDownloadManager singleton.</Abstract>
+			<DeclaredIn>TCBlobDownload.h</DeclaredIn>
+			
+			<Declaration>- (void)download:(TCBlobDownload *)blobDownload didFinishWithSucces:(BOOL)downloadFinished atPath:(NSString *)pathToFile</Declaration>
+			<Parameters>
+				<Parameter>
+					<Name>blobDownload</Name>
+					<Abstract type="html">The TCBlobDownload object whose execution is finished.</Abstract>
+				</Parameter><Parameter>
+					<Name>downloadFinished</Name>
+					<Abstract type="html">YES if the file has been downloaded, NO if not.</Abstract>
+				</Parameter><Parameter>
+					<Name>pathToFile</Name>
+					<Abstract type="html">The path where the file has been downloaded.</Abstract>
+				</Parameter>
+			</Parameters>
+			
+			<Anchor>//api/name/download:didFinishWithSucces:atPath:</Anchor>
+            <NodeRef refid="3"/>
+		</Token>
+		
+        
+	</File>
+</Tokens>
