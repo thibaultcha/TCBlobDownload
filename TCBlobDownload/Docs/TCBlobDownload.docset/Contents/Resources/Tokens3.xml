@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Tokens version="1.0">
+	<File path="Categories/XCTestCase+AsyncTesting.html">
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/cat/XCTestCase(AsyncTesting)</TokenIdentifier>
+			<Abstract type="html"></Abstract>
+			<DeclaredIn>XCTestCase+AsyncTesting.h</DeclaredIn>
+            
+			
+			<NodeRef refid="3"/>
+		</Token>
+		
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instm/XCTestCase/waitForStatus:timeout:</TokenIdentifier>
+			<Abstract type="html"></Abstract>
+			<DeclaredIn>XCTestCase+AsyncTesting.h</DeclaredIn>
+			
+			<Declaration>- (void)waitForStatus:(XCTAsyncTestCaseStatus)status timeout:(NSTimeInterval)timeout</Declaration>
+			
+			
+			<Anchor>//api/name/waitForStatus:timeout:</Anchor>
+            <NodeRef refid="3"/>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instm/XCTestCase/waitForTimeout:</TokenIdentifier>
+			<Abstract type="html"></Abstract>
+			<DeclaredIn>XCTestCase+AsyncTesting.h</DeclaredIn>
+			
+			<Declaration>- (void)waitForTimeout:(NSTimeInterval)timeout</Declaration>
+			
+			
+			<Anchor>//api/name/waitForTimeout:</Anchor>
+            <NodeRef refid="3"/>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instm/XCTestCase/notify:</TokenIdentifier>
+			<Abstract type="html"></Abstract>
+			<DeclaredIn>XCTestCase+AsyncTesting.h</DeclaredIn>
+			
+			<Declaration>- (void)notify:(XCTAsyncTestCaseStatus)status</Declaration>
+			
+			
+			<Anchor>//api/name/notify:</Anchor>
+            <NodeRef refid="3"/>
+		</Token>
+		
+        
+	</File>
+</Tokens>

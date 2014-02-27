@@ -8,7 +8,7 @@
 			<DeclaredIn>TCBlobDownload.h</DeclaredIn>
             
 			
-			<NodeRef refid="3"/>
+			<NodeRef refid="4"/>
 		</Token>
 		
 		
@@ -29,7 +29,7 @@
 			</Parameters>
 			
 			<Anchor>//api/name/download:didReceiveFirstResponse:</Anchor>
-            <NodeRef refid="3"/>
+            <NodeRef refid="4"/>
 		</Token>
 		
 		<Token>
@@ -56,7 +56,7 @@ If you pause and restart later a download, the new TCBlobDownload will resume it
 			</Parameters>
 			
 			<Anchor>//api/name/download:didReceiveData:onTotal:</Anchor>
-            <NodeRef refid="3"/>
+            <NodeRef refid="4"/>
 		</Token>
 		
 		<Token>
@@ -76,7 +76,7 @@ If you pause and restart later a download, the new TCBlobDownload will resume it
 			</Parameters>
 			
 			<Anchor>//api/name/download:didStopWithError:</Anchor>
-            <NodeRef refid="3"/>
+            <NodeRef refid="4"/>
 		</Token>
 		
 		<Token>
@@ -99,7 +99,7 @@ If you pause and restart later a download, the new TCBlobDownload will resume it
 			</Parameters>
 			
 			<Anchor>//api/name/download:didFinishWithSucces:atPath:</Anchor>
-            <NodeRef refid="3"/>
+            <NodeRef refid="4"/>
 		</Token>
 		
         

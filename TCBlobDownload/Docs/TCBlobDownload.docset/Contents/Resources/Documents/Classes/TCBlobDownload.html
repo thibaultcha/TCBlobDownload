@@ -152,7 +152,7 @@
 	<td class="specification-value">NSURLConnectionDelegate</td>
 </tr><tr>
 	<td class="specification-title">Declared in</td>
-	<td class="specification-value">TCBlobDownload.h<br />TCBlobDownload.m</td>
+	<td class="specification-value">TCBlobDownload.h</td>
 </tr>
 						</tbody></table></div>
 					
@@ -302,7 +302,7 @@
 	
 	
 	<div class="method-subsection brief-description">
-		<p>The URL of the <a href="#//api/name/file">file</a> to download.</p>
+		<p>The URL of the file to download.</p>
 	</div>		
 	
     
@@ -343,7 +343,7 @@
 	
 	
 	<div class="method-subsection brief-description">
-		<p>The <a href="#//api/name/file">file</a> name, based on the last path component of the download URL.</p>
+		<p>The file name, based on the last path component of the download URL.</p>
 	</div>		
 	
     
@@ -360,13 +360,11 @@
 	
 	<div class="method-subsection discussion-section">
 		<h4 class="method-subtitle">Discussion</h4>
-		<div class="warning"><p><strong>Warning:</strong> You should not set this property directly, as it is retrieved from the download URL.</p>
+		<h2>Note</h2>
 
-<h2>Note</h2>
+<p>You cannot change the file name during the download process. The file name of a file downloaded by TCBlobDownload is the last part of the URL used to download it. This allow TCBlobDownload to check if a part of that file has already been downloaded and if so, retrieve the downloaded from where it has previously stopped. It is up to you to manage your download paths to avoid downloading 2 files with the same name.</p>
 
-<p>You cannot change the <a href="#//api/name/file">file</a> name during the download process. The <a href="#//api/name/file">file</a> name of a <a href="#//api/name/file">file</a> downloaded by TCBlobDownload is the last part of the URL used to download it. This allow TCBlobDownload to check if a part of that <a href="#//api/name/file">file</a> has already been downloaded and if so, retrieve the downloaded from where it has previously stopped. It is up to you to manage your download paths to avoid downloading 2 files with the same name.</p>
-
-<p>You can change the <a href="#//api/name/file">file</a> name once the <a href="#//api/name/file">file</a> has been downloaded in the completion block or the appropriate <a href="#//api/name/delegate">delegate</a> method.</p></div>
+<p>You can change the file name once the file has been downloaded in the completion block or the appropriate <a href="#//api/name/delegate">delegate</a> method.</p><div class="warning"><p><strong>Warning:</strong> You should not set this property directly, as it is retrieved from the download URL.</p></div>
 	</div>
 	
 	
@@ -399,7 +397,7 @@
 	
 	
 	<div class="method-subsection brief-description">
-		<p>The directory where to download the <a href="#//api/name/file">file</a>.</p>
+		<p>The directory where to download the file.</p>
 	</div>		
 	
     
@@ -440,7 +438,7 @@
 	
 	
 	<div class="method-subsection brief-description">
-		<p>The path to the downloaded <a href="#//api/name/file">file</a>, including the <a href="#//api/name/file">file</a> name.</p>
+		<p>The path to the downloaded file, including the file name.</p>
 	</div>		
 	
     
@@ -457,7 +455,7 @@
 	
 	<div class="method-subsection discussion-section">
 		<h4 class="method-subtitle">Discussion</h4>
-		<div class="warning"><p><strong>Warning:</strong> You should not set this property directly as the <a href="#//api/name/file">file</a> name is managed by the library.</p></div>
+		<div class="warning"><p><strong>Warning:</strong> You should not set this property directly as the file name is managed by the library.</p></div>
 	</div>
 	
 	
@@ -609,7 +607,7 @@
 	
 	
 	<div class="method-subsection brief-description">
-		<p>Cancels the download. Remove already downloaded parts of the <a href="#//api/name/file">file</a> from the disk is asked.</p>
+		<p>Cancels the download. Remove already downloaded parts of the file from the disk is asked.</p>
 	</div>		
 	
     
@@ -623,7 +621,7 @@
 		
 		<dl class="argument-def parameter-def">
 			<dt><em>remove</em></dt>
-			<dd><p>If <code>YES</code>, this method will remove the downloaded <a href="#//api/name/file">file</a> parts from the disk. File parts are left untouched if set to <code>NO</code>. This will allow TCBlobDownload to re<a href="#//api/name/start">start</a> the download from where it has ended in a future operation.</p></dd>
+			<dd><p>If <code>YES</code>, this method will remove the downloaded file parts from the disk. File parts are left untouched if set to <code>NO</code>. This will allow TCBlobDownload to restart the download from where it has ended in a future operation.</p></dd>
 		</dl>
 		
 	</div>
@@ -669,7 +667,7 @@
 		
 		<dl class="argument-def parameter-def">
 			<dt><em>url</em></dt>
-			<dd><p>The URL from where to download the <a href="#//api/name/file">file</a>.</p></dd>
+			<dd><p>The URL from where to download the file.</p></dd>
 		</dl>
 		
 		<dl class="argument-def parameter-def">
@@ -730,7 +728,7 @@
 		
 		<dl class="argument-def parameter-def">
 			<dt><em>url</em></dt>
-			<dd><p>The URL of the <a href="#//api/name/file">file</a> to download.</p></dd>
+			<dd><p>The URL of the file to download.</p></dd>
 		</dl>
 		
 		<dl class="argument-def parameter-def">

@@ -18,30 +18,22 @@
 		21D06E11181847F400CAADCD /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 21D06E06181847F400CAADCD /* main.m */; };
 		21D06E13181847F400CAADCD /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 21D06E0A181847F400CAADCD /* ViewController.m */; };
 		21D06E14181847F400CAADCD /* ViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 21D06E0B181847F400CAADCD /* ViewController.xib */; };
-		21D06E2218184B3200CAADCD /* libTCBlobDownload.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 21D06E1D18184B1800CAADCD /* libTCBlobDownload.a */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
-		21D06E1C18184B1800CAADCD /* PBXContainerItemProxy */ = {
+		C33448C918C000850050C1ED /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
-			containerPortal = 21D06E1718184B1800CAADCD /* TCBlobDownload.xcodeproj */;
+			containerPortal = C33448C318C000850050C1ED /* TCBlobDownload.xcodeproj */;
 			proxyType = 2;
 			remoteGlobalIDString = 217761FC172FFBBB001956C7;
 			remoteInfo = TCBlobDownload;
 		};
-		21D06E1E18184B1800CAADCD /* PBXContainerItemProxy */ = {
+		C33448CB18C000850050C1ED /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
-			containerPortal = 21D06E1718184B1800CAADCD /* TCBlobDownload.xcodeproj */;
+			containerPortal = C33448C318C000850050C1ED /* TCBlobDownload.xcodeproj */;
 			proxyType = 2;
 			remoteGlobalIDString = 21203AD4178C593900C19335;
 			remoteInfo = TCBlobDownloadTests;
-		};
-		21D06E2018184B2500CAADCD /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 21D06E1718184B1800CAADCD /* TCBlobDownload.xcodeproj */;
-			proxyType = 1;
-			remoteGlobalIDString = 217761FB172FFBBB001956C7;
-			remoteInfo = TCBlobDownload;
 		};
 /* End PBXContainerItemProxy section */
 
@@ -62,7 +54,7 @@
 		21D06E09181847F400CAADCD /* ViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ViewController.h; sourceTree = "<group>"; };
 		21D06E0A181847F400CAADCD /* ViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ViewController.m; sourceTree = "<group>"; };
 		21D06E0B181847F400CAADCD /* ViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ViewController.xib; sourceTree = "<group>"; };
-		21D06E1718184B1800CAADCD /* TCBlobDownload.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = TCBlobDownload.xcodeproj; path = TCBlobDownload/TCBlobDownload.xcodeproj; sourceTree = "<group>"; };
+		C33448C318C000850050C1ED /* TCBlobDownload.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = TCBlobDownload.xcodeproj; path = ../TCBlobDownload/TCBlobDownload.xcodeproj; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -70,7 +62,6 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				21D06E2218184B3200CAADCD /* libTCBlobDownload.a in Frameworks */,
 				217762391730025C001956C7 /* UIKit.framework in Frameworks */,
 				2177623B1730025C001956C7 /* Foundation.framework in Frameworks */,
 				2177623D1730025C001956C7 /* CoreGraphics.framework in Frameworks */,
@@ -86,7 +77,7 @@
 				21D06DFE181847F400CAADCD /* TCBlobDownloadExample */,
 				217762371730025C001956C7 /* Frameworks */,
 				217762361730025C001956C7 /* Products */,
-				21D06E1718184B1800CAADCD /* TCBlobDownload.xcodeproj */,
+				C33448C318C000850050C1ED /* TCBlobDownload.xcodeproj */,
 			);
 			sourceTree = "<group>";
 		};
@@ -143,11 +134,11 @@
 			name = "Supporting Files";
 			sourceTree = "<group>";
 		};
-		21D06E1818184B1800CAADCD /* Products */ = {
+		C33448C418C000850050C1ED /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				21D06E1D18184B1800CAADCD /* libTCBlobDownload.a */,
-				21D06E1F18184B1800CAADCD /* TCBlobDownloadTests.xctest */,
+				C33448CA18C000850050C1ED /* libTCBlobDownload.a */,
+				C33448CC18C000850050C1ED /* TCBlobDownloadTests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -166,7 +157,6 @@
 			buildRules = (
 			);
 			dependencies = (
-				21D06E2118184B2500CAADCD /* PBXTargetDependency */,
 			);
 			name = TCBlobDownloadExample;
 			productName = SampleProject;
@@ -199,8 +189,8 @@
 			projectDirPath = "";
 			projectReferences = (
 				{
-					ProductGroup = 21D06E1818184B1800CAADCD /* Products */;
-					ProjectRef = 21D06E1718184B1800CAADCD /* TCBlobDownload.xcodeproj */;
+					ProductGroup = C33448C418C000850050C1ED /* Products */;
+					ProjectRef = C33448C318C000850050C1ED /* TCBlobDownload.xcodeproj */;
 				},
 			);
 			projectRoot = "";
@@ -211,18 +201,18 @@
 /* End PBXProject section */
 
 /* Begin PBXReferenceProxy section */
-		21D06E1D18184B1800CAADCD /* libTCBlobDownload.a */ = {
+		C33448CA18C000850050C1ED /* libTCBlobDownload.a */ = {
 			isa = PBXReferenceProxy;
 			fileType = archive.ar;
 			path = libTCBlobDownload.a;
-			remoteRef = 21D06E1C18184B1800CAADCD /* PBXContainerItemProxy */;
+			remoteRef = C33448C918C000850050C1ED /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
-		21D06E1F18184B1800CAADCD /* TCBlobDownloadTests.xctest */ = {
+		C33448CC18C000850050C1ED /* TCBlobDownloadTests.xctest */ = {
 			isa = PBXReferenceProxy;
 			fileType = wrapper.cfbundle;
 			path = TCBlobDownloadTests.xctest;
-			remoteRef = 21D06E1E18184B1800CAADCD /* PBXContainerItemProxy */;
+			remoteRef = C33448CB18C000850050C1ED /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
 /* End PBXReferenceProxy section */
@@ -254,14 +244,6 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXSourcesBuildPhase section */
-
-/* Begin PBXTargetDependency section */
-		21D06E2118184B2500CAADCD /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			name = TCBlobDownload;
-			targetProxy = 21D06E2018184B2500CAADCD /* PBXContainerItemProxy */;
-		};
-/* End PBXTargetDependency section */
 
 /* Begin PBXVariantGroup section */
 		21D06E04181847F400CAADCD /* InfoPlist.strings */ = {
@@ -342,6 +324,7 @@
 				GCC_PREFIX_HEADER = "TCBlobDownloadExample/TCBlobDownloadExample-Prefix.pch";
 				INFOPLIST_FILE = "$(SRCROOT)/TCBlobDownloadExample/TCBlobDownloadExample-Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 5.0;
+				LIBRARY_SEARCH_PATHS = "";
 				PRODUCT_NAME = TCBlobDownloadExample;
 				WRAPPER_EXTENSION = app;
 			};
@@ -356,6 +339,7 @@
 				GCC_PREFIX_HEADER = "TCBlobDownloadExample/TCBlobDownloadExample-Prefix.pch";
 				INFOPLIST_FILE = "$(SRCROOT)/TCBlobDownloadExample/TCBlobDownloadExample-Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 5.0;
+				LIBRARY_SEARCH_PATHS = "";
 				PRODUCT_NAME = TCBlobDownloadExample;
 				WRAPPER_EXTENSION = app;
 			};

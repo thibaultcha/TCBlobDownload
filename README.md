@@ -30,7 +30,7 @@ Requires **iOS 5.0 or later** and ARC.
 
 ## Documentation
 
-Browse the documentation on [Cocoadocs](http://cocoadocs.org/docsets/TCBlobDownload/1.4.0/) or add it directly to Xcode by downloading the docset and placing it into `~/Library/Developer/Shared/Documentation/DocSets/`
+Browse the documentation on [Cocoadocs](http://cocoadocs.org/docsets/TCBlobDownload/1.4.0/) or add it directly to Xcode by downloading the docset and placing it into `~/Library/Developer/Shared/Documentation/DocSets/`.
 
 ## Usage
 

@@ -18,12 +18,21 @@
 				</Node>
 				
 				
+				<Node>
+					<Name>Categories</Name>
+					<Path>index.html</Path>
+					<Subnodes>
+						<NodeRef refid="3"/>
+						
+					</Subnodes>
+				</Node>
+				
                 
 				<Node>
 					<Name>Protocols</Name>
 					<Path>index.html</Path>
 					<Subnodes>
-						<NodeRef refid="3"/>
+						<NodeRef refid="4"/>
 						
 					</Subnodes>
 				</Node>
@@ -107,8 +116,35 @@
             
         </Node>
 		
+		<Node id="3" type="file" documentType="reference">
+            <Name>XCTestCase(AsyncTesting)</Name>
+            <Path>Categories/XCTestCase+AsyncTesting.html</Path>
+            
+                <Subnodes>
+                <Node type="section">
+                    <Path>Categories/XCTestCase+AsyncTesting.html</Path>
+                    <Name>Overview</Name>
+                    <Anchor>overview</Anchor>
+                </Node>
+                <Node type="section">
+                    <Path>Categories/XCTestCase+AsyncTesting.html</Path>
+                    <Name>Tasks</Name>
+                    <Anchor>tasks</Anchor>
+                </Node>
+                
+                
+                
+                <Node type="section">
+                    <Path>Categories/XCTestCase+AsyncTesting.html</Path>
+                    <Name>Instance Methods</Name>
+                    <Anchor>instance_methods</Anchor>
+                </Node>
+                
+            </Subnodes>
+            
+        </Node>
 		
-        <Node id="3" type="file" documentType="reference">
+        <Node id="4" type="file" documentType="reference">
             <Name>TCBlobDownloadDelegate</Name>
             <Path>Protocols/TCBlobDownloadDelegate.html</Path>
             

@@ -20,7 +20,7 @@
 	<key>DocSetFeedName</key>
 	<string>TCBlobDownload Documentation</string>
 	<key>DocSetFeedURL</key>
-	<string>http://thibaultcha.me/thibaultCha/thibaultCha.atom</string>
+	<string>http://thibaultcha.me/thibaultCha/com.thibaultcha.TCBlobDownload.atom</string>
 	<key>DocSetMinimumXcodeVersion</key>
 	<string>3.0</string>
 	<key>DocSetPlatformFamily</key>
