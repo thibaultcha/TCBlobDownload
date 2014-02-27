@@ -11,7 +11,7 @@ I've implemented **TCBlobDownload** which extends NSOperation and use **TCBlobDo
 Requires **iOS 5.0 or later** and ARC.
   
 - **[Features](#features)**
-- **[Methods](#methods)**
+- **[Documentation](#documentation)**
 - **[Usage](#usage)**
 - **[Change Log](#change-log)**
 - **[Licence](#licence)**
