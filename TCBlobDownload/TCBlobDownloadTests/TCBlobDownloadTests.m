@@ -143,7 +143,7 @@
                          firstResponse:^(NSURLResponse *response) {
                              
                          }
-                              progress:^(float receivedLength, float totalLength) {
+                              progress:^(float receivedLength, float totalLength, NSInteger remainingTime) {
                                   BOOL exists = [[NSFileManager defaultManager] fileExistsAtPath:testDirectory];
                                   XCTAssert(exists, @"Custom download directory not created");
                              

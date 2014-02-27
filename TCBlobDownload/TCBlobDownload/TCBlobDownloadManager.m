@@ -12,7 +12,6 @@
 @end
 
 @implementation TCBlobDownloadManager
-@dynamic downloadCount;
 
 
 #pragma mark - Init
@@ -39,7 +38,7 @@
 }
 
 
-#pragma mark - Utilities
+#pragma mark - Custom Setters
 
 
 - (void)setDefaultDownloadPath:(NSString *)pathToDL
@@ -55,7 +54,7 @@
 }
 
 
-#pragma mark - Getters
+#pragma mark - Custom Getters
 
 
 - (NSUInteger)downloadCount

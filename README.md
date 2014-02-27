@@ -20,12 +20,13 @@ Requires **iOS 5.0 or later**.
 
 ## Features
 1. Download files in background threads.
-2. Use blocks `||` delegate!
+2. Use blocks or delegate!
 3. Pause and resume a download.
 4. Set maximum number of concurrent downloads.
 5. Custom download path and auto path creation.
-6. [download cancelDownloadAndRemoveFile:BOOL]
-7. Download dependencies.
+6. Download speed and remaining time 
+7. `[download cancelDownloadAndRemoveFile:BOOL]`
+8. Download dependencies.
 
 ## Methods
 #### TCBlobDownloadManager
@@ -82,7 +83,7 @@ pod 'TCBlobDownload'
 
 If you don't have CocoaPods installed or integrated into your project, you can learn how to do so [here](http://cocoapods.org).
 
-### Import as static library
+### Import as a static library
 
 1. Drag and drop `TCBlobDownload.xcodeproj` from Finder to your opened project.
 2. Open your Project's Target -> Build Phases -> **Target Dependencies** and add `TCBlobDownload`. Then, click **Link binary with libraries** and add `libTCBlobDownload.a` (no worries if it's red).
@@ -99,21 +100,21 @@ To immediately start a download in the default TCBlobDownloadManager directory (
 ```objective-c
 #import "TCBlobDownloadManager.h"
 
-TCBlobDownloadManager *sharedManager = [TCBlobDownloadManager sharedDownloadManager];
+TCBlobDownloadManager *sharedManager = [TCBlobDownloadManager sharedInstance];
 
 TCBlobDownload *downloader = [sharedManager startDownloadWithURL:@"http://give.me/abigfile.avi"
                        downloadPath:nil
                  firstResponse:^(NSURLResponse *response) {
-		               // [response expectedContentLength]?
+		      
                  }
-                 progress:^(float receivedLength, float totalLength){
+                 progress:^(float receivedLength, float totalLength, NSInteger remainingTime){
                    // wow moving progress bar!
                  }
                  error:^(NSError *error){
                    // this not cool
                  }
                  complete:^(BOOL downloadFinished, NSString *pathToFile) {
-									// okay
+		     // okay
                  }];
 ```
 
@@ -123,8 +124,8 @@ If you set a customPath:
 NSString *customPath = [NSTemporaryDirectory() stringByAppendingPathComponent:@"My/Custom/Path/"];
 
 TCBlobDownload *downloader = [sharedManager startDownloadWithURL:@"http://give.me/abigfile.avi"
-                  customPathOrNil:customPath // important
-                      andDelegate:nil];
+                                                                                                   customPath:customPath // important
+                                                                                                 andDelegate:nil];
 ```
 
 This will **create** the given path if needed and download the file in the `Path/` directory. **Remember that you should follow the [iOS Data Storage Guidelines](https://developer.apple.com/icloud/documentation/data-storage/)**.
@@ -135,12 +136,14 @@ You can either set a delegate which can implement those optional methods if dele
 ```objective-c
 - (void)download:(TCBlobDownload *)blobDownload didReceiveFirstResponse:(NSURLResponse *)response
 {
-  // [response expectedContentLength]?
+
 }
 
 - (void)download:(TCBlobDownload *)blobDownload didReceiveData:(uint64_t)received onTotal:(uint64_t)total
 {
   // wow moving progress bar! (bis)
+  // blobDownload.remainingTime
+  // blobDownload.speedRate
 }
 
 - (void)download:(TCBlobDownload *)blobDownload didStopWithError:(NSError *)error
@@ -161,11 +164,16 @@ You can either set a delegate which can implement those optional methods if dele
 
 ## Change log
 
+### v1.5.0
+* Added a `speedRate` and `remainingTime` (in seconds) property on TCBlobDownload thanks to [#16](https://github.com/thibaultCha/TCBlobDownload/issues/16)
+* Updated TCBlobDownload properties to `readonly`
+* Renamed `sharedDownloadManager` to `sharedInstance`
+
 ### v1.4.0 (11/19/2013)
 * Unit testing
 * HTTP error status code handling [#3](https://github.com/thibaultCha/TCBlobDownload/pull/3)
 * Manager returns created downloads [#5](https://github.com/thibaultCha/TCBlobDownload/pull/5)
-* Cocoapods relase
+* Cocoapods release
 
 ### v1.3.1 (6/01/2013)
 * Bug fix

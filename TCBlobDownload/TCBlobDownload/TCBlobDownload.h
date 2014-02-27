@@ -30,10 +30,10 @@ typedef void (^CompleteBlock)(BOOL downloadFinished, NSString *pathToFile);
 @interface TCBlobDownload : NSOperation <NSURLConnectionDelegate>
 
 @property (nonatomic, unsafe_unretained) id<TCBlobDownloadDelegate> delegate;
-@property (nonatomic, copy) NSURL *downloadURL;
 @property (nonatomic, copy) NSString *pathToDownloadDirectory;
-@property (nonatomic, copy) NSString *pathToFile;
-@property (nonatomic, copy) NSString *fileName;
+@property (nonatomic, copy, readonly) NSString *pathToFile;
+@property (nonatomic, copy, readonly) NSURL *downloadURL;
+@property (nonatomic, copy, readonly) NSString *fileName;
 @property (nonatomic, assign, readonly) NSInteger speedRate;
 @property (nonatomic, assign, readonly) NSInteger remainingTime;
 

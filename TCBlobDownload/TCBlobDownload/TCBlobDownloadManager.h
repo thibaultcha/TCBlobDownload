@@ -9,8 +9,8 @@
 
 @interface TCBlobDownloadManager : NSObject
 
-@property (nonatomic, strong, setter = setDefaultDownloadPath:) NSString *defaultDownloadPath;
-@property (nonatomic, getter = downloadCount) NSUInteger downloadCount;
+@property (nonatomic, strong) NSString *defaultDownloadPath;
+@property (nonatomic, assign) NSUInteger downloadCount;
 
 /**
  Retrieve the singleton
@@ -36,6 +36,7 @@
                                 progress:(ProgressBlock)progressBlock
                                    error:(ErrorBlock)errorBlock
                                 complete:(CompleteBlock)completeBlock;
+
 /**
  Start an already initialized TCBlobDownload
 */

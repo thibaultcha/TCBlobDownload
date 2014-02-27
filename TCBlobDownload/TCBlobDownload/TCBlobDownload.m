@@ -13,6 +13,10 @@ static NSString * const HTTPErrorCode = @"httpStatus";
 #import "TCBlobDownload.h"
 
 @interface TCBlobDownload ()
+// Public
+@property (nonatomic, copy, readwrite) NSURL *downloadURL;
+@property (nonatomic, copy, readwrite) NSString *pathToFile;
+@property (nonatomic, copy, readwrite) NSString *fileName;
 // Download
 @property (nonatomic, strong) NSURLConnection *connection;
 @property (nonatomic, strong) NSMutableData *receivedDataBuffer;
@@ -225,7 +229,7 @@ static NSString * const HTTPErrorCode = @"httpStatus";
 {
     [self.receivedDataBuffer appendData:data];
     self.receivedDataLength += [data length];
-    
+
     TCLog(@"%@ | %.2f%% - Received: %ld - Total: %ld",
           self.fileName, (float) _receivedDataLength / self.expectedDataLength * 100, (long)self.receivedDataLength, (long)self.expectedDataLength);
     
