@@ -28,11 +28,10 @@
     return self;
 }
 
-+ (id)sharedDownloadManager
++ (id)sharedInstance
 {
     static dispatch_once_t onceToken;
     static id sharedManager = nil;
-    
     dispatch_once(&onceToken, ^{
         sharedManager = [[[self class] alloc] init];
     });
@@ -124,7 +123,7 @@
 }
 
 
-#pragma mark - Custom
+#pragma mark - Internal Methods
 
 
 + (BOOL)createPathFromPath:(NSString *)path

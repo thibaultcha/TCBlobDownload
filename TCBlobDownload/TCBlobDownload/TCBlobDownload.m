@@ -22,6 +22,8 @@ static NSString * const HTTPErrorCode = @"httpStatus";
 @property (nonatomic, strong) NSMutableArray *samplesOfDownloadedBytes;
 @property (nonatomic, assign) uint64_t expectedDataLength;
 @property (nonatomic, assign) uint64_t receivedDataLength;
+@property (nonatomic, assign, readwrite) NSInteger speedRate;
+@property (nonatomic, assign, readwrite) NSInteger remainingTime;
 // Blocks
 @property (nonatomic, copy) FirstResponseBlock firstResponseBlock;
 @property (nonatomic, copy) ProgressBlock progressBlock;
@@ -224,8 +226,8 @@ static NSString * const HTTPErrorCode = @"httpStatus";
     [self.receivedDataBuffer appendData:data];
     self.receivedDataLength += [data length];
     
-    //TCLog(@"%@ | %.2f%% - Received: %ld - Total: %ld",
-    //      self.fileName, (float) _receivedDataLength / self.expectedDataLength * 100, (long)self.receivedDataLength, (long)self.expectedDataLength);
+    TCLog(@"%@ | %.2f%% - Received: %ld - Total: %ld",
+          self.fileName, (float) _receivedDataLength / self.expectedDataLength * 100, (long)self.receivedDataLength, (long)self.expectedDataLength);
     
     if (self.receivedDataBuffer.length > kBufferSize && self.file) {
         [self.file writeData:self.receivedDataBuffer];
@@ -258,7 +260,7 @@ static NSString * const HTTPErrorCode = @"httpStatus";
 }
 
 
-#pragma mark - Utilities
+#pragma mark - Internal Methods
 
 
 - (void)updateTransferRate

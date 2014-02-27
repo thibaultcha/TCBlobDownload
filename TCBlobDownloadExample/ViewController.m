@@ -18,7 +18,7 @@
 {
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
     if (self) {
-        self.sharedDownloadManager = [TCBlobDownloadManager sharedDownloadManager];
+        self.sharedDownloadManager = [TCBlobDownloadManager sharedInstance];
     }
     
     return self;

@@ -15,7 +15,7 @@
 /**
  Retrieve the singleton
 */
-+ (id)sharedDownloadManager;
++ (id)sharedInstance;
 
 /**
  Start a download with the specified URL, an optional download path (default if nil)

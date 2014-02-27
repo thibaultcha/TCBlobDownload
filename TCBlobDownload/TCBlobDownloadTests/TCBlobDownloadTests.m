@@ -60,14 +60,14 @@
 
 - (void)testSingleton
 {
-    TCBlobDownloadManager *manager = [TCBlobDownloadManager sharedDownloadManager];
+    TCBlobDownloadManager *manager = [TCBlobDownloadManager sharedInstance];
     XCTAssertNotNil(manager, @"TCBlobDownloadManager shared instance is nil.");
 }
 
 - (void)testSharedInstanceReturnsSameSingletonObject
 {
-    TCBlobDownloadManager *m1 = [TCBlobDownloadManager sharedDownloadManager];
-    TCBlobDownloadManager *m2 = [TCBlobDownloadManager sharedDownloadManager];
+    TCBlobDownloadManager *m1 = [TCBlobDownloadManager sharedInstance];
+    TCBlobDownloadManager *m2 = [TCBlobDownloadManager sharedInstance];
     XCTAssertEqualObjects(m1, m2, @"sharedDownloadManager didn't return same object twice");
 }
 
