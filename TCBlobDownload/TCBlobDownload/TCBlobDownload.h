@@ -17,7 +17,7 @@
 extern NSString * const HTTPErrorCode;
 
 typedef void (^FirstResponseBlock)(NSURLResponse *response);
-typedef void (^ProgressBlock)(float receivedLength, float totalLength);
+typedef void (^ProgressBlock)(float receivedLength, float totalLength, NSInteger remainingTime);
 typedef void (^ErrorBlock)(NSError *error);
 typedef void (^CompleteBlock)(BOOL downloadFinished, NSString *pathToFile);
 
@@ -81,8 +81,9 @@ typedef void (^CompleteBlock)(BOOL downloadFinished, NSString *pathToFile);
  On each response from the NSURLConnection
 */
 - (void)download:(TCBlobDownload *)blobDownload
-  didReceiveData:(uint64_t)receivedLength
-         onTotal:(uint64_t)totalLength;
+  didReceiveData:(NSInteger)receivedLength
+         onTotal:(NSInteger)totalLength
+   remainingTime:(NSInteger)remainingTile;
 
 /**
  Let you handle the error for a given download

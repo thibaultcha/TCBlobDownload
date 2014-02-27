@@ -235,12 +235,13 @@ static NSString * const HTTPErrorCode = @"httpStatus";
     }
     
     if (self.progressBlock) {
-        self.progressBlock(self.receivedDataLength, self.expectedDataLength);
+        self.progressBlock(self.receivedDataLength, self.expectedDataLength, self.remainingTime);
     }
-    if ([self.delegate respondsToSelector:@selector(download:didReceiveData:onTotal:)]) {
+    if ([self.delegate respondsToSelector:@selector(download:didReceiveData:onTotal:remainingTime:)]) {
         [self.delegate download:self
                  didReceiveData:self.receivedDataLength
-                        onTotal:self.expectedDataLength];
+                        onTotal:self.expectedDataLength
+                  remainingTime:self.remainingTime];
     }
 }
 

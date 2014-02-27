@@ -44,15 +44,19 @@
 - (void)download:(id)sender
 {
     // Delegate
-    /*[self.sharedDownloadManager startDownloadWithURL:self.urlField.text
-                                            customPath:nil
-                                           andDelegate:self];*/
+    /*
+    [self.sharedDownloadManager startDownloadWithURL:self.urlField.text
+                                          customPath:nil
+                                         andDelegate:self];
+    */
     
     // Blocks
     [self.sharedDownloadManager startDownloadWithURL:[NSURL URLWithString:self.urlField.text]
                                           customPath:nil
                                        firstResponse:NULL
-                                            progress:NULL
+                                            progress:^(float receivedLength, float totalLength, NSInteger remainingTime) {
+                                                [self.remainingTime setText:[NSString stringWithFormat:@"%d", remainingTime]];
+                                            }
                                                error:NULL
                                             complete:NULL];
     [self.urlField resignFirstResponder];
@@ -73,8 +77,9 @@
 }
 
 - (void)download:(TCBlobDownload *)blobDownload
-  didReceiveData:(uint64_t)receivedLength
-         onTotal:(uint64_t)totalLength
+  didReceiveData:(NSInteger)receivedLength
+         onTotal:(NSInteger)totalLength
+   remainingTime:(NSInteger)remainingTile
 {
 
 }
