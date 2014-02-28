@@ -165,7 +165,7 @@ You can either set a delegate which can implement those optional methods if dele
 * Unit testing
 * HTTP error status code handling [#3](https://github.com/thibaultCha/TCBlobDownload/pull/3)
 * Manager returns created downloads [#5](https://github.com/thibaultCha/TCBlobDownload/pull/5)
-* Cocoapods relase
+* Cocoapods release
 
 ### v1.3.1 (6/01/2013)
 * Bug fix
