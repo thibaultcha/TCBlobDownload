@@ -12,7 +12,8 @@ Requires **iOS 5.0 or later** and ARC.
   
 - **[Features](#features)**
 - **[Documentation](#documentation)**
-- **[Usage](#usage)**
+- **[Installation](#installation)**
+- **[Example](#example)**
 - **[Change Log](#change-log)**
 
 ======
@@ -31,7 +32,7 @@ Requires **iOS 5.0 or later** and ARC.
 
 Browse the documentation on [Cocoadocs](http://cocoadocs.org/docsets/TCBlobDownload/1.5.0/) or add it directly to Xcode by [downloading](https://github.com/thibaultCha/TCBlobDownload/blob/remaining-time/TCBlobDownload/Docs/TCBlobDownloadDocset.zip?raw=true) the docset and placing it into `~/Library/Developer/Shared/Documentation/DocSets/` or open it directly using [Dash](http://kapeli.com/dash).
 
-## Usage
+## Installation
 
 ### Cocoapods
 
@@ -52,6 +53,8 @@ If you don't have CocoaPods installed or integrated into your project, you can l
 ```
 #import <TCBlobDownload/TCBlobDownloadManager.h>
 ```
+
+## Example
 
 ### 1. Blocks
 Blocks are cool.

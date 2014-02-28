@@ -76,12 +76,14 @@ typedef void (^CompleteBlock)(BOOL downloadFinished, NSString *pathToFile);
 @property (nonatomic, copy, readonly) NSString *fileName;
 
 /**
- The current speed of the download in bits/sec.
+ The current speed of the download in bits/sec. This property updates itself regularly so you can retrieve it on a regular interval to update your UI.
  */
 @property (nonatomic, assign, readonly) NSInteger speedRate;
 
 /**
  The estimated number of seconds before the download completes.
+ 
+ `-1` if the remaining time has not been calculated yet.
  */
 @property (nonatomic, assign, readonly) NSInteger remainingTime;
 
