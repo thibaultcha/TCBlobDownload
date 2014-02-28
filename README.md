@@ -54,7 +54,7 @@ If you don't have CocoaPods installed or integrated into your project, you can l
 #import <TCBlobDownload/TCBlobDownloadManager.h>
 ```
 
-## Example
+## Example :eyeglasses:
 
 ### 1. Blocks
 Blocks are cool.
@@ -127,7 +127,7 @@ You can either set a delegate which can implement those optional methods if dele
 
 See documentation for more details.
 
-## Change log
+## Change log :memo:
 
 ### v1.5.0 (2/28/2014)
 * Improved documentation and created a docset
@@ -163,7 +163,7 @@ See documentation for more details.
 ### v1.0 (4/18/2013)
 * Initial release
 
-## Roadmap
+## Roadmap :rocket:
 If you have any idea or request, please suggest it! :smiley:
 
 * Multi segmented downloads

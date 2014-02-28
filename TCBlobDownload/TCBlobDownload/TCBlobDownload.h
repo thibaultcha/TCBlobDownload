@@ -18,10 +18,11 @@ extern NSString * const HTTPErrorCode;
 
 typedef void (^FirstResponseBlock)(NSURLResponse *response);
 typedef void (^ProgressBlock)(float receivedLength, float totalLength, NSInteger remainingTime);
-typedef void (^ErrorBlock)(NSError *error);
+typedef void (^ErrorBlock)(NSError *);
 typedef void (^CompleteBlock)(BOOL downloadFinished, NSString *pathToFile);
 
 @protocol TCBlobDownloadDelegate;
+
 
 #pragma mark - TCBlobDownload
 
@@ -169,12 +170,15 @@ typedef void (^CompleteBlock)(BOOL downloadFinished, NSString *pathToFile);
          onTotal:(uint64_t)totalLength;
 
 /**
- Optional. Called when an error occur during the download. If this method is called, the `TCBlobDownload` will be automatically cancelled just after.
+ Optional. Called when an error occur during the download. If this method is called, the `TCBlobDownload` will be automatically cancelled just after, without deleting the the already downloaded parts of the file. This is done by calling `cancelDownloadAndRemoveFile:`
+ 
+ @see cancelDownloadAndRemoveFile:
  
  @param blobDownload  The `TCBlobDownload` object which trigerred an error.
  @param error  The trigerred error.
  */
-- (void)download:(TCBlobDownload *)blobDownload didStopWithError:(NSError *)error;
+- (void)download:(TCBlobDownload *)blobDownload
+didStopWithError:(__autoreleasing NSError **)error;
 
 /**
  Optional. Called when the `TCBlobDownload` will be removed from the `TCBlobDownloadManager` singleton.

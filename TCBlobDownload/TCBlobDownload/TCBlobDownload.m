@@ -7,6 +7,7 @@
 
 static const double kBufferSize = 1024*1024; // 1 MB
 static const NSTimeInterval kDefaultTimeout = 30;
+static const NSInteger kNumberOfSamples = 5;
 static NSString * const kErrorDomain = @"com.thibaultcha.tcblobdownload";
 static NSString * const HTTPErrorCode = @"httpStatus";
 
@@ -95,16 +96,18 @@ static NSString * const HTTPErrorCode = @"httpStatus";
                                                            timeoutInterval:kDefaultTimeout];
     
     if (![NSURLConnection canHandleRequest:fileRequest]) {
-        __autoreleasing NSError *error = [NSError errorWithDomain:kErrorDomain
-                                                             code:1
-                                                         userInfo:@{ NSLocalizedDescriptionKey:
-                                                                     [NSString stringWithFormat:@"Invalid URL provided to TCBlobDownload: %@",
-                                                                      fileRequest.URL] }];
+        NSError *error = [NSError errorWithDomain:kErrorDomain
+                                             code:1
+                                         userInfo:@{ NSLocalizedDescriptionKey:
+                                                         [NSString stringWithFormat:@"Invalid URL provided to TCBlobDownload: %@",
+                                                          fileRequest.URL] }];
         if (self.errorBlock) {
-            self.errorBlock(error);
+            dispatch_async(dispatch_get_main_queue(), ^{
+               self.errorBlock(error);
+            });
         }
         if ([self.delegate respondsToSelector:@selector(download:didStopWithError:)]) {
-            [self.delegate download:self didStopWithError:error];
+            [self.delegate download:self didStopWithError:&error];
         }
         
         [self finishOperation];
@@ -128,15 +131,16 @@ static NSString * const HTTPErrorCode = @"httpStatus";
     _file = [NSFileHandle fileHandleForWritingAtPath:self.pathToFile];
     [self.file seekToEndOfFile];
     _receivedDataBuffer = [[NSMutableData alloc] init];
+    _samplesOfDownloadedBytes = [[NSMutableArray alloc] init];
     _connection = [[NSURLConnection alloc] initWithRequest:fileRequest
                                                   delegate:self
                                           startImmediately:NO];
     if (self.connection) {
-        [self.connection scheduleInRunLoop:[NSRunLoop mainRunLoop]
+        [self.connection scheduleInRunLoop:[NSRunLoop currentRunLoop]
                                    forMode:NSDefaultRunLoopMode];
+        
         [self willChangeValueForKey:@"isExecuting"];
         [self.connection start];
-        self.samplesOfDownloadedBytes = [[NSMutableArray alloc] init];
         self.speedTimer = [NSTimer scheduledTimerWithTimeInterval:1.0
                                                            target:self
                                                          selector:@selector(updateTransferRate)
@@ -165,16 +169,18 @@ static NSString * const HTTPErrorCode = @"httpStatus";
 
 - (void)connection:(NSURLConnection*)connection didFailWithError:(NSError *)error
 {
-    __autoreleasing NSError *downloadError = [NSError errorWithDomain:kErrorDomain
-                                                                 code:4
-                                                             userInfo:@{ NSLocalizedDescriptionKey: [NSString stringWithFormat:@"Download failed for file: %@. Reason: %@",
-                                                                                                     self.fileName,
-                                                                                                     error.localizedDescription] }];
+    NSError *downloadError = [NSError errorWithDomain:kErrorDomain
+                                                 code:4
+                                             userInfo:@{ NSLocalizedDescriptionKey:[NSString stringWithFormat:@"Download failed for file: %@. Reason: %@",
+                                                                                    self.fileName,
+                                                                                    error.localizedDescription] }];
     if (self.errorBlock) {
-        self.errorBlock(downloadError);
+        dispatch_async(dispatch_get_main_queue(), ^{
+           self.errorBlock(downloadError); 
+        });
     }
     if ([self.delegate respondsToSelector:@selector(download:didStopWithError:)]) {
-        [self.delegate download:self didStopWithError:downloadError];
+        [self.delegate download:self didStopWithError:&downloadError];
     }
     
     [self cancelDownloadAndRemoveFile:NO];
@@ -185,7 +191,7 @@ static NSString * const HTTPErrorCode = @"httpStatus";
     self.expectedDataLength = [response expectedContentLength];
     NSHTTPURLResponse *httpUrlResponse = (NSHTTPURLResponse *)response;
     
-    __autoreleasing NSError *error;
+    NSError *error;
     
     if (httpUrlResponse.statusCode >= 400) {
         error = [NSError errorWithDomain:kErrorDomain
@@ -207,7 +213,9 @@ static NSString * const HTTPErrorCode = @"httpStatus";
         [self.receivedDataBuffer setData:nil];
         
         if (self.firstResponseBlock) {
-            self.firstResponseBlock(response);
+            dispatch_async(dispatch_get_main_queue(), ^{
+               self.firstResponseBlock(response);
+            });
         }
         if ([self.delegate respondsToSelector:@selector(download:didReceiveFirstResponse:)]) {
             [self.delegate download:self didReceiveFirstResponse:response];
@@ -215,10 +223,12 @@ static NSString * const HTTPErrorCode = @"httpStatus";
     }
     else {
         if (self.errorBlock) {
-            self.errorBlock(error);
+            dispatch_async(dispatch_get_main_queue(), ^{
+                self.errorBlock(error);
+            });
         }
         if ([self.delegate respondsToSelector:@selector(download:didStopWithError:)]) {
-            [self.delegate download:self didStopWithError:error];
+            [self.delegate download:self didStopWithError:&error];
         }
         
         [self cancelDownloadAndRemoveFile:NO];
@@ -239,7 +249,9 @@ static NSString * const HTTPErrorCode = @"httpStatus";
     }
     
     if (self.progressBlock) {
-        self.progressBlock(self.receivedDataLength, self.expectedDataLength, self.remainingTime);
+        dispatch_async(dispatch_get_main_queue(), ^{
+            self.progressBlock(self.receivedDataLength, self.expectedDataLength, self.remainingTime);
+        });
     }
     if ([self.delegate respondsToSelector:@selector(download:didReceiveData:onTotal:)]) {
         [self.delegate download:self
@@ -254,7 +266,9 @@ static NSString * const HTTPErrorCode = @"httpStatus";
     [self.receivedDataBuffer setData:nil];
     
     if (self.completeBlock) {
-        self.completeBlock(YES, self.pathToFile);
+        dispatch_async(dispatch_get_main_queue(), ^{
+           self.completeBlock(YES, self.pathToFile);
+        });
     }
     if ([self.delegate respondsToSelector:@selector(download:didFinishWithSucces:atPath:)]) {
         [self.delegate download:self didFinishWithSucces:YES atPath:self.pathToFile];
@@ -269,14 +283,14 @@ static NSString * const HTTPErrorCode = @"httpStatus";
 
 - (void)updateTransferRate
 {
-    if (self.samplesOfDownloadedBytes.count > 5) {
+    if (self.samplesOfDownloadedBytes.count > kNumberOfSamples) {
         [self.samplesOfDownloadedBytes removeObjectAtIndex:0];
     }
     
     static NSInteger totalReceived;
     [self.samplesOfDownloadedBytes addObject:[NSNumber numberWithLong:self.receivedDataLength - totalReceived]];
     totalReceived = self.receivedDataLength;
-    
+    // Compute the speed rate on an average of the last seconds samples
     self.speedRate = [[self.samplesOfDownloadedBytes valueForKeyPath:@"@avg.longValue"] longValue];
 }
 
@@ -299,21 +313,25 @@ static NSString * const HTTPErrorCode = @"httpStatus";
     NSFileManager *fm = [NSFileManager defaultManager];
     
     if (remove && [fm fileExistsAtPath:self.pathToFile]) {
-        __autoreleasing NSError *fileError;
+        NSError *fileError;
         [fm removeItemAtPath:self.pathToFile error:&fileError];
         if (fileError) {
             TCLog(@"An error occured while removing file - %@", fileError);
             if (self.errorBlock) {
-                self.errorBlock(fileError);
+                dispatch_async(dispatch_get_main_queue(), ^{
+                   self.errorBlock(fileError);
+                });
             }
             if ([self.delegate respondsToSelector:@selector(download:didStopWithError:)]) {
-                [self.delegate download:self didStopWithError:fileError];
+                [self.delegate download:self didStopWithError:&fileError];
             }
         }
     }
     
     if (self.completeBlock) {
-        self.completeBlock(NO, nil);
+        dispatch_async(dispatch_get_main_queue(), ^{
+           self.completeBlock(NO, nil);
+        });
     }
     if ([self.delegate respondsToSelector:@selector(download:didFinishWithSucces:atPath:)]) {
         [self.delegate download:self didFinishWithSucces:NO atPath:nil];

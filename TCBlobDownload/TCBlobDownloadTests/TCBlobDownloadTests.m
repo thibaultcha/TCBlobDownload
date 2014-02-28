@@ -198,4 +198,23 @@
     }
 }
 
+- (void)testCallbacksShouldBeCalledOnMainThread
+{
+    [self.manager startDownloadWithURL:[NSURL URLWithString:kValidURLToDownload]
+                            customPath:nil
+                         firstResponse:^(NSURLResponse *response) {
+                             XCTAssert([NSThread isMainThread], @"First response block is not called on main thread");
+                         }
+                              progress:^(float receivedLength, float totalLength, NSInteger remainingTime) {
+                                  XCTAssert([NSThread isMainThread], @"Progress block is not called on main thread");
+                              }
+                                 error:NULL
+                              complete:^(BOOL downloadFinished, NSString *pathToFile) {
+                                  XCTAssert([NSThread isMainThread], @"Completion block is not called on main thread");
+                                  [self notify:XCTAsyncTestCaseStatusSucceeded];
+                              }];
+    
+    [self waitForStatus:XCTAsyncTestCaseStatusSucceeded timeout:5];
+}
+
 @end

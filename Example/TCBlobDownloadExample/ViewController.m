@@ -55,10 +55,20 @@
                                           customPath:nil
                                        firstResponse:NULL
                                             progress:^(float receivedLength, float totalLength, NSInteger remainingTime) {
-                                                [self.remainingTime setText:[NSString stringWithFormat:@"%d", remainingTime]];
+                                                if (![NSThread isMainThread]) {
+                                                    NSLog(@"I am NOT in the main thread");
+                                                }
+                                                
+                                                
+                                                if (remainingTime != -1) {
+                                                    [self.remainingTime setText:[NSString stringWithFormat:@"%ds", remainingTime]];
+                                                }
                                             }
                                                error:NULL
-                                            complete:NULL];
+                                            complete:^(BOOL downloadFinished, NSString *pathToFile) {
+                                                NSString *str = downloadFinished ? @"Completed" : @"Cancelled";
+                                                [self.remainingTime setText:str];
+                                            }];
     [self.urlField resignFirstResponder];
 }
 
