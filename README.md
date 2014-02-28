@@ -14,23 +14,22 @@ Requires **iOS 5.0 or later** and ARC.
 - **[Documentation](#documentation)**
 - **[Usage](#usage)**
 - **[Change Log](#change-log)**
-- **[Licence](#licence)**
 
 ======
 
 ## Features
-1. Download files in background threads.
-2. Use blocks or delegate!
-3. Pause and resume a download.
-4. Set maximum number of concurrent downloads.
-5. Custom download path and auto path creation.
+1. Download files in background threads
+2. Blocks or delegate style
+3. Pause and resume a download
+4. Set maximum number of concurrent downloads
+5. Custom download path and auto path creation
 6. Download speed and remaining time 
-7. `[download cancelDownloadAndRemoveFile:BOOL]`
-8. Download dependencies.
+7. Download cancellation
+8. Download dependencies
 
 ## Documentation
 
-Browse the documentation on [Cocoadocs](http://cocoadocs.org/docsets/TCBlobDownload/1.4.0/) or add it directly to Xcode by downloading the docset and placing it into `~/Library/Developer/Shared/Documentation/DocSets/`.
+Browse the documentation on [Cocoadocs](http://cocoadocs.org/docsets/TCBlobDownload/1.5.0/) or add it directly to Xcode by [downloading](https://github.com/thibaultCha/TCBlobDownload/blob/remaining-time/TCBlobDownload/Docs/TCBlobDownloadDocset.zip?raw=true) the docset and placing it into `~/Library/Developer/Shared/Documentation/DocSets/` or open it directly using [Dash](http://kapeli.com/dash).
 
 ## Usage
 
@@ -72,24 +71,24 @@ TCBlobDownload *downloader = [sharedManager startDownloadWithURL:@"http://give.m
                    // wow moving progress bar!
                  }
                  error:^(NSError *error){
-                   // this not cool
+                  // this not cool
                  }
                  complete:^(BOOL downloadFinished, NSString *pathToFile) {
-		     // okay
+                  // okay
                  }];
 ```
 
-If you set a customPath:
+If you set a custom path:
 
 ```objective-c
 NSString *customPath = [NSTemporaryDirectory() stringByAppendingPathComponent:@"My/Custom/Path/"];
 
 TCBlobDownload *downloader = [sharedManager startDownloadWithURL:@"http://give.me/abigfile.avi"
-                                                                                                   customPath:customPath // important
-                                                                                                 andDelegate:nil];
+                                                          customPath:customPath // important
+                                                         andDelegate:nil];
 ```
 
-This will **create** the given path if needed and download the file in the `Path/` directory. **Remember that you should follow the [iOS Data Storage Guidelines](https://developer.apple.com/icloud/documentation/data-storage/)**.
+This will **create** the given path if needed and download the file in the `Path/` directory. Please note that during the download process you have no control over the file name as explained with reasons why in the documentation. **Remember that you should follow the [iOS Data Storage Guidelines](https://developer.apple.com/icloud/documentation/data-storage/)**.
 
 ### 2. Delegate
 You can either set a delegate which can implement those optional methods if delegates have your preference over blocks:
@@ -121,14 +120,16 @@ You can either set a delegate which can implement those optional methods if dele
 ### 3. Other things you should know
 **Cool thing 1:** If a download has been stopped and the local file has not been deleted, when you will restart the download to the same local path, the download will start where it has stopped using the HTTP `Range=bytes` header.
 
-**Cool thing 2:** You can also set dependencies in your downloads using the `addDependentDownload:` method from TCBlobDownload. (See [NSOperation Class Reference](http://developer.apple.com/library/mac/#documentation/Cocoa/Reference/NSOperation_class/Reference/Reference.html) and the `addDependency:` method in particular.)
+**Cool thing 2:** You can also set dependencies in your downloads using the `addDependentDownload:` method from `TCBlobDownload`.
+
+See documentation for more details.
 
 ## Change log
 
-### v1.5.0
+### v1.5.0 (2/28/2014)
 * Improved documentation and created a docset
-* Added a `speedRate` and `remainingTime` (in seconds) property on TCBlobDownload thanks to [#16](https://github.com/thibaultCha/TCBlobDownload/issues/16)
-* Updated TCBlobDownload properties to `readonly`
+* Added a `speedRate` and `remainingTime` (in seconds) property on `TCBlobDownload` thanks to [#16](https://github.com/thibaultCha/TCBlobDownload/issues/16)
+* Updated `TCBlobDownload` properties to `readonly`
 * Renamed `sharedDownloadManager` to `sharedInstance`
 
 ### v1.4.0 (11/19/2013)
@@ -163,3 +164,4 @@ You can either set a delegate which can implement those optional methods if dele
 If you have any idea or request, please suggest it! :smiley:
 
 * Multi segmented downloads
+* Dash XML feed for documentation versioning

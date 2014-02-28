@@ -25,7 +25,7 @@ profile
 
 ####
 # Xcode temporary files that should never be committed
-# 
+#
 # NB: NIB/XIB files still exist even on Storyboard projects, so we want this...
 
 *~.nib
@@ -124,7 +124,7 @@ xcuserdata
 
 ####
 # Cocoapods: cocoapods.org
-# 
+#
 # Ignoring these files means that whoever uses the code will first have to run:
 # pod install
 # in the App.xcodeproj directory.
@@ -137,7 +137,9 @@ Podfile.lock
 # UNKNOWN: recommended by others, but I can't discover what these files are
 #
 # ...none. Everything is now explained.
-SampleProject.xcodeproj/project.xcworkspace/xcshareddata/SampleProject.xccheckout
 
-SampleProject.xcodeproj/project.xcworkspace/xcshareddata/SampleProject.xccheckout
+###
+# CUSTOM
+# Related to TCBlobDownload
+
 docset-installed.txt

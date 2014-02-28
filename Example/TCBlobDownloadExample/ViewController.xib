@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="4514" systemVersion="13C64" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="4514" systemVersion="13C64" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES">
     <dependencies>
-        <deployment defaultVersion="1280" identifier="iOS"/>
+        <deployment defaultVersion="1536" identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="3747"/>
     </dependencies>
     <objects>
@@ -19,15 +19,22 @@
             <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
-                <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="File URL to download" minimumFontSize="17" id="3">
+                <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="URL to download" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="3">
                     <rect key="frame" x="20" y="77" width="280" height="30"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                    <constraints>
+                        <constraint firstAttribute="width" constant="280" id="VMX-Qb-awx"/>
+                    </constraints>
                     <fontDescription key="fontDescription" type="system" pointSize="16"/>
                     <textInputTraits key="textInputTraits"/>
                 </textField>
-                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" id="13">
-                    <rect key="frame" x="24" y="115" width="128" height="44"/>
+                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="13">
+                    <rect key="frame" x="20" y="115" width="128" height="44"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                    <constraints>
+                        <constraint firstAttribute="width" constant="128" id="0dH-dd-6MH"/>
+                        <constraint firstAttribute="height" constant="44" id="s6H-L9-8ri"/>
+                    </constraints>
                     <state key="normal" title="Add download">
                         <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                     </state>
@@ -35,9 +42,13 @@
                         <action selector="download:" destination="-1" eventType="touchUpInside" id="26"/>
                     </connections>
                 </button>
-                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" id="17">
+                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="17">
                     <rect key="frame" x="185" y="115" width="95" height="44"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="44" id="gxb-5h-h5z"/>
+                        <constraint firstAttribute="width" constant="95" id="u9c-JJ-X1e"/>
+                    </constraints>
                     <state key="normal" title="Cancel all">
                         <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                     </state>
@@ -45,7 +56,7 @@
                         <action selector="cancelAll:" destination="-1" eventType="touchUpInside" id="28"/>
                     </connections>
                 </button>
-                <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="dG2-Ua-phD">
+                <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="dG2-Ua-phD">
                     <rect key="frame" x="139" y="178" width="42" height="21"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                     <fontDescription key="fontDescription" type="system" pointSize="17"/>
@@ -54,6 +65,19 @@
                 </label>
             </subviews>
             <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+            <constraints>
+                <constraint firstItem="17" firstAttribute="height" secondItem="13" secondAttribute="height" id="3jH-Jl-w6d"/>
+                <constraint firstItem="dG2-Ua-phD" firstAttribute="centerX" secondItem="1" secondAttribute="centerX" id="4hL-5t-CGO"/>
+                <constraint firstItem="dG2-Ua-phD" firstAttribute="centerX" secondItem="3" secondAttribute="centerX" id="7JE-nS-jeN"/>
+                <constraint firstItem="dG2-Ua-phD" firstAttribute="top" secondItem="3" secondAttribute="bottom" constant="71" id="AEy-pV-XAl"/>
+                <constraint firstItem="3" firstAttribute="top" secondItem="1" secondAttribute="top" constant="77" id="FvB-de-oZ4"/>
+                <constraint firstItem="13" firstAttribute="leading" secondItem="1" secondAttribute="leading" constant="20" id="Nb4-x2-nmJ"/>
+                <constraint firstItem="17" firstAttribute="top" secondItem="3" secondAttribute="bottom" constant="8" id="T8E-1l-xrg"/>
+                <constraint firstAttribute="centerX" secondItem="3" secondAttribute="centerX" id="VE0-5X-ZXe"/>
+                <constraint firstItem="13" firstAttribute="top" secondItem="3" secondAttribute="bottom" constant="8" id="hrc-iq-ahL"/>
+                <constraint firstItem="17" firstAttribute="width" secondItem="13" secondAttribute="width" constant="-33" id="jgF-Fs-z2e"/>
+                <constraint firstAttribute="trailing" secondItem="17" secondAttribute="trailing" constant="40" id="jtS-gn-9L4"/>
+            </constraints>
             <simulatedStatusBarMetrics key="simulatedStatusBarMetrics"/>
             <simulatedScreenMetrics key="simulatedDestinationMetrics" type="retina4"/>
         </view>

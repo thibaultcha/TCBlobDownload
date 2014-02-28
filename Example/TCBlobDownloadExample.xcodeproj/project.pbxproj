@@ -18,6 +18,7 @@
 		21D06E11181847F400CAADCD /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 21D06E06181847F400CAADCD /* main.m */; };
 		21D06E13181847F400CAADCD /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 21D06E0A181847F400CAADCD /* ViewController.m */; };
 		21D06E14181847F400CAADCD /* ViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 21D06E0B181847F400CAADCD /* ViewController.xib */; };
+		C33448CD18C00E500050C1ED /* libTCBlobDownload.a in Frameworks */ = {isa = PBXBuildFile; fileRef = C33448CA18C000850050C1ED /* libTCBlobDownload.a */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -62,6 +63,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				C33448CD18C00E500050C1ED /* libTCBlobDownload.a in Frameworks */,
 				217762391730025C001956C7 /* UIKit.framework in Frameworks */,
 				2177623B1730025C001956C7 /* Foundation.framework in Frameworks */,
 				2177623D1730025C001956C7 /* CoreGraphics.framework in Frameworks */,
@@ -282,7 +284,7 @@
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
 				GCC_WARN_UNINITIALIZED_AUTOS = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 5.1;
+				IPHONEOS_DEPLOYMENT_TARGET = 6.0;
 				ONLY_ACTIVE_ARCH = YES;
 				SDKROOT = iphoneos;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -307,7 +309,7 @@
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
 				GCC_WARN_UNINITIALIZED_AUTOS = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 5.1;
+				IPHONEOS_DEPLOYMENT_TARGET = 6.0;
 				OTHER_CFLAGS = "-DNS_BLOCK_ASSERTIONS=1";
 				SDKROOT = iphoneos;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -322,8 +324,13 @@
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "TCBlobDownloadExample/TCBlobDownloadExample-Prefix.pch";
+				HEADER_SEARCH_PATHS = (
+					"$(inherited)",
+					/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include,
+					"$(PROJECT_DIR)/../TCBlobDownload/**",
+				);
 				INFOPLIST_FILE = "$(SRCROOT)/TCBlobDownloadExample/TCBlobDownloadExample-Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 5.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 6.0;
 				LIBRARY_SEARCH_PATHS = "";
 				PRODUCT_NAME = TCBlobDownloadExample;
 				WRAPPER_EXTENSION = app;
@@ -337,8 +344,13 @@
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "TCBlobDownloadExample/TCBlobDownloadExample-Prefix.pch";
+				HEADER_SEARCH_PATHS = (
+					"$(inherited)",
+					/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include,
+					"$(PROJECT_DIR)/../TCBlobDownload/**",
+				);
 				INFOPLIST_FILE = "$(SRCROOT)/TCBlobDownloadExample/TCBlobDownloadExample-Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 5.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 6.0;
 				LIBRARY_SEARCH_PATHS = "";
 				PRODUCT_NAME = TCBlobDownloadExample;
 				WRAPPER_EXTENSION = app;
