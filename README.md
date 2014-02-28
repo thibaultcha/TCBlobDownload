@@ -28,9 +28,9 @@ Requires **iOS 5.0 or later** and ARC.
 7. Download cancellation
 8. Download dependencies
 
-## Documentation
+## Documentation :books:
 
-Browse the documentation on [Cocoadocs](http://cocoadocs.org/docsets/TCBlobDownload/1.5.0/) or add it directly to Xcode by [downloading](https://github.com/thibaultCha/TCBlobDownload/blob/remaining-time/TCBlobDownload/Docs/TCBlobDownloadDocset.zip?raw=true) the docset and placing it into `~/Library/Developer/Shared/Documentation/DocSets/` or open it directly using [Dash](http://kapeli.com/dash).
+Browse the documentation on [Cocoadocs](http://cocoadocs.org/docsets/TCBlobDownload/1.5.0/) or add it directly to Xcode or [Dash](http://kapeli.com/dash) by [downloading](https://github.com/thibaultCha/TCBlobDownload/blob/remaining-time/TCBlobDownload/Docs/TCBlobDownloadDocset.zip?raw=true) the docset and placing it into `~/Library/Developer/Shared/Documentation/DocSets/`.
 
 ## Installation
 
@@ -66,7 +66,7 @@ To immediately start a download in the default TCBlobDownloadManager directory (
 TCBlobDownloadManager *sharedManager = [TCBlobDownloadManager sharedInstance];
 
 TCBlobDownload *downloader = [sharedManager startDownloadWithURL:@"http://give.me/abigfile.avi"
-                       downloadPath:nil
+                downloadPath:nil
                  firstResponse:^(NSURLResponse *response) {
 		      
                  }
