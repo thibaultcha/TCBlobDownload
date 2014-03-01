@@ -2,7 +2,7 @@
 
 [![Build Status](https://api.travis-ci.org/thibaultCha/TCBlobDownload.png)](https://travis-ci.org/thibaultCha/TCBlobDownload)
 
-This library uses **NSOperations** to download big files (typically videos, music... well: BLOBs) using **NSURLConnection** in background threads.
+TCBlobDownload uses **NSOperations** to download large files (typically videos, music... well: BLOBs) using **NSURLConnection** in background threads.
 
 Tested with files from ~150MB to ~1.2GB, mostly videos.
 
@@ -11,10 +11,11 @@ I've implemented **TCBlobDownload** which extends NSOperation and use **TCBlobDo
 Requires **iOS 5.0 or later** and ARC.
   
 - **[Features](#features)**
-- **[Documentation](#documentation)**
+- **[Documentation](#documentation-books)**
 - **[Installation](#installation)**
-- **[Example](#example)**
-- **[Change Log](#change-log)**
+- **[Example](#example-eyeglasses)**
+- **[Change Log](#change-log-memo)**
+- **[Roadmap](#roadmap-rocket)**
 
 ======
 

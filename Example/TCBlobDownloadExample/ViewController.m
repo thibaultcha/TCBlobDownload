@@ -1,6 +1,6 @@
 //
 //  ViewController.m
-//  BlobDownloaderExample
+//  TCBlobDownloadExample
 //
 //  Created by Thibault Charbonnier on 18/04/13.
 //  Copyright (c) 2013 thibaultCha. All rights reserved.
@@ -55,11 +55,6 @@
                                           customPath:nil
                                        firstResponse:NULL
                                             progress:^(float receivedLength, float totalLength, NSInteger remainingTime) {
-                                                if (![NSThread isMainThread]) {
-                                                    NSLog(@"I am NOT in the main thread");
-                                                }
-                                                
-                                                
                                                 if (remainingTime != -1) {
                                                     [self.remainingTime setText:[NSString stringWithFormat:@"%ds", remainingTime]];
                                                 }

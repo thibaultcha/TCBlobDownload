@@ -12,10 +12,12 @@
 #import "TestValues.h"
 #import "TCBlobDownloadManager.h"
 
-@interface TCBlobDownloadTests : XCTestCase
+@interface TCBlobDownloadTests : XCTestCase <TCBlobDownloadDelegate>
 @property (nonatomic, strong) TCBlobDownloadManager *manager;
 @property (nonatomic, copy) NSURL *validURL;
 @property (nonatomic, copy) NSString *testsDirectory;
+
+@property (nonatomic, assign) BOOL delegateCalledOnMainThread;
 @end
 
 @implementation TCBlobDownloadTests
@@ -104,6 +106,18 @@
               @"TCBlobDownloadManager cancelAllDownload did not properly finished all operations.");
 }
 
+- (void)SetMaximumNumberOfDownloads
+{
+    [self.manager setMaxConcurrentDownloads:3];
+    
+    for (NSInteger i = 0; i < 5; i++) {
+        [self.manager startDownloadWithURL:self.validURL
+                                customPath:nil
+                                  delegate:nil];
+    }
+    
+    XCTAssertEqual(self.manager.downloadCount, 3, @"Maximum number of downloads is not respected.");
+}
 
 #pragma mark - TCBlobDownload
 
@@ -198,9 +212,9 @@
     }
 }
 
-- (void)testCallbacksShouldBeCalledOnMainThread
+- (void)testCallbacksBlocksShouldBeCalledOnMainThread
 {
-    [self.manager startDownloadWithURL:[NSURL URLWithString:kValidURLToDownload]
+    [self.manager startDownloadWithURL:self.validURL
                             customPath:nil
                          firstResponse:^(NSURLResponse *response) {
                              XCTAssert([NSThread isMainThread], @"First response block is not called on main thread");
@@ -215,6 +229,66 @@
                               }];
     
     [self waitForStatus:XCTAsyncTestCaseStatusSucceeded timeout:5];
+}
+
+- (void)DelegateMethodsShouldBeCalledOnMainThreadOne
+{
+    [self.manager startDownloadWithURL:self.validURL
+                            customPath:nil
+                              delegate:self];
+
+    [self waitForStatus:kDidReceiveFirstResponseMethodCalled timeout:kDefaultAsyncTimeout];
+    XCTAssert(self.delegateCalledOnMainThread, @"download:didReceiveFirstResponse: is not called on main thread");
+    
+    [self waitForStatus:kDidReceiveDataMethodCalled timeout:kDefaultAsyncTimeout];
+    XCTAssert(self.delegateCalledOnMainThread, @"download:didReceiveData: is not called on main thread");
+    
+    //[self waitForStatus:kDidFinishWithSuccessMethodCalled timeout:10];
+    //XCTAssert(self.delegateCalledOnMainThread, @"download:didFinishWithSuccess: is not called on main thread");
+}
+
+- (void)DelegateMethodsShouldBeCalledOnMainThreadTwo
+{
+    [self.manager startDownloadWithURL:[NSURL URLWithString:kInvalidURLToDownload]
+                            customPath:nil
+                              delegate:self];
+    
+    [self waitForStatus:kDidStopWithErrorMethodCalled timeout:5];
+    XCTAssert(self.delegateCalledOnMainThread, @"download:didStopWithError: is not called on main thread");
+    
+    //[self waitForStatus:kDidFinishWithSuccessMethodCalled timeout:5];
+    //XCTAssert(self.delegateCalledOnMainThread, @"download:didFinishWithSuccess: is not called on main thread after error occurring");
+}
+
+
+#pragma mark - TCBlobDownloadDelegate
+
+
+- (void)download:(TCBlobDownload *)blobDownload didReceiveFirstResponse:(NSURLResponse *)response
+{
+    self.delegateCalledOnMainThread = YES;
+    [self notify:kDidReceiveFirstResponseMethodCalled];
+}
+
+- (void)download:(TCBlobDownload *)blobDownload didReceiveData:(uint64_t)receivedLength onTotal:(uint64_t)totalLength
+{
+    static dispatch_once_t onceToken;
+    dispatch_once(&onceToken, ^{
+        self.delegateCalledOnMainThread = YES;
+        [self notify:kDidReceiveDataMethodCalled];
+    });
+}
+
+- (void)download:(TCBlobDownload *)blobDownload didFinishWithSucces:(BOOL)downloadFinished atPath:(NSString *)pathToFile
+{
+    //self.delegateCalledOnMainThread = YES;
+    //[self notify:kDidFinishWithSuccessMethodCalled];
+}
+
+- (void)download:(TCBlobDownload *)blobDownload didStopWithError:(NSError *)error
+{
+    //self.delegateCalledOnMainThread = YES;
+    //[self notify:kDidStopWithErrorMethodCalled];
 }
 
 @end

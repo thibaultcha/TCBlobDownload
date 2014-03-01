@@ -1,6 +1,6 @@
 //
 //  ViewController.h
-//  BlobDownloaderExample
+//  TCBlobDownloadExample
 //
 //  Created by Thibault Charbonnier on 18/04/13.
 //  Copyright (c) 2013 thibaultCha. All rights reserved.

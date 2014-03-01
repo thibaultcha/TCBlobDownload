@@ -44,7 +44,7 @@
 - (void)setDefaultDownloadPath:(NSString *)pathToDL
 {
     if ([TCBlobDownloadManager createPathFromPath:pathToDL]) {
-        _defaultDownloadPath = pathToDL;
+        self.defaultDownloadPath = pathToDL;
     }
 }
 
@@ -59,7 +59,7 @@
 
 - (NSUInteger)downloadCount
 {
-    return [_operationQueue operationCount];
+    return [self.operationQueue operationCount];
 }
 
 
@@ -78,7 +78,7 @@
     TCBlobDownload *downloader = [[TCBlobDownload alloc] initWithURL:url
                                                         downloadPath:downloadPath
                                                             delegate:delegateOrNil];
-    [_operationQueue addOperation:downloader];
+    [self.operationQueue addOperation:downloader];
     
     return downloader;
 }

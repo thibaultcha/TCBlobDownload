@@ -14,8 +14,16 @@ static NSString * const pathToDownloadTests = @"com.thibaultcha.tcblobdltests";
 static NSString * const kValidURLToDownload = @"https://github.com/thibaultCha/TCBlobDownload/archive/master.zip";
 
 static NSString * const kInvalidURLToDownload = @"wait, where?";
+
 static NSString * const k404URLToDownload = @"https://github.com/thibaultCha/TCBlobDownload/archive/totoro";
 
 static const NSTimeInterval kDefaultAsyncTimeout = 2;
+
+typedef NS_OPTIONS(NSUInteger, kDelegateMethodCalled) {
+    kDidReceiveFirstResponseMethodCalled = 10,
+    kDidReceiveDataMethodCalled,
+    kDidFinishWithSuccessMethodCalled,
+    kDidStopWithErrorMethodCalled
+};
 
 #endif

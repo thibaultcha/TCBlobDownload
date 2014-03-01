@@ -178,7 +178,7 @@ typedef void (^CompleteBlock)(BOOL downloadFinished, NSString *pathToFile);
  @param error  The trigerred error.
  */
 - (void)download:(TCBlobDownload *)blobDownload
-didStopWithError:(__autoreleasing NSError **)error;
+didStopWithError:(NSError *)error;
 
 /**
  Optional. Called when the `TCBlobDownload` will be removed from the `TCBlobDownloadManager` singleton.

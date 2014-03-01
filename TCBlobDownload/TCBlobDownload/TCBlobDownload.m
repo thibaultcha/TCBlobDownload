@@ -99,7 +99,7 @@ static NSString * const HTTPErrorCode = @"httpStatus";
         NSError *error = [NSError errorWithDomain:kErrorDomain
                                              code:1
                                          userInfo:@{ NSLocalizedDescriptionKey:
-                                                         [NSString stringWithFormat:@"Invalid URL provided to TCBlobDownload: %@",
+                                                         [NSString stringWithFormat:@"Invalid URL provided: %@",
                                                           fileRequest.URL] }];
         if (self.errorBlock) {
             dispatch_async(dispatch_get_main_queue(), ^{
@@ -107,7 +107,9 @@ static NSString * const HTTPErrorCode = @"httpStatus";
             });
         }
         if ([self.delegate respondsToSelector:@selector(download:didStopWithError:)]) {
-            [self.delegate download:self didStopWithError:&error];
+            dispatch_async(dispatch_get_main_queue(), ^{
+               [self.delegate download:self didStopWithError:error];
+            });
         }
         
         [self finishOperation];
@@ -176,11 +178,13 @@ static NSString * const HTTPErrorCode = @"httpStatus";
                                                                                     error.localizedDescription] }];
     if (self.errorBlock) {
         dispatch_async(dispatch_get_main_queue(), ^{
-           self.errorBlock(downloadError); 
+            self.errorBlock(downloadError);
         });
     }
     if ([self.delegate respondsToSelector:@selector(download:didStopWithError:)]) {
-        [self.delegate download:self didStopWithError:&downloadError];
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [self.delegate download:self didStopWithError:downloadError];
+        });
     }
     
     [self cancelDownloadAndRemoveFile:NO];
@@ -214,11 +218,13 @@ static NSString * const HTTPErrorCode = @"httpStatus";
         
         if (self.firstResponseBlock) {
             dispatch_async(dispatch_get_main_queue(), ^{
-               self.firstResponseBlock(response);
+                self.firstResponseBlock(response);
             });
         }
         if ([self.delegate respondsToSelector:@selector(download:didReceiveFirstResponse:)]) {
-            [self.delegate download:self didReceiveFirstResponse:response];
+            dispatch_async(dispatch_get_main_queue(), ^{
+                [self.delegate download:self didReceiveFirstResponse:response];
+            });
         }
     }
     else {
@@ -228,7 +234,9 @@ static NSString * const HTTPErrorCode = @"httpStatus";
             });
         }
         if ([self.delegate respondsToSelector:@selector(download:didStopWithError:)]) {
-            [self.delegate download:self didStopWithError:&error];
+            dispatch_async(dispatch_get_main_queue(), ^{
+                [self.delegate download:self didStopWithError:error];
+            });
         }
         
         [self cancelDownloadAndRemoveFile:NO];
@@ -254,9 +262,11 @@ static NSString * const HTTPErrorCode = @"httpStatus";
         });
     }
     if ([self.delegate respondsToSelector:@selector(download:didReceiveData:onTotal:)]) {
-        [self.delegate download:self
-                 didReceiveData:self.receivedDataLength
-                        onTotal:self.expectedDataLength];
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [self.delegate download:self
+                     didReceiveData:self.receivedDataLength
+                            onTotal:self.expectedDataLength];
+        });
     }
 }
 
@@ -271,7 +281,9 @@ static NSString * const HTTPErrorCode = @"httpStatus";
         });
     }
     if ([self.delegate respondsToSelector:@selector(download:didFinishWithSucces:atPath:)]) {
-        [self.delegate download:self didFinishWithSucces:YES atPath:self.pathToFile];
+        dispatch_async(dispatch_get_main_queue(), ^{
+           [self.delegate download:self didFinishWithSucces:YES atPath:self.pathToFile];
+        });
     }
     
     [self finishOperation];
@@ -323,7 +335,9 @@ static NSString * const HTTPErrorCode = @"httpStatus";
                 });
             }
             if ([self.delegate respondsToSelector:@selector(download:didStopWithError:)]) {
-                [self.delegate download:self didStopWithError:&fileError];
+                dispatch_async(dispatch_get_main_queue(), ^{
+                   [self.delegate download:self didStopWithError:fileError]; 
+                });
             }
         }
     }
@@ -334,7 +348,9 @@ static NSString * const HTTPErrorCode = @"httpStatus";
         });
     }
     if ([self.delegate respondsToSelector:@selector(download:didFinishWithSucces:atPath:)]) {
-        [self.delegate download:self didFinishWithSucces:NO atPath:nil];
+        dispatch_async(dispatch_get_main_queue(), ^{
+           [self.delegate download:self didFinishWithSucces:NO atPath:nil];
+        });
     }
 }
 
