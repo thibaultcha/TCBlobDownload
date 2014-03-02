@@ -6,6 +6,7 @@
 //
 
 #import "TCBlobDownloadManager.h"
+#import "TCBlobDownload.h"
 
 @interface TCBlobDownloadManager ()
 @property (nonatomic, strong) NSOperationQueue *operationQueue;
@@ -91,8 +92,16 @@
                                 complete:(CompleteBlock)completeBlock
 {
     NSString *downloadPath = self.defaultDownloadPath;
-    if ([TCBlobDownloadManager createPathFromPath:customPathOrNil]) {
+    NSError *error;
+    BOOL existsOrIsCreated = [[NSFileManager defaultManager] createDirectoryAtPath:customPathOrNil
+                                                       withIntermediateDirectories:YES
+                                                                        attributes:nil
+                                                                             error:&error];
+    if (existsOrIsCreated) {
         downloadPath = customPathOrNil;
+    }
+    if (error) {
+        NSLog(@"%@", error);
     }
     
     TCBlobDownload *downloader = [[TCBlobDownload alloc] initWithURL:url

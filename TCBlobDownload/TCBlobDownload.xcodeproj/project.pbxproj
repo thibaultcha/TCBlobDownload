@@ -135,6 +135,7 @@
 		217761F3172FFBBB001956C7 = {
 			isa = PBXGroup;
 			children = (
+				C30D071718C37A2200D5CBB3 /* Utils */,
 				2177620D172FFBD9001956C7 /* TCBlobDownload.h */,
 				2177620E172FFBD9001956C7 /* TCBlobDownload.m */,
 				2177620F172FFBD9001956C7 /* TCBlobDownloadManager.h */,
@@ -190,6 +191,13 @@
 				C30D071218C375FB00D5CBB3 /* TCBlobDownloadTestsBase.m */,
 			);
 			name = Base;
+			sourceTree = "<group>";
+		};
+		C30D071718C37A2200D5CBB3 /* Utils */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = Utils;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */

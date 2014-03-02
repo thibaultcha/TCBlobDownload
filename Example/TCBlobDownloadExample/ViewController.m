@@ -52,7 +52,7 @@
     
     // Blocks
     [self.sharedDownloadManager startDownloadWithURL:[NSURL URLWithString:self.urlField.text]
-                                          customPath:nil
+                                          customPath:[NSString pathWithComponents:@[NSTemporaryDirectory(), @"test"]]
                                        firstResponse:NULL
                                             progress:^(float receivedLength, float totalLength, NSInteger remainingTime) {
                                                 if (remainingTime != -1) {
@@ -69,7 +69,7 @@
 
 - (void)cancelAll:(id)sender
 {
-    [self.sharedDownloadManager cancelAllDownloadsAndRemoveFiles:YES];
+    [self.sharedDownloadManager cancelAllDownloadsAndRemoveFiles:NO];
 }
 
 
