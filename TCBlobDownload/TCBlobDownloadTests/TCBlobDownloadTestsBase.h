@@ -1,13 +1,14 @@
 //
-//  TestValues.h
+//  TCBlobDownloadTestsBase.h
 //  TCBlobDownload
 //
-//  Created by Thibault Charbonnier on 23/10/2013.
-//  Copyright (c) 2013 thibaultCha. All rights reserved.
+//  Created by Thibault Charbonnier on 02/03/2014.
+//  Copyright (c) 2014 thibaultCha. All rights reserved.
 //
 
-#ifndef TCBlobDownload_TestValues_h
-#define TCBlobDownload_TestValues_h
+#import <XCTest/XCTest.h>
+#import "XCTestCase+AsyncTesting.h"
+#import "TCBlobDownloadManager.h"
 
 static NSString * const pathToDownloadTests = @"com.thibaultcha.tcblobdltests";
 
@@ -26,4 +27,9 @@ typedef NS_OPTIONS(NSUInteger, kDelegateMethodCalled) {
     kDidStopWithErrorMethodCalled
 };
 
-#endif
+@interface TCBlobDownloadTestsBase : XCTestCase
+@property (nonatomic, strong) TCBlobDownloadManager *manager;
+@property (nonatomic, copy) NSURL *validURL;
+@property (nonatomic, copy) NSURL *invalidURL;
+@property (nonatomic, copy) NSString *testsDirectory;
+@end

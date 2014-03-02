@@ -6,47 +6,12 @@
 //  Copyright (c) 2013 thibaultCha. All rights reserved.
 //
 
-#import <XCTest/XCTest.h>
-#import "XCTestCase+AsyncTesting.h"
+#import "TCBlobDownloadTestsBase.h"
 
-#import "TestValues.h"
-#import "TCBlobDownloadManager.h"
-
-@interface TCBlobDownloadErrorTests : XCTestCase
-@property (nonatomic, strong) TCBlobDownloadManager *manager;
+@interface TCBlobDownloadErrorTests : TCBlobDownloadTestsBase
 @end
 
 @implementation TCBlobDownloadErrorTests
-
-- (void)setUp
-{
-    [super setUp];
-    
-    _manager = [[TCBlobDownloadManager alloc] init];
-    
-    __autoreleasing NSError *error;
-    [[NSFileManager defaultManager] createDirectoryAtPath:[NSString pathWithComponents:@[NSTemporaryDirectory(), pathToDownloadTests]]
-                              withIntermediateDirectories:YES
-                                               attributes:nil
-                                                    error:&error];
-    
-    XCTAssertNil(error, @"Error while creating tests directory - %@", error);
-    
-    [self.manager setDefaultDownloadPath:[NSString pathWithComponents:@[NSTemporaryDirectory(), pathToDownloadTests]]];
-}
-
-- (void)tearDown
-{
-    self.manager = nil;
-    
-    __autoreleasing NSError *error;
-    [[NSFileManager defaultManager]removeItemAtPath:[NSString pathWithComponents:@[NSTemporaryDirectory(), pathToDownloadTests]]
-                                              error:&error];
-    
-    XCTAssertNil(error, @"Error while removing tests directory - %@", error);
-    
-    [super tearDown];
-}
 
 - (void)testInvalidURL
 {

@@ -6,121 +6,13 @@
 //  Copyright (c) 2013 thibaultCha. All rights reserved.
 //
 
-#import <XCTest/XCTest.h>
-#import "XCTestCase+AsyncTesting.h"
+#import "TCBlobDownloadTestsBase.h"
 
-#import "TestValues.h"
-#import "TCBlobDownloadManager.h"
-
-@interface TCBlobDownloadTests : XCTestCase <TCBlobDownloadDelegate>
-@property (nonatomic, strong) TCBlobDownloadManager *manager;
-@property (nonatomic, copy) NSURL *validURL;
-@property (nonatomic, copy) NSString *testsDirectory;
-
+@interface TCBlobDownloadTests : TCBlobDownloadTestsBase <TCBlobDownloadDelegate>
 @property (nonatomic, assign) BOOL delegateCalledOnMainThread;
 @end
 
 @implementation TCBlobDownloadTests
-
-- (void)setUp
-{
-    [super setUp];
-    
-    _manager = [[TCBlobDownloadManager alloc] init];
-    self.validURL = [NSURL URLWithString:kValidURLToDownload];
-    self.testsDirectory = [NSString pathWithComponents:@[NSTemporaryDirectory(), pathToDownloadTests]];
-    
-    __autoreleasing NSError *error;
-    [[NSFileManager defaultManager] createDirectoryAtPath:self.testsDirectory
-                              withIntermediateDirectories:YES
-                                               attributes:nil
-                                                    error:&error];
-
-    XCTAssertNil(error, @"Error while creating tests directory - %@", error);
-    
-    [self.manager setDefaultDownloadPath:self.testsDirectory];
-}
-
-- (void)tearDown
-{
-    self.manager = nil;
-    self.validURL = nil;
-    
-
-    __autoreleasing NSError *error;
-    [[NSFileManager defaultManager] removeItemAtPath:self.testsDirectory
-                                                   error:&error];
-
-    XCTAssertNil(error, @"Error while removing tests directory - %@", error);
-    
-    [super tearDown];
-}
-
-
-#pragma mark - TCBlobDownloadManager
-
-
-- (void)testSingleton
-{
-    TCBlobDownloadManager *manager = [TCBlobDownloadManager sharedInstance];
-    XCTAssertNotNil(manager, @"TCBlobDownloadManager shared instance is nil.");
-}
-
-- (void)testSharedInstanceReturnsSameSingletonObject
-{
-    TCBlobDownloadManager *m1 = [TCBlobDownloadManager sharedInstance];
-    TCBlobDownloadManager *m2 = [TCBlobDownloadManager sharedInstance];
-    XCTAssertEqualObjects(m1, m2, @"sharedDownloadManager didn't return same object twice");
-}
-
-- (void)testDefaultDownloadPath
-{
-    XCTAssertNotNil(self.manager.defaultDownloadPath, @"TCBlobDownloadManager default download path is nil.");
-}
-
-- (void)testSetDefaultDownloadPath
-{
-    [self.manager setDefaultDownloadPath:NSHomeDirectory()];
-    XCTAssertEqualObjects(self.manager.defaultDownloadPath, NSHomeDirectory(),
-                          @"Default download path is not set correctly");
-}
-
-- (void)testCreatePathFromPath
-{
-    // test if null
-    // test if exists
-}
-
-- (void)testAllOperationsCorrectlyCancelled
-{
-    for (NSInteger i = 0; i < 10; i++) {
-        [self.manager startDownloadWithURL:self.validURL
-                                customPath:nil
-                                  delegate:nil];
-    }
-    
-    [self waitForTimeout:kDefaultAsyncTimeout];
-    
-    [self.manager cancelAllDownloadsAndRemoveFiles:YES];
-    XCTAssert(self.manager.downloadCount == 0,
-              @"TCBlobDownloadManager cancelAllDownload did not properly finished all operations.");
-}
-
-- (void)SetMaximumNumberOfDownloads
-{
-    [self.manager setMaxConcurrentDownloads:3];
-    
-    for (NSInteger i = 0; i < 5; i++) {
-        [self.manager startDownloadWithURL:self.validURL
-                                customPath:nil
-                                  delegate:nil];
-    }
-    
-    XCTAssertEqual(self.manager.downloadCount, 3, @"Maximum number of downloads is not respected.");
-}
-
-#pragma mark - TCBlobDownload
-
 
 - (void)testShouldHandleNilDownloadPath
 {
@@ -231,7 +123,7 @@
     [self waitForStatus:XCTAsyncTestCaseStatusSucceeded timeout:5];
 }
 
-- (void)testDelegateMethodsShouldBeCalledOnMainThreadOne
+- (void)DelegateMethodsShouldBeCalledOnMainThreadOne
 {
     [self.manager startDownloadWithURL:self.validURL
                             customPath:nil
