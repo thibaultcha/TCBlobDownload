@@ -25,7 +25,7 @@
  
  @warning Please be careful of the iOS Data Storage Guidelines about the download path.
  */
-@property (nonatomic, strong) NSString *defaultDownloadPath;
+@property (nonatomic, copy) NSString *defaultDownloadPath;
 
 /**
  The number of simultaneous active downloads at a given moment.

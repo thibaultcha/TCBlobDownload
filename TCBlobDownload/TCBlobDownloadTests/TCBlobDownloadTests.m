@@ -28,7 +28,7 @@
     
     _manager = [[TCBlobDownloadManager alloc] init];
     self.validURL = [NSURL URLWithString:kValidURLToDownload];
-    self.testsDirectory = [NSString pathWithComponents:@[NSHomeDirectory(), pathToDownloadTests]];
+    self.testsDirectory = [NSString pathWithComponents:@[NSTemporaryDirectory(), pathToDownloadTests]];
     
     __autoreleasing NSError *error;
     [[NSFileManager defaultManager] createDirectoryAtPath:self.testsDirectory
@@ -231,7 +231,7 @@
     [self waitForStatus:XCTAsyncTestCaseStatusSucceeded timeout:5];
 }
 
-- (void)DelegateMethodsShouldBeCalledOnMainThreadOne
+- (void)testDelegateMethodsShouldBeCalledOnMainThreadOne
 {
     [self.manager startDownloadWithURL:self.validURL
                             customPath:nil

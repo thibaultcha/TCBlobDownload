@@ -44,7 +44,7 @@
 - (void)setDefaultDownloadPath:(NSString *)pathToDL
 {
     if ([TCBlobDownloadManager createPathFromPath:pathToDL]) {
-        self.defaultDownloadPath = pathToDL;
+        _defaultDownloadPath = pathToDL;
     }
 }
 
@@ -133,7 +133,7 @@
         // handle error
         return false;
     }
-    
+
     if ([fm fileExistsAtPath:path]) {
         return true;
     }
