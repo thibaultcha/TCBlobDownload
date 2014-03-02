@@ -2,7 +2,7 @@
 <html>
 	<head>
 		<meta http-equiv="Content-Type" content="html/html; charset=utf-8" />
-		<title>TCBlobDownloadDelegate Protocol Reference</title>
+		<title>TCBlobDownloaderDelegate Protocol Reference</title>
 		<meta id="xcode-display" name="xcode-display" content="render"/>
 		<link rel="stylesheet" type="text/css" href="../css/styles.css" media="all" />
 		<link rel="stylesheet" type="text/css" media="print" href="../css/stylesPrint.css" />
@@ -16,7 +16,7 @@
 			</div>
 			
 			<div id="title" role="banner">
-				<h1 class="hideInXcode">TCBlobDownloadDelegate Protocol Reference</h1>
+				<h1 class="hideInXcode">TCBlobDownloaderDelegate Protocol Reference</h1>
 			</div>
 			<ul id="headerButtons" role="toolbar">
 				<li id="toc_button">
@@ -94,7 +94,7 @@
 		</nav>
 		<article>
 			<div id="contents" class="isShowingTOC" role="main">
-				<a title="TCBlobDownloadDelegate Protocol Reference" name="top"></a>
+				<a title="TCBlobDownloaderDelegate Protocol Reference" name="top"></a>
 				<div class="main-navigation navigation-top">
 					<ul>
 	<li><a href="../index.html">Index</a></li>
@@ -103,7 +103,7 @@
 				</div>
 				<div id="header">
 					<div class="section-header">
-						<h1 class="title title-header">TCBlobDownloadDelegate Protocol Reference</h1>
+						<h1 class="title title-header">TCBlobDownloaderDelegate Protocol Reference</h1>
 					</div>		
 				</div>
 				<div id="container">	
@@ -114,7 +114,7 @@
 	<td class="specification-value">NSObject</td>
 </tr><tr>
 	<td class="specification-title">Declared in</td>
-	<td class="specification-value">TCBlobDownload.h</td>
+	<td class="specification-value">TCBlobDownloader.h</td>
 </tr>
 						</tbody></table></div>
 					
@@ -124,7 +124,7 @@
 					<div class="section section-overview">
 						<a title="Overview" name="overview"></a>
 						<h2 class="subtitle subtitle-overview">Overview</h2>
-						<p>The <code>TCBlobDownloadDelegate</code> protocol defines the methods supported by <a href="../Classes/TCBlobDownload.html"><code>TCBlobDownload</code></a> to notify you of the state of the download.</p>
+						<p>The <code>TCBlobDownloaderDelegate</code> protocol defines the methods supported by <a href="../Classes/TCBlobDownloader.html"><code>TCBlobDownloader</code></a> to notify you of the state of the download.</p>
 					</div>
 					
 					
@@ -188,12 +188,12 @@
 	
 	
 	<div class="method-subsection brief-description">
-		<p>Optional. Called when the <a href="../Classes/TCBlobDownload.html"><code>TCBlobDownload</code></a> will be removed from the <a href="../Classes/TCBlobDownloadManager.html"><code>TCBlobDownloadManager</code></a> singleton.</p>
+		<p>Optional. Called when the <a href="../Classes/TCBlobDownloader.html"><code>TCBlobDownloader</code></a> will be removed from the <code>TCBlobDownloaderManager</code> singleton.</p>
 	</div>		
 	
     
 
-	<div class="method-subsection method-declaration"><code>- (void)download:(TCBlobDownload *)<em>blobDownload</em> didFinishWithSucces:(BOOL)<em>downloadFinished</em> atPath:(NSString *)<em>pathToFile</em></code></div>
+	<div class="method-subsection method-declaration"><code>- (void)download:(TCBlobDownloader *)<em>blobDownload</em> didFinishWithSucces:(BOOL)<em>downloadFinished</em> atPath:(NSString *)<em>pathToFile</em></code></div>
 
     
 	
@@ -202,7 +202,7 @@
 		
 		<dl class="argument-def parameter-def">
 			<dt><em>blobDownload</em></dt>
-			<dd><p>The <a href="../Classes/TCBlobDownload.html"><code>TCBlobDownload</code></a> object whose execution is finished.</p></dd>
+			<dd><p>The <a href="../Classes/TCBlobDownloader.html"><code>TCBlobDownloader</code></a> object whose execution is finished.</p></dd>
 		</dl>
 		
 		<dl class="argument-def parameter-def">
@@ -231,7 +231,7 @@
 	
 	<div class="method-subsection declared-in-section">
 		<h4 class="method-subtitle">Declared In</h4>
-		<code class="declared-in-ref">TCBlobDownload.h</code><br />
+		<code class="declared-in-ref">TCBlobDownloader.h</code><br />
 	</div>				
 	
 	
@@ -249,7 +249,7 @@
 	
     
 
-	<div class="method-subsection method-declaration"><code>- (void)download:(TCBlobDownload *)<em>blobDownload</em> didReceiveData:(uint64_t)<em>receivedLength</em> onTotal:(uint64_t)<em>totalLength</em></code></div>
+	<div class="method-subsection method-declaration"><code>- (void)download:(TCBlobDownloader *)<em>blobDownload</em> didReceiveData:(uint64_t)<em>receivedLength</em> onTotal:(uint64_t)<em>totalLength</em></code></div>
 
     
 	
@@ -258,7 +258,7 @@
 		
 		<dl class="argument-def parameter-def">
 			<dt><em>blobDownload</em></dt>
-			<dd><p>The <a href="../Classes/TCBlobDownload.html"><code>TCBlobDownload</code></a> object which received data.</p></dd>
+			<dd><p>The <a href="../Classes/TCBlobDownloader.html"><code>TCBlobDownloader</code></a> object which received data.</p></dd>
 		</dl>
 		
 		<dl class="argument-def parameter-def">
@@ -272,7 +272,7 @@
 
 <h2>Note</h2>
 
-<p>If you pause and restart later a download, the new <a href="../Classes/TCBlobDownload.html"><code>TCBlobDownload</code></a> will resume it from where it has stopped (see <code>fileName</code> property for more explanations). Therefore, you might want to track yourself the total size of the file when you first tried to download it, otherwise the <code>totalLength</code> is the actual remaining length to download and might not suit your needs if you do something such as a progress bar.</p></dd>
+<p>If you pause and restart later a download, the new <a href="../Classes/TCBlobDownloader.html"><code>TCBlobDownloader</code></a> will resume it from where it has stopped (see <code>fileName</code> property for more explanations). Therefore, you might want to track yourself the total size of the file when you first tried to download it, otherwise the <code>totalLength</code> is the actual remaining length to download and might not suit your needs if you do something such as a progress bar.</p></dd>
 		</dl>
 		
 	</div>
@@ -291,7 +291,7 @@
 	
 	<div class="method-subsection declared-in-section">
 		<h4 class="method-subtitle">Declared In</h4>
-		<code class="declared-in-ref">TCBlobDownload.h</code><br />
+		<code class="declared-in-ref">TCBlobDownloader.h</code><br />
 	</div>				
 	
 	
@@ -304,12 +304,12 @@
 	
 	
 	<div class="method-subsection brief-description">
-		<p>Optional. Called when the <a href="../Classes/TCBlobDownload.html"><code>TCBlobDownload</code></a> object has received the first response from the server.</p>
+		<p>Optional. Called when the <a href="../Classes/TCBlobDownloader.html"><code>TCBlobDownloader</code></a> object has received the first response from the server.</p>
 	</div>		
 	
     
 
-	<div class="method-subsection method-declaration"><code>- (void)download:(TCBlobDownload *)<em>blobDownload</em> didReceiveFirstResponse:(NSURLResponse *)<em>response</em></code></div>
+	<div class="method-subsection method-declaration"><code>- (void)download:(TCBlobDownloader *)<em>blobDownload</em> didReceiveFirstResponse:(NSURLResponse *)<em>response</em></code></div>
 
     
 	
@@ -318,7 +318,7 @@
 		
 		<dl class="argument-def parameter-def">
 			<dt><em>blobDownload</em></dt>
-			<dd><p>The <a href="../Classes/TCBlobDownload.html"><code>TCBlobDownload</code></a> object receiving the first response.</p></dd>
+			<dd><p>The <a href="../Classes/TCBlobDownloader.html"><code>TCBlobDownloader</code></a> object receiving the first response.</p></dd>
 		</dl>
 		
 		<dl class="argument-def parameter-def">
@@ -342,7 +342,7 @@
 	
 	<div class="method-subsection declared-in-section">
 		<h4 class="method-subtitle">Declared In</h4>
-		<code class="declared-in-ref">TCBlobDownload.h</code><br />
+		<code class="declared-in-ref">TCBlobDownloader.h</code><br />
 	</div>				
 	
 	
@@ -355,12 +355,12 @@
 	
 	
 	<div class="method-subsection brief-description">
-		<p>Optional. Called when an error occur during the download. If this method is called, the <a href="../Classes/TCBlobDownload.html"><code>TCBlobDownload</code></a> will be automatically cancelled just after, without deleting the the already downloaded parts of the file. This is done by calling <code>cancelDownloadAndRemoveFile:</code></p>
+		<p>Optional. Called when an error occur during the download. If this method is called, the <a href="../Classes/TCBlobDownloader.html"><code>TCBlobDownloader</code></a> will be automatically cancelled just after, without deleting the the already downloaded parts of the file. This is done by calling <code>cancelDownloadAndRemoveFile:</code></p>
 	</div>		
 	
     
 
-	<div class="method-subsection method-declaration"><code>- (void)download:(TCBlobDownload *)<em>blobDownload</em> didStopWithError:(NSError *)<em>error</em></code></div>
+	<div class="method-subsection method-declaration"><code>- (void)download:(TCBlobDownloader *)<em>blobDownload</em> didStopWithError:(NSError *)<em>error</em></code></div>
 
     
 	
@@ -369,7 +369,7 @@
 		
 		<dl class="argument-def parameter-def">
 			<dt><em>blobDownload</em></dt>
-			<dd><p>The <a href="../Classes/TCBlobDownload.html"><code>TCBlobDownload</code></a> object which trigerred an error.</p></dd>
+			<dd><p>The <a href="../Classes/TCBlobDownloader.html"><code>TCBlobDownloader</code></a> object which trigerred an error.</p></dd>
 		</dl>
 		
 		<dl class="argument-def parameter-def">
@@ -393,7 +393,7 @@
 	
 	<div class="method-subsection declared-in-section">
 		<h4 class="method-subtitle">Declared In</h4>
-		<code class="declared-in-ref">TCBlobDownload.h</code><br />
+		<code class="declared-in-ref">TCBlobDownloader.h</code><br />
 	</div>				
 	
 	

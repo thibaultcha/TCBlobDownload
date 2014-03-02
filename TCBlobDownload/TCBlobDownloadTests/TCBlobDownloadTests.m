@@ -16,20 +16,20 @@
 
 - (void)testShouldHandleNilDownloadPath
 {
-    TCBlobDownload *download1 = [[TCBlobDownload alloc] initWithURL:self.validURL
+    TCBlobDownloader *download1 = [[TCBlobDownloader alloc] initWithURL:self.validURL
                                                        downloadPath:nil
                                                            delegate:nil];
     [self.manager startDownload:download1];
     XCTAssertEqualObjects(self.manager.defaultDownloadPath, download1.pathToDownloadDirectory,
                           @"TCBlobDownloadManager did not set defaultPath in startDownload:");
     
-    TCBlobDownload *download2 = [self.manager startDownloadWithURL:self.validURL
+    TCBlobDownloader *download2 = [self.manager startDownloadWithURL:self.validURL
                                                         customPath:nil
                                                           delegate:nil];
     XCTAssertEqualObjects(self.manager.defaultDownloadPath, download2.pathToDownloadDirectory,
                           @"TCBlobDownloadManager did not set defaultPath in startDownloadWithURL:customPath:delegate:");
     
-    TCBlobDownload *download3 = [self.manager startDownloadWithURL:self.validURL
+    TCBlobDownloader *download3 = [self.manager startDownloadWithURL:self.validURL
                                                         customPath:nil
                                                      firstResponse:NULL
                                                           progress:NULL
@@ -72,7 +72,7 @@
 
 - (void)testOperationCorrectlyCancelled
 {
-    TCBlobDownload *download = [self.manager startDownloadWithURL:self.validURL
+    TCBlobDownloader *download = [self.manager startDownloadWithURL:self.validURL
                                                        customPath:nil
                                                          delegate:nil];
     [self waitForTimeout:kDefaultAsyncTimeout];
@@ -83,7 +83,7 @@
 
 - (void)testFileIsRemovedOnCancel
 {
-    TCBlobDownload *download = [self.manager startDownloadWithURL:self.validURL
+    TCBlobDownloader *download = [self.manager startDownloadWithURL:self.validURL
                                                        customPath:nil
                                                          delegate:nil];
     
@@ -156,13 +156,13 @@
 #pragma mark - TCBlobDownloadDelegate
 
 
-- (void)download:(TCBlobDownload *)blobDownload didReceiveFirstResponse:(NSURLResponse *)response
+- (void)download:(TCBlobDownloader *)blobDownload didReceiveFirstResponse:(NSURLResponse *)response
 {
     self.delegateCalledOnMainThread = YES;
     [self notify:kDidReceiveFirstResponseMethodCalled];
 }
 
-- (void)download:(TCBlobDownload *)blobDownload didReceiveData:(uint64_t)receivedLength onTotal:(uint64_t)totalLength
+- (void)download:(TCBlobDownloader *)blobDownload didReceiveData:(uint64_t)receivedLength onTotal:(uint64_t)totalLength
 {
     static dispatch_once_t onceToken;
     dispatch_once(&onceToken, ^{
@@ -171,13 +171,13 @@
     });
 }
 
-- (void)download:(TCBlobDownload *)blobDownload didFinishWithSucces:(BOOL)downloadFinished atPath:(NSString *)pathToFile
+- (void)download:(TCBlobDownloader *)blobDownload didFinishWithSucces:(BOOL)downloadFinished atPath:(NSString *)pathToFile
 {
     //self.delegateCalledOnMainThread = YES;
     //[self notify:kDidFinishWithSuccessMethodCalled];
 }
 
-- (void)download:(TCBlobDownload *)blobDownload didStopWithError:(NSError *)error
+- (void)download:(TCBlobDownloader *)blobDownload didStopWithError:(NSError *)error
 {
     //self.delegateCalledOnMainThread = YES;
     //[self notify:kDidStopWithErrorMethodCalled];

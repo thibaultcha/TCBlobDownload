@@ -5,7 +5,8 @@
 //  Copyright (c) 2013 Thibault Charbonnier. All rights reserved.
 //
 
-#import "TCBlobDownload.h"
+@class TCBlobDownloader;
+@protocol TCBlobDownloaderDelegate;
 
 /**
  `TCBlobDownloadManager` is a subclass of `NSOperationQueue` and is used to execute `TCBlobDownload` objects.
@@ -48,9 +49,9 @@
 
  @return The created and already running `TCBlobDownloadObject`.
 */
-- (TCBlobDownload *)startDownloadWithURL:(NSURL *)url
+- (TCBlobDownloader *)startDownloadWithURL:(NSURL *)url
                               customPath:(NSString *)customPathOrNil
-                                delegate:(id<TCBlobDownloadDelegate>)delegateOrNil;
+                                delegate:(id<TCBlobDownloaderDelegate>)delegateOrNil;
 
 /**
  Creates and runs instantly a `TCBlobDownload` object.
@@ -62,16 +63,15 @@
  @param url  The URL of the file to download.
  @param customPathOrNil  An optional path to override the default download path of the `TCBlobDownloadManager` instance. Can be `nil`.
  @param firstResponseBlock  This block is called when receiving the first response from the server. Can be `nil`.
- @param progressBlock  This block is called on each response from the server while the download is occurring. Can be `nil`.
- @param errorBlock  Called when an error occur during the download. If this block is called, the download will be cancelled just after. Can be `nil`.
- @param completeBlock  Called when the download is completed. Can be `nil`.
+ @param progressBlock  This block is called on each response from the server while the download is occurring. Can be `nil`. If the remaining time has not been calculated yet, the value is `-1`. @param errorBlock  Called when an error occur during the download. If this block is called, the download will be cancelled just after. Can be `nil`.
+ @param completeBlock  Called when the download is completed or cancelled. Can be `nil`. If the download has been cancelled with the paramater `removeFile` set to `YES`, then the `pathToFile` parameter is `nil`.
 */
-- (TCBlobDownload *)startDownloadWithURL:(NSURL *)url
+- (TCBlobDownloader *)startDownloadWithURL:(NSURL *)url
                               customPath:(NSString *)customPathOrNil
-                           firstResponse:(FirstResponseBlock)firstResponseBlock
-                                progress:(ProgressBlock)progressBlock
-                                   error:(ErrorBlock)errorBlock
-                                complete:(CompleteBlock)completeBlock;
+                           firstResponse:(void (^)(NSURLResponse *response))firstResponseBlock
+                                progress:(void (^)(float receivedLength, float totalLength, NSInteger remainingTime))progressBlock
+                                   error:(void (^)(NSError *error))errorBlock
+                                complete:(void (^)(BOOL downloadFinished, NSString *pathToFile))completeBlock;
 
 /**
  Starts an already instanciated `TCBlobDownload` object.
@@ -80,7 +80,7 @@
  
  @param download  A `TCBlobDownload` object.
 */
-- (void)startDownload:(TCBlobDownload *)download;
+- (void)startDownload:(TCBlobDownloader *)download;
 
 /**
  Specifies the default download path. (which is `/tmp` by default)
@@ -104,15 +104,5 @@
  @param remove  If `YES`, this method will remove all downloaded files parts from the disk. Files parts are left untouched if set to `NO`. This will allow TCBlobDownload to restart the download from where it has ended in a future operation.
 */
 - (void)cancelAllDownloadsAndRemoveFiles:(BOOL)remove;
-
-/**
- Creates a path from given string.
- 
- @warning You should not use this method directly, as it is automatically called by `TCBlobDownloadManager` and `TCBlobDownload` to create download paths.
- 
- @param path  The path to create.
- @return A boolean indicating if the path has been successfully created.
- */
-+ (BOOL)createPathFromPath:(NSString *)path;
 
 @end

@@ -48,8 +48,6 @@
 	
 	<option value="class_methods">Class Methods</option>
 	
-	<option value="//api/name/createPathFromPath:">&nbsp;&nbsp;&nbsp;&nbsp;+ createPathFromPath:</option>
-	
 	<option value="//api/name/sharedInstance">&nbsp;&nbsp;&nbsp;&nbsp;+ sharedInstance</option>
 	
 	
@@ -102,8 +100,6 @@
 
 
 <li role="treeitem" class="children"><span class="disclosure"></span><span class="sectionName"><a href="#class_methods">Class Methods</a></span><ul>
-	
-	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#//api/name/createPathFromPath:">createPathFromPath:</a></span></li>
 	
 	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#//api/name/sharedInstance">sharedInstance</a></span></li>
 	
@@ -162,7 +158,7 @@
 					<div class="section section-overview">
 						<a title="Overview" name="overview"></a>
 						<h2 class="subtitle subtitle-overview">Overview</h2>
-						<p><code>TCBlobDownloadManager</code> is a subclass of <code>NSOperationQueue</code> and is used to execute <a href="../Classes/TCBlobDownload.html"><code>TCBlobDownload</code></a> objects.</p>
+						<p><code>TCBlobDownloadManager</code> is a subclass of <code>NSOperationQueue</code> and is used to execute <code>TCBlobDownload</code> objects.</p>
 
 <p>It provides methods to start and cancel a download, as well as defining a maximum amount of simultaneous downloads.</p>
 
@@ -238,12 +234,6 @@
 	</span>
 	
 	
-</li><li>
-	<span class="tooltip">
-		<code><a href="#//api/name/createPathFromPath:">+&nbsp;createPathFromPath:</a></code>
-	</span>
-	
-	
 </li>
 						</ul>
 						
@@ -264,7 +254,7 @@
 	
 	
 	<div class="method-subsection brief-description">
-		<p>The default download path for a file if no <code>customPath</code> property is set at the creation of the <a href="../Classes/TCBlobDownload.html"><code>TCBlobDownload</code></a> object.</p>
+		<p>The default download path for a file if no <code>customPath</code> property is set at the creation of the <code>TCBlobDownload</code> object.</p>
 	</div>		
 	
     
@@ -343,62 +333,6 @@
 						<h2 class="subtitle subtitle-methods">Class Methods</h2>
 						
 						<div class="section-method">
-	<a name="//api/name/createPathFromPath:" title="createPathFromPath:"></a>
-	<h3 class="subsubtitle method-title">createPathFromPath:</h3>
-	
-	
-	
-	<div class="method-subsection brief-description">
-		<p>Creates a path from given string.</p>
-	</div>		
-	
-    
-
-	<div class="method-subsection method-declaration"><code>+ (BOOL)createPathFromPath:(NSString *)<em>path</em></code></div>
-
-    
-	
-	<div class="method-subsection arguments-section parameters">
-		<h4 class="method-subtitle parameter-title">Parameters</h4>
-		
-		<dl class="argument-def parameter-def">
-			<dt><em>path</em></dt>
-			<dd><p>The path to create.</p></dd>
-		</dl>
-		
-	</div>
-	
-	
-	
-	<div class="method-subsection return">
-		<h4 class="method-subtitle parameter-title">Return Value</h4>
-		<p>A boolean indicating if the path has been successfully created.</p>
-	</div>
-	
-	
-	
-	
-	
-	<div class="method-subsection discussion-section">
-		<h4 class="method-subtitle">Discussion</h4>
-		<div class="warning"><p><strong>Warning:</strong> You should not use this method directly, as it is automatically called by <code>TCBlobDownloadManager</code> and <a href="../Classes/TCBlobDownload.html"><code>TCBlobDownload</code></a> to create download paths.</p></div>
-	</div>
-	
-	
-	
-	
-	
-	
-	
-	<div class="method-subsection declared-in-section">
-		<h4 class="method-subtitle">Declared In</h4>
-		<code class="declared-in-ref">TCBlobDownloadManager.h</code><br />
-	</div>				
-	
-	
-</div>
-						
-						<div class="section-method">
 	<a name="//api/name/sharedInstance" title="sharedInstance"></a>
 	<h3 class="subsubtitle method-title">sharedInstance</h3>
 	
@@ -463,7 +397,7 @@
 		
 		<dl class="argument-def parameter-def">
 			<dt><em>remove</em></dt>
-			<dd><p>If <code>YES</code>, this method will remove all downloaded files parts from the disk. Files parts are left untouched if set to <code>NO</code>. This will allow <a href="../Classes/TCBlobDownload.html">TCBlobDownload</a> to restart the download from where it has ended in a future operation.</p></dd>
+			<dd><p>If <code>YES</code>, this method will remove all downloaded files parts from the disk. Files parts are left untouched if set to <code>NO</code>. This will allow TCBlobDownload to restart the download from where it has ended in a future operation.</p></dd>
 		</dl>
 		
 	</div>
@@ -592,12 +526,12 @@
 	
 	
 	<div class="method-subsection brief-description">
-		<p>Starts an already instanciated <a href="../Classes/TCBlobDownload.html"><code>TCBlobDownload</code></a> object.</p>
+		<p>Starts an already instanciated <code>TCBlobDownload</code> object.</p>
 	</div>		
 	
     
 
-	<div class="method-subsection method-declaration"><code>- (void)startDownload:(TCBlobDownload *)<em>download</em></code></div>
+	<div class="method-subsection method-declaration"><code>- (void)startDownload:(TCBlobDownloader *)<em>download</em></code></div>
 
     
 	
@@ -606,7 +540,7 @@
 		
 		<dl class="argument-def parameter-def">
 			<dt><em>download</em></dt>
-			<dd><p>A <a href="../Classes/TCBlobDownload.html"><code>TCBlobDownload</code></a> object.</p></dd>
+			<dd><p>A <code>TCBlobDownload</code> object.</p></dd>
 		</dl>
 		
 	</div>
@@ -619,7 +553,7 @@
 	
 	<div class="method-subsection discussion-section">
 		<h4 class="method-subtitle">Discussion</h4>
-		<p>You can instanciate a <a href="../Classes/TCBlobDownload.html"><code>TCBlobDownload</code></a> object and instead of executing it directly using <a href="#//api/name/startDownloadWithURL:customPath:delegate:"><code>startDownloadWithURL:customPath:delegate:</code></a> or the block equivalent, pass it to this method whenever you&rsquo;re ready.</p>
+		<p>You can instanciate a <code>TCBlobDownload</code> object and instead of executing it directly using <a href="#//api/name/startDownloadWithURL:customPath:delegate:"><code>startDownloadWithURL:customPath:delegate:</code></a> or the block equivalent, pass it to this method whenever you&rsquo;re ready.</p>
 	</div>
 	
 	
@@ -643,12 +577,12 @@
 	
 	
 	<div class="method-subsection brief-description">
-		<p>Instanciates and runs instantly a <code>TCBlobDownloadObject</code> with the specified URL, an optional customPath and an optional delegate. Runs in background thread the <a href="../Classes/TCBlobDownload.html"><code>TCBlobDownload</code></a> object (a subclass of <code>NSOperation</code>) in the <code>TCBlobDownloadManager</code> instance.</p>
+		<p>Instanciates and runs instantly a <code>TCBlobDownloadObject</code> with the specified URL, an optional customPath and an optional delegate. Runs in background thread the <code>TCBlobDownload</code> object (a subclass of <code>NSOperation</code>) in the <code>TCBlobDownloadManager</code> instance.</p>
 	</div>		
 	
     
 
-	<div class="method-subsection method-declaration"><code>- (TCBlobDownload *)startDownloadWithURL:(NSURL *)<em>url</em> customPath:(NSString *)<em>customPathOrNil</em> delegate:(id&lt;TCBlobDownloadDelegate&gt;)<em>delegateOrNil</em></code></div>
+	<div class="method-subsection method-declaration"><code>- (TCBlobDownloader *)startDownloadWithURL:(NSURL *)<em>url</em> customPath:(NSString *)<em>customPathOrNil</em> delegate:(id&lt;TCBlobDownloaderDelegate&gt;)<em>delegateOrNil</em></code></div>
 
     
 	
@@ -685,7 +619,7 @@
 	
 	<div class="method-subsection discussion-section">
 		<h4 class="method-subtitle">Discussion</h4>
-		<p>This method returns the created <a href="../Classes/TCBlobDownload.html"><code>TCBlobDownload</code></a> object for further use.</p>
+		<p>This method returns the created <code>TCBlobDownload</code> object for further use.</p>
 	</div>
 	
 	
@@ -709,12 +643,12 @@
 	
 	
 	<div class="method-subsection brief-description">
-		<p>Creates and runs instantly a <a href="../Classes/TCBlobDownload.html"><code>TCBlobDownload</code></a> object.</p>
+		<p>Creates and runs instantly a <code>TCBlobDownload</code> object.</p>
 	</div>		
 	
     
 
-	<div class="method-subsection method-declaration"><code>- (TCBlobDownload *)startDownloadWithURL:(NSURL *)<em>url</em> customPath:(NSString *)<em>customPathOrNil</em> firstResponse:(FirstResponseBlock)<em>firstResponseBlock</em> progress:(ProgressBlock)<em>progressBlock</em> error:(ErrorBlock)<em>errorBlock</em> complete:(CompleteBlock)<em>completeBlock</em></code></div>
+	<div class="method-subsection method-declaration"><code>- (TCBlobDownloader *)startDownloadWithURL:(NSURL *)<em>url</em> customPath:(NSString *)<em>customPathOrNil</em> firstResponse:(void ( ^ ) ( NSURLResponse *response ))<em>firstResponseBlock</em> progress:(void ( ^ ) ( float receivedLength , float totalLength , NSInteger remainingTime ))<em>progressBlock</em> error:(void ( ^ ) ( NSError *error ))<em>errorBlock</em> complete:(void ( ^ ) ( BOOL downloadFinished , NSString *pathToFile ))<em>completeBlock</em></code></div>
 
     
 	
@@ -738,17 +672,12 @@
 		
 		<dl class="argument-def parameter-def">
 			<dt><em>progressBlock</em></dt>
-			<dd><p>This block is called on each response from the server while the download is occurring. Can be <code>nil</code>.</p></dd>
-		</dl>
-		
-		<dl class="argument-def parameter-def">
-			<dt><em>errorBlock</em></dt>
-			<dd><p>Called when an error occur during the download. If this block is called, the download will be cancelled just after. Can be <code>nil</code>.</p></dd>
+			<dd><p>This block is called on each response from the server while the download is occurring. Can be <code>nil</code>. If the remaining time has not been calculated yet, the value is <code>-1</code>. @param errorBlock  Called when an error occur during the download. If this block is called, the download will be cancelled just after. Can be <code>nil</code>.</p></dd>
 		</dl>
 		
 		<dl class="argument-def parameter-def">
 			<dt><em>completeBlock</em></dt>
-			<dd><p>Called when the download is completed. Can be <code>nil</code>.</p></dd>
+			<dd><p>Called when the download is completed or cancelled. Can be <code>nil</code>. If the download has been cancelled with the paramater <code>removeFile</code> set to <code>YES</code>, then the <code>pathToFile</code> parameter is <code>nil</code>.</p></dd>
 		</dl>
 		
 	</div>

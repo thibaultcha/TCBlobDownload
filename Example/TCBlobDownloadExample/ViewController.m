@@ -29,14 +29,6 @@
     [super viewDidLoad];
 }
 
-- (void)didReceiveMemoryWarning
-{
-    [super didReceiveMemoryWarning];
-    [self setUrlField:nil];
-    [self setDownloadButton:nil];
-    [self setCancelButton:nil];
-}
-
 
 #pragma mark - Demo
 
@@ -69,36 +61,36 @@
 
 - (void)cancelAll:(id)sender
 {
-    [self.sharedDownloadManager cancelAllDownloadsAndRemoveFiles:NO];
+    [self.sharedDownloadManager cancelAllDownloadsAndRemoveFiles:YES];
 }
 
 
-#pragma mark - BlobDownloadManager Delegate (Optional, your choice)
+#pragma mark - TCBlobDownloaderDelegate
 
 
-- (void)download:(TCBlobDownload *)blobDownload didReceiveFirstResponse:(NSURLResponse *)response
+- (void)download:(TCBlobDownloader *)blobDownload didReceiveFirstResponse:(NSURLResponse *)response
 {
     
 }
 
-- (void)download:(TCBlobDownload *)blobDownload
+- (void)download:(TCBlobDownloader *)blobDownload
   didReceiveData:(uint64_t)receivedLength
          onTotal:(uint64_t)totalLength
 {
 
 }
 
-- (void)download:(TCBlobDownload *)blobDownload didStopWithError:(NSError *)error
+- (void)download:(TCBlobDownloader *)blobDownload didStopWithError:(NSError *)error
 {
 
 }
 
-- (void)download:(TCBlobDownload *)blobDownload didCancelRemovingFile:(BOOL)fileRemoved
+- (void)download:(TCBlobDownloader *)blobDownload didCancelRemovingFile:(BOOL)fileRemoved
 {
     
 }
 
-- (void)downloadDidFinishWithDownload:(TCBlobDownload *)blobDownload
+- (void)downloadDidFinishWithDownload:(TCBlobDownloader *)blobDownload
 {
     
 }
