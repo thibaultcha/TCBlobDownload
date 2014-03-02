@@ -9,7 +9,7 @@
 @protocol TCBlobDownloaderDelegate;
 
 /**
- `TCBlobDownloadManager` is a subclass of `NSOperationQueue` and is used to execute `TCBlobDownload` objects.
+ `TCBlobDownloadManager` is a subclass of `NSOperationQueue` and is used to execute `TCBlobDownloader` objects.
  
  It provides methods to start and cancel a download, as well as defining a maximum amount of simultaneous downloads.
  
@@ -20,7 +20,7 @@
 @interface TCBlobDownloadManager : NSObject
 
 /**
- The default download path for a file if no `customPath` property is set at the creation of the `TCBlobDownload` object.
+ The default download path for a file if no `customPath` property is set at the creation of the `TCBlobDownloader` object.
  
  The default value is `/tmp`.
  
@@ -39,9 +39,9 @@
 + (instancetype)sharedInstance;
 
 /**
- Instanciates and runs instantly a `TCBlobDownloadObject` with the specified URL, an optional customPath and an optional delegate. Runs in background thread the `TCBlobDownload` object (a subclass of `NSOperation`) in the `TCBlobDownloadManager` instance.
+ Instanciates and runs instantly a `TCBlobDownloadObject` with the specified URL, an optional customPath and an optional delegate. Runs in background thread the `TCBlobDownloader` object (a subclass of `NSOperation`) in the `TCBlobDownloadManager` instance.
  
- This method returns the created `TCBlobDownload` object for further use.
+ This method returns the created `TCBlobDownloader` object for further use.
  
  @param url  The URL of the file to download.
  @param customPathOrNil  An optional path to override the default download path of the `TCBlobDownloadManager` instance. Can be `nil`.
@@ -54,7 +54,7 @@
                                 delegate:(id<TCBlobDownloaderDelegate>)delegateOrNil;
 
 /**
- Creates and runs instantly a `TCBlobDownload` object.
+ Creates and runs instantly a `TCBlobDownloader` object.
  
  @see -startDownloadWithURL:customPath:delegate:
  
@@ -74,11 +74,11 @@
                                 complete:(void (^)(BOOL downloadFinished, NSString *pathToFile))completeBlock;
 
 /**
- Starts an already instanciated `TCBlobDownload` object.
+ Starts an already instanciated `TCBlobDownloader` object.
  
- You can instanciate a `TCBlobDownload` object and instead of executing it directly using `-startDownloadWithURL:customPath:delegate:` or the block equivalent, pass it to this method whenever you're ready.
+ You can instanciate a `TCBlobDownloader` object and instead of executing it directly using `-startDownloadWithURL:customPath:delegate:` or the block equivalent, pass it to this method whenever you're ready.
  
- @param download  A `TCBlobDownload` object.
+ @param download  A `TCBlobDownloader` object.
 */
 - (void)startDownload:(TCBlobDownloader *)download;
 

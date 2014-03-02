@@ -332,6 +332,7 @@
 				INFOPLIST_FILE = "$(SRCROOT)/TCBlobDownloadExample/TCBlobDownloadExample-Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 6.0;
 				LIBRARY_SEARCH_PATHS = "";
+				OTHER_LDFLAGS = "-ObjC";
 				PRODUCT_NAME = TCBlobDownloadExample;
 				WRAPPER_EXTENSION = app;
 			};
@@ -352,6 +353,7 @@
 				INFOPLIST_FILE = "$(SRCROOT)/TCBlobDownloadExample/TCBlobDownloadExample-Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 6.0;
 				LIBRARY_SEARCH_PATHS = "";
+				OTHER_LDFLAGS = "-ObjC";
 				PRODUCT_NAME = TCBlobDownloadExample;
 				WRAPPER_EXTENSION = app;
 			};

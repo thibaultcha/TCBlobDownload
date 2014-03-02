@@ -61,7 +61,7 @@ extern NSString * const HTTPErrorCode;
  
  ## Note
  
- You cannot change the file name during the download process. The file name of a file downloaded by TCBlobDownloader is the last part of the URL used to download it. This allow TCBlobDownloader to check if a part of that file has already been downloaded and if so, retrieve the downloaded from where it has previously stopped. It is up to you to manage your download paths to avoid downloading 2 files with the same name.
+ You cannot change the file name during the download process. The file name of a file downloaded by TCBlobDownload is the last part of the URL used to download it. This allow TCBlobDownload to check if a part of that file has already been downloaded and if so, retrieve the downloaded from where it has previously stopped. It is up to you to manage your download paths to avoid downloading 2 files with the same name.
 
  You can change the file name once the file has been downloaded in the completion block or the appropriate delegate method.
  
@@ -120,7 +120,7 @@ extern NSString * const HTTPErrorCode;
 /**
  Cancels the download. Remove already downloaded parts of the file from the disk is asked.
  
- @param remove  If `YES`, this method will remove the downloaded file parts from the disk. File parts are left untouched if set to `NO`. This will allow TCBlobDownloader to restart the download from where it has ended in a future operation.
+ @param remove  If `YES`, this method will remove the downloaded file parts from the disk. File parts are left untouched if set to `NO`. This will allow TCBlobDownload to restart the download from where it has ended in a future operation.
  */
 - (void)cancelDownloadAndRemoveFile:(BOOL)remove;
 

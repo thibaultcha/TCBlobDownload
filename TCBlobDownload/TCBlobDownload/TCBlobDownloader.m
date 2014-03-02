@@ -12,6 +12,7 @@ static NSString * const kErrorDomain = @"com.thibaultcha.tcblobdownload";
 static NSString * const HTTPErrorCode = @"httpStatus";
 
 #import "TCBlobDownloader.h"
+#import "UIDevice-Hardware.h"
 
 @interface TCBlobDownloader ()
 // Public
@@ -38,7 +39,6 @@ static NSString * const HTTPErrorCode = @"httpStatus";
 - (void)notifyFromCompletionWithSuccess:(BOOL)success pathToFile:(NSString *)pathToFile;
 - (void)updateTransferRate;
 - (void)finishOperation;
-+ (uint64_t)freeDiskSpace;
 @end
 
 @implementation TCBlobDownloader
@@ -194,7 +194,7 @@ static NSString * const HTTPErrorCode = @"httpStatus";
                                             HTTPErrorCode: @(httpUrlResponse.statusCode) }];
     }
     
-    if ([TCBlobDownloader freeDiskSpace] < self.expectedDataLength && self.expectedDataLength != -1) {
+    if ([[UIDevice currentDevice] freeDiskSpace].longLongValue < self.expectedDataLength && self.expectedDataLength != -1) {
         error = [NSError errorWithDomain:kErrorDomain
                                     code:3
                                 userInfo:@{ NSLocalizedDescriptionKey:NSLocalizedString(@"Not enough free disk space", @"") }];
@@ -344,31 +344,6 @@ static NSString * const HTTPErrorCode = @"httpStatus";
     [self.file closeFile];
     [self didChangeValueForKey:@"isFinished"];
     [self didChangeValueForKey:@"isExecuting"];
-}
-
-+ (uint64_t)freeDiskSpace
-{
-    //uint64_t totalSpace = 0;
-    uint64_t totalFreeSpace = 0;
-    
-    __autoreleasing NSError *error;
-    NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
-    NSDictionary *dictionary = [[NSFileManager defaultManager] attributesOfFileSystemForPath:[paths lastObject]
-                                                                                       error:&error];
-    if (dictionary) {
-        //NSNumber *fileSystemSizeInBytes = [dictionary objectForKey: NSFileSystemSize];
-        NSNumber *freeFileSystemSizeInBytes = dictionary[NSFileSystemFreeSize];
-        //totalSpace = [fileSystemSizeInBytes unsignedLongLongValue];
-        totalFreeSpace = [freeFileSystemSizeInBytes unsignedLongLongValue];
-        //TCLog(@"Memory Capacity of %llu MiB with %llu MiB Free memory available.", ((totalSpace/1024ll)/1024ll), ((totalFreeSpace/1024ll)/1024ll));
-    }
-    else {
-        TCLog(@"Error obtaining system memory infos: Domain = %@, Code = %d",
-              [error domain],
-              [error code]);
-        // TODO handle error
-    }
-    return totalFreeSpace;
 }
 
 

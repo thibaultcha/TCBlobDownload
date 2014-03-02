@@ -158,7 +158,7 @@
 					<div class="section section-overview">
 						<a title="Overview" name="overview"></a>
 						<h2 class="subtitle subtitle-overview">Overview</h2>
-						<p><code>TCBlobDownloadManager</code> is a subclass of <code>NSOperationQueue</code> and is used to execute <code>TCBlobDownload</code> objects.</p>
+						<p><code>TCBlobDownloadManager</code> is a subclass of <code>NSOperationQueue</code> and is used to execute <a href="../Classes/TCBlobDownloader.html"><code>TCBlobDownloader</code></a> objects.</p>
 
 <p>It provides methods to start and cancel a download, as well as defining a maximum amount of simultaneous downloads.</p>
 
@@ -254,7 +254,7 @@
 	
 	
 	<div class="method-subsection brief-description">
-		<p>The default download path for a file if no <code>customPath</code> property is set at the creation of the <code>TCBlobDownload</code> object.</p>
+		<p>The default download path for a file if no <code>customPath</code> property is set at the creation of the <a href="../Classes/TCBlobDownloader.html"><code>TCBlobDownloader</code></a> object.</p>
 	</div>		
 	
     
@@ -526,7 +526,7 @@
 	
 	
 	<div class="method-subsection brief-description">
-		<p>Starts an already instanciated <code>TCBlobDownload</code> object.</p>
+		<p>Starts an already instanciated <a href="../Classes/TCBlobDownloader.html"><code>TCBlobDownloader</code></a> object.</p>
 	</div>		
 	
     
@@ -540,7 +540,7 @@
 		
 		<dl class="argument-def parameter-def">
 			<dt><em>download</em></dt>
-			<dd><p>A <code>TCBlobDownload</code> object.</p></dd>
+			<dd><p>A <a href="../Classes/TCBlobDownloader.html"><code>TCBlobDownloader</code></a> object.</p></dd>
 		</dl>
 		
 	</div>
@@ -553,7 +553,7 @@
 	
 	<div class="method-subsection discussion-section">
 		<h4 class="method-subtitle">Discussion</h4>
-		<p>You can instanciate a <code>TCBlobDownload</code> object and instead of executing it directly using <a href="#//api/name/startDownloadWithURL:customPath:delegate:"><code>startDownloadWithURL:customPath:delegate:</code></a> or the block equivalent, pass it to this method whenever you&rsquo;re ready.</p>
+		<p>You can instanciate a <a href="../Classes/TCBlobDownloader.html"><code>TCBlobDownloader</code></a> object and instead of executing it directly using <a href="#//api/name/startDownloadWithURL:customPath:delegate:"><code>startDownloadWithURL:customPath:delegate:</code></a> or the block equivalent, pass it to this method whenever you&rsquo;re ready.</p>
 	</div>
 	
 	
@@ -577,7 +577,7 @@
 	
 	
 	<div class="method-subsection brief-description">
-		<p>Instanciates and runs instantly a <code>TCBlobDownloadObject</code> with the specified URL, an optional customPath and an optional delegate. Runs in background thread the <code>TCBlobDownload</code> object (a subclass of <code>NSOperation</code>) in the <code>TCBlobDownloadManager</code> instance.</p>
+		<p>Instanciates and runs instantly a <code>TCBlobDownloadObject</code> with the specified URL, an optional customPath and an optional delegate. Runs in background thread the <a href="../Classes/TCBlobDownloader.html"><code>TCBlobDownloader</code></a> object (a subclass of <code>NSOperation</code>) in the <code>TCBlobDownloadManager</code> instance.</p>
 	</div>		
 	
     
@@ -619,7 +619,7 @@
 	
 	<div class="method-subsection discussion-section">
 		<h4 class="method-subtitle">Discussion</h4>
-		<p>This method returns the created <code>TCBlobDownload</code> object for further use.</p>
+		<p>This method returns the created <a href="../Classes/TCBlobDownloader.html"><code>TCBlobDownloader</code></a> object for further use.</p>
 	</div>
 	
 	
@@ -643,7 +643,7 @@
 	
 	
 	<div class="method-subsection brief-description">
-		<p>Creates and runs instantly a <code>TCBlobDownload</code> object.</p>
+		<p>Creates and runs instantly a <a href="../Classes/TCBlobDownloader.html"><code>TCBlobDownloader</code></a> object.</p>
 	</div>		
 	
     
