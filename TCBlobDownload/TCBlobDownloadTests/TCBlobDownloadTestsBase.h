@@ -8,7 +8,7 @@
 
 #import <XCTest/XCTest.h>
 #import "XCTestCase+AsyncTesting.h"
-#import "TCBlobDownloadManager.h"
+#import "TCBlobDownload.h"
 
 static NSString * const pathToDownloadTests = @"com.thibaultcha.tcblobdltests";
 

@@ -203,16 +203,14 @@ static NSString * const HTTPErrorCode = @"httpStatus";
     if (!error) {
         [self.receivedDataBuffer setData:nil];
         
-        if (self.firstResponseBlock) {
-            dispatch_async(dispatch_get_main_queue(), ^{
+        dispatch_async(dispatch_get_main_queue(), ^{
+            if (self.firstResponseBlock) {
                 self.firstResponseBlock(response);
-            });
-        }
-        if ([self.delegate respondsToSelector:@selector(download:didReceiveFirstResponse:)]) {
-            dispatch_async(dispatch_get_main_queue(), ^{
+            }
+            if ([self.delegate respondsToSelector:@selector(download:didReceiveFirstResponse:)]) {
                 [self.delegate download:self didReceiveFirstResponse:response];
-            });
-        }
+            }
+        });
     }
     else {
         [self notifyFromError:error];
@@ -235,18 +233,16 @@ static NSString * const HTTPErrorCode = @"httpStatus";
         [self.receivedDataBuffer setData:nil];
     }
     
-    if (self.progressBlock) {
-        dispatch_async(dispatch_get_main_queue(), ^{
+    dispatch_async(dispatch_get_main_queue(), ^{
+        if (self.progressBlock) {
             self.progressBlock(self.receivedDataLength, self.expectedDataLength, self.remainingTime);
-        });
-    }
-    if ([self.delegate respondsToSelector:@selector(download:didReceiveData:onTotal:)]) {
-        dispatch_async(dispatch_get_main_queue(), ^{
+        }
+        if ([self.delegate respondsToSelector:@selector(download:didReceiveData:onTotal:)]) {
             [self.delegate download:self
                      didReceiveData:self.receivedDataLength
                             onTotal:self.expectedDataLength];
-        });
-    }
+        }
+    });
 }
 
 - (void)connectionDidFinishLoading:(NSURLConnection*)connection
@@ -265,7 +261,7 @@ static NSString * const HTTPErrorCode = @"httpStatus";
 
 - (void)cancelDownloadAndRemoveFile:(BOOL)remove
 {
-    [self finishOperation];
+    [self.connection cancel];
     
     NSFileManager *fm = [NSFileManager defaultManager];
     
@@ -274,7 +270,6 @@ static NSString * const HTTPErrorCode = @"httpStatus";
         [fm removeItemAtPath:self.pathToFile error:&fileError];
         if (fileError) {
             TCLog(@"An error occured while removing file - %@", fileError);
-            
             [self notifyFromError:fileError];
         }
     }
@@ -282,6 +277,8 @@ static NSString * const HTTPErrorCode = @"httpStatus";
     NSString *pathToFile = remove ? nil : self.fileName;
     
     [self notifyFromCompletionWithSuccess:NO pathToFile:pathToFile];
+        
+    [self finishOperation];
 }
 
 - (void)addDependentDownload:(TCBlobDownloader *)blobDownload
@@ -295,30 +292,26 @@ static NSString * const HTTPErrorCode = @"httpStatus";
 
 - (void)notifyFromError:(NSError *)error
 {
-    if (self.errorBlock) {
-        dispatch_async(dispatch_get_main_queue(), ^{
+    dispatch_async(dispatch_get_main_queue(), ^{
+        if (self.errorBlock) {
             self.errorBlock(error);
-        });
-    }
-    if ([self.delegate respondsToSelector:@selector(download:didStopWithError:)]) {
-        dispatch_async(dispatch_get_main_queue(), ^{
+        }
+        if ([self.delegate respondsToSelector:@selector(download:didStopWithError:)]) {
             [self.delegate download:self didStopWithError:error];
-        });
-    }
+        }
+    });
 }
 
 - (void)notifyFromCompletionWithSuccess:(BOOL)success pathToFile:(NSString *)pathToFile
 {
-    if (self.completionBlock) {
-        dispatch_async(dispatch_get_main_queue(), ^{
+    dispatch_async(dispatch_get_main_queue(), ^{
+        if (self.completionBlock) {
             self.completionBlock(NO, nil);
-        });
-    }
-    if ([self.delegate respondsToSelector:@selector(download:didFinishWithSucces:atPath:)]) {
-        dispatch_async(dispatch_get_main_queue(), ^{
+        }
+        if ([self.delegate respondsToSelector:@selector(download:didFinishWithSucces:atPath:)]) {
             [self.delegate download:self didFinishWithSucces:NO atPath:nil];
-        });
-    }
+        }
+    });
 }
 
 - (void)updateTransferRate
@@ -340,8 +333,8 @@ static NSString * const HTTPErrorCode = @"httpStatus";
     [self willChangeValueForKey:@"isFinished"];
     [self.speedTimer invalidate];
     [self.connection cancel];
-    [self setConnection:nil];
     [self.file closeFile];
+    [self setConnection:nil];
     [self didChangeValueForKey:@"isFinished"];
     [self didChangeValueForKey:@"isExecuting"];
 }

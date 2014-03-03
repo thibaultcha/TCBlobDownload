@@ -59,7 +59,7 @@
               @"TCBlobDownloadManager cancelAllDownload did not properly finished all operations.");
 }
 
-- (void)SetMaximumNumberOfDownloads
+/*- (void)testSetMaximumNumberOfDownloads
 {
     [self.manager setMaxConcurrentDownloads:3];
     
@@ -70,7 +70,7 @@
     }
     
     XCTAssertEqual(self.manager.downloadCount, 3, @"Maximum number of downloads is not respected.");
-}
+}*/
 
 
 @end

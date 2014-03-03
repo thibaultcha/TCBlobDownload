@@ -8,7 +8,7 @@
 
 #import "TCBlobDownloadTestsBase.h"
 
-@interface TCBlobDownloadTests : TCBlobDownloadTestsBase <TCBlobDownloadDelegate>
+@interface TCBlobDownloadTests : TCBlobDownloadTestsBase <TCBlobDownloaderDelegate>
 @property (nonatomic, assign) BOOL delegateCalledOnMainThread;
 @end
 
@@ -96,11 +96,11 @@
                                                                           error:&fileError];
     if (fileError) {
         XCTFail(@"An error occured while listing files in test downloads directory.");
-        NSLog(@"Error : %d - %@", fileError.code, fileError.localizedDescription);
+        NSLog(@"Error : %ld - %@", fileError.code, fileError.localizedDescription);
     }
     if (content.count > 0) {
         XCTFail(@"Files not removed from disk after download cancellation.");
-        NSLog(@"%d file(s) located at %@", content.count, download.pathToDownloadDirectory);
+        NSLog(@"%ld file(s) located at %@", (unsigned long)content.count, download.pathToDownloadDirectory);
     }
 }
 
