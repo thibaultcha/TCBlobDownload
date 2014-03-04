@@ -9,7 +9,7 @@ static const double kBufferSize = 1024*1024; // 1 MB
 static const NSTimeInterval kDefaultTimeout = 30;
 static const NSInteger kNumberOfSamples = 5;
 static NSString * const kErrorDomain = @"com.thibaultcha.tcblobdownload";
-static NSString * const HTTPErrorCode = @"httpStatus";
+static NSString * const TCHTTPErrorCode = @"httpStatus";
 
 #import "TCBlobDownloader.h"
 #import "UIDevice-Hardware.h"
@@ -34,7 +34,7 @@ static NSString * const HTTPErrorCode = @"httpStatus";
 @property (nonatomic, copy) void (^firstResponseBlock)(NSURLResponse *response);
 @property (nonatomic, copy) void (^progressBlock)(float receivedLength, float totalLength, NSInteger remainingTime);
 @property (nonatomic, copy) void (^errorBlock)(NSError *error);
-@property (nonatomic, copy) void (^completionBlock)(BOOL downloadFinished, NSString *pathToFile);
+@property (nonatomic, copy) void (^completeBlock)(BOOL downloadFinished, NSString *pathToFile);
 - (void)notifyFromError:(NSError *)error;
 - (void)notifyFromCompletionWithSuccess:(BOOL)success pathToFile:(NSString *)pathToFile;
 - (void)updateTransferRate;
@@ -82,7 +82,7 @@ static NSString * const HTTPErrorCode = @"httpStatus";
         self.firstResponseBlock = firstResponseBlock;
         self.progressBlock = progressBlock;
         self.errorBlock = errorBlock;
-        self.completionBlock = completeBlock;
+        self.completeBlock = completeBlock;
     }
     return self;
 }
@@ -191,7 +191,7 @@ static NSString * const HTTPErrorCode = @"httpStatus";
                                                                        NSLocalizedString(@"HTTP error code %d (%@) ", @"HTTP error code {satus code} ({status code description})"),
                                                                        httpUrlResponse.statusCode,
                                                                        [NSHTTPURLResponse localizedStringForStatusCode:httpUrlResponse.statusCode]],
-                                            HTTPErrorCode: @(httpUrlResponse.statusCode) }];
+                                            TCHTTPErrorCode: @(httpUrlResponse.statusCode) }];
     }
     
     if ([[UIDevice currentDevice] freeDiskSpace].longLongValue < self.expectedDataLength && self.expectedDataLength != -1) {
@@ -251,8 +251,6 @@ static NSString * const HTTPErrorCode = @"httpStatus";
     [self.receivedDataBuffer setData:nil];
     
     [self notifyFromCompletionWithSuccess:YES pathToFile:self.pathToFile];
-    
-    [self finishOperation];
 }
 
 
@@ -277,8 +275,6 @@ static NSString * const HTTPErrorCode = @"httpStatus";
     NSString *pathToFile = remove ? nil : self.fileName;
     
     [self notifyFromCompletionWithSuccess:NO pathToFile:pathToFile];
-        
-    [self finishOperation];
 }
 
 - (void)addDependentDownload:(TCBlobDownloader *)blobDownload
@@ -305,12 +301,15 @@ static NSString * const HTTPErrorCode = @"httpStatus";
 - (void)notifyFromCompletionWithSuccess:(BOOL)success pathToFile:(NSString *)pathToFile
 {
     dispatch_async(dispatch_get_main_queue(), ^{
-        if (self.completionBlock) {
-            self.completionBlock(NO, nil);
+        if (self.completeBlock) {
+            self.completeBlock(success, pathToFile);
         }
         if ([self.delegate respondsToSelector:@selector(download:didFinishWithSucces:atPath:)]) {
-            [self.delegate download:self didFinishWithSucces:NO atPath:nil];
+            [self.delegate download:self didFinishWithSucces:success atPath:pathToFile];
         }
+        
+        // Let's finish the operation once and for all
+        [self finishOperation];
     });
 }
 

@@ -36,8 +36,8 @@
                          firstResponse:NULL
                               progress:NULL
                                  error:^(NSError *error) {
-                                     XCTAssertNotNil(error.userInfo[@"httpStatus"], @"Error.userInfos does not contains httpStatus field.");
-                                     XCTAssertEqual([error.userInfo[@"httpStatus"] longValue], 404, @"Error code should equal 404 for this URL");
+                                     XCTAssertNotNil(error.userInfo[TCHTTPErrorCode], @"error.userInfos does not contains TCHTTPErrorCode field.");
+                                     XCTAssertEqual([error.userInfo[TCHTTPErrorCode] integerValue], (long)404, @"Error code should equal 404 for this URL");
                                      [self notify:XCTAsyncTestCaseStatusSucceeded];
                                  }
                               complete:NULL];

@@ -14,7 +14,12 @@
 
 #import <Foundation/Foundation.h>
 
-extern NSString * const HTTPErrorCode;
+/**
+ * When a download fails because of an HTTP error, the HTTP status code is transmitted as an `NSNumber` via the provided `NSError` parameter of the corresponding block or delegate method. Access to `error.userInfos[TCHTTPErrorCode]`
+ *
+ * @see -download:didStopWithError:
+ */
+extern NSString * const TCHTTPErrorCode;
 
 @protocol TCBlobDownloaderDelegate;
 
@@ -107,7 +112,7 @@ extern NSString * const HTTPErrorCode;
  @param firstResponseBlock  This block is called when receiving the first response from the server. Can be `nil`.
  @param progressBlock  This block is called on each response from the server while the download is occurring. Can be `nil`. If the remaining time has not been calculated yet, the value is `-1`.
  @param errorBlock  Called when an error occur during the download. If this block is called, the download will be cancelled just after. Can be `nil`.
- @param completeBlock  Called when the download is completed or cancelled. Can be `nil`. If the download has been cancelled with the paramater `removeFile` set to `YES`, then the `pathToFile` parameter is `nil`.
+ @param completeBlock  Called when the download is completed or cancelled. Can be `nil`. If the download has been cancelled with the paramater `removeFile` set to `YES`, then the `pathToFile` parameter is `nil`. The `TCBlobDownloader` operation will be removed from `TCBlobDownloadManager` just after this block is called.
  @return The newly created `TCBlobDownloader`.
  */
 - (instancetype)initWithURL:(NSURL *)url
@@ -176,7 +181,7 @@ extern NSString * const HTTPErrorCode;
 didStopWithError:(NSError *)error;
 
 /**
- Optional. Called when the `TCBlobDownloader` will be removed from the `TCBlobDownloaderManager` singleton.
+ Optional. Called when the download is finished or when the operation has been cancelled. The `TCBlobDownloader` operation will be removed from `TCBlobDownloadManager` just after this method is called.
  
  @param blobDownload  The `TCBlobDownloader` object whose execution is finished.
  @param downloadFinished  `YES` if the file has been downloaded, `NO` if not.
