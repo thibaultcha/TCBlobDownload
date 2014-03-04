@@ -6,7 +6,7 @@ TCBlobDownload uses **NSOperations** to download large files (typically videos, 
 
 Tested with files from ~150MB to ~1.2GB, mostly videos.
 
-I've implemented **TCBlobDownload** which extends NSOperation and use **TCBlobDownloadManager** to execute it. You can set a delegate or use blocks (your choice) for each download to update your views etc…
+I've implemented **TCBlobDownloader** which extends NSOperation and use **TCBlobDownloadManager** to execute it. You can set a delegate or use blocks (your choice) for each download to update your views etc…
 
 Requires **iOS 5.0 or later** and ARC.
   
@@ -31,11 +31,13 @@ Requires **iOS 5.0 or later** and ARC.
 
 ## Documentation :books:
 
-Browse the documentation on [Cocoadocs](http://cocoadocs.org/docsets/TCBlobDownload/1.5.0/) or add it directly to Xcode or [Dash](http://kapeli.com/dash) by [downloading](https://github.com/thibaultCha/TCBlobDownload/blob/remaining-time/TCBlobDownload/Docs/TCBlobDownloadDocset.zip?raw=true) the docset and placing it into `~/Library/Developer/Shared/Documentation/DocSets/`.
+Browse the documentation on [Cocoadocs](http://cocoadocs.org/docsets/TCBlobDownload/1.5.0/) or add it directly to Xcode by [downloading](https://github.com/thibaultCha/TCBlobDownload/blob/remaining-time/TCBlobDownload/Docs/TCBlobDownloadDocset.zip?raw=true) the docset and placing it into `~/Library/Developer/Shared/Documentation/DocSets/`. (or use [Dash](http://kapeli.com/dash))
 
 ## Installation
 
-### Cocoapods
+For CocoaPod install or the static library import: go to `Project's Target -> Build Settings -> Other Linker Flags -> Add "-ObjC".`
+
+### CocoaPods
 
 Add the following to your Podfile and run `$ pod install`:
 
@@ -48,11 +50,11 @@ If you don't have CocoaPods installed or integrated into your project, you can l
 ### Import as a static library
 
 1. Drag and drop `TCBlobDownload.xcodeproj` from Finder to your opened project.
-2. Open your Project's Target -> Build Phases -> **Target Dependencies** and add `TCBlobDownload`. Then, click **Link binary with libraries** and add `libTCBlobDownload.a` (no worries if it's red).
+2. Project's Target -> Build Phases -> **Target Dependencies** -> add `TCBlobDownload`. Then, click **Link binary with libraries** and add `libTCBlobDownload.a` (no worries if it's red).
 3. Go to **build settings**, switch "always search user paths" to `YES` and add `$(PROJECT_TEMP_DIR)/../UninstalledProducts/include` to "User Header Search Paths".
-4. Import in each file where you want to use the lib. (no worries if no autocomplete)
+4. Import the lib. (no worries if no autocomplete)
 ```
-#import <TCBlobDownload/TCBlobDownloadManager.h>
+#import <TCBlobDownload/TCBlobDownload.h>
 ```
 
 ## Example :eyeglasses:
@@ -66,7 +68,7 @@ To immediately start a download in the default TCBlobDownloadManager directory (
 
 TCBlobDownloadManager *sharedManager = [TCBlobDownloadManager sharedInstance];
 
-TCBlobDownload *downloader = [sharedManager startDownloadWithURL:@"http://give.me/abigfile.avi"
+TCBlobDownloader *downloader = [sharedManager startDownloadWithURL:@"http://give.me/abigfile.avi"
                 downloadPath:nil
                  firstResponse:^(NSURLResponse *response) {
 		      
@@ -87,9 +89,9 @@ If you set a custom path:
 ```objective-c
 NSString *customPath = [NSTemporaryDirectory() stringByAppendingPathComponent:@"My/Custom/Path/"];
 
-TCBlobDownload *downloader = [sharedManager startDownloadWithURL:@"http://give.me/abigfile.avi"
-                                                          customPath:customPath // important
-                                                         andDelegate:nil];
+TCBlobDownloader *downloader = [sharedManager startDownloadWithURL:@"http://give.me/abigfile.avi"
+                                                            customPath:customPath // important
+                                                           andDelegate:nil];
 ```
 
 This will **create** the given path if needed and download the file in the `Path/` directory. Please note that during the download process you have no control over the file name as explained with reasons why in the documentation. **Remember that you should follow the [iOS Data Storage Guidelines](https://developer.apple.com/icloud/documentation/data-storage/)**.
@@ -98,24 +100,24 @@ This will **create** the given path if needed and download the file in the `Path
 You can either set a delegate which can implement those optional methods if delegates have your preference over blocks:
 
 ```objective-c
-- (void)download:(TCBlobDownload *)blobDownload didReceiveFirstResponse:(NSURLResponse *)response
+- (void)download:(TCBlobDownloader *)blobDownload didReceiveFirstResponse:(NSURLResponse *)response
 {
 
 }
 
-- (void)download:(TCBlobDownload *)blobDownload didReceiveData:(uint64_t)received onTotal:(uint64_t)total
+- (void)download:(TCBlobDownloader *)blobDownload didReceiveData:(uint64_t)received onTotal:(uint64_t)total
 {
   // wow moving progress bar! (bis)
   // blobDownload.remainingTime
   // blobDownload.speedRate
 }
 
-- (void)download:(TCBlobDownload *)blobDownload didStopWithError:(NSError *)error
+- (void)download:(TCBlobDownloader *)blobDownload didStopWithError:(NSError *)error
 {
   // this is not cool
 }
 
-- (void)download:(TCBlobDownload *)blobDownload didFinishWithSucces:(BOOL)downloadFinished atPath:(NSString *)pathToFile
+- (void)download:(TCBlobDownloader *)blobDownload didFinishWithSucces:(BOOL)downloadFinished atPath:(NSString *)pathToFile
 {
   // okay, okay
 }
@@ -126,17 +128,17 @@ You can either set a delegate which can implement those optional methods if dele
 
 **Cool thing 2:** You can also set dependencies in your downloads using the `addDependentDownload:` method from `TCBlobDownload`.
 
-See documentation for more details.
+See [documentation](#documentation-books) for more details.
 
 ## Change log :memo:
 
-### v1.5.0 (2/28/2014)
+### v1.5 (3/04/2014)
 * Improved documentation and created a docset
-* Added a `speedRate` and `remainingTime` (in seconds) property on `TCBlobDownload` thanks to [#16](https://github.com/thibaultCha/TCBlobDownload/issues/16)
-* Updated `TCBlobDownload` properties to `readonly`
-* Renamed `sharedDownloadManager` to `sharedInstance`
+* Added a `speedRate` and `remainingTime` (in seconds) property on `TCBlobDownloader` thanks to [#16](https://github.com/thibaultCha/TCBlobDownload/issues/16)
+* Updated `TCBlobDownloader` properties to `readonly`
+* Refactor code and test for a much more maintainable code base
 
-### v1.4.0 (11/19/2013)
+### v1.4 (11/19/2013)
 * Unit testing
 * HTTP error status code handling [#3](https://github.com/thibaultCha/TCBlobDownload/pull/3)
 * Manager returns created downloads [#5](https://github.com/thibaultCha/TCBlobDownload/pull/5)
