@@ -35,7 +35,7 @@ Browse the documentation on [Cocoadocs](http://cocoadocs.org/docsets/TCBlobDownl
 
 ## Installation
 
-For CocoaPod install or the static library import: go to `Project's Target -> Build Settings -> Other Linker Flags -> Add "-ObjC".`
+For CocoaPod install or the static library import: `Project's Target -> Build Settings -> Other Linker Flags -> Add "-ObjC"`
 
 ### CocoaPods
 
@@ -57,7 +57,7 @@ If you don't have CocoaPods installed or integrated into your project, you can l
 #import <TCBlobDownload/TCBlobDownload.h>
 ```
 
-## Example :eyeglasses:
+## Examples :eyeglasses:
 
 ### 1. Blocks
 Blocks are cool.
@@ -136,7 +136,7 @@ See [documentation](#documentation-books) for more details.
 * Improved documentation and created a docset
 * Added a `speedRate` and `remainingTime` (in seconds) property on `TCBlobDownloader` thanks to [#16](https://github.com/thibaultCha/TCBlobDownload/issues/16)
 * Updated `TCBlobDownloader` properties to `readonly`
-* Refactor code and test for a much more maintainable code base
+* Refactored code and tests for a much more maintainable code base
 
 ### v1.4 (11/19/2013)
 * Unit testing
