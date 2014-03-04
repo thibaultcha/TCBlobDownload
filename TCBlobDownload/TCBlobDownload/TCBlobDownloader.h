@@ -15,11 +15,29 @@
 #import <Foundation/Foundation.h>
 
 /**
- * When a download fails because of an HTTP error, the HTTP status code is transmitted as an `NSNumber` via the provided `NSError` parameter of the corresponding block or delegate method. Access to `error.userInfos[TCHTTPErrorCode]`
- *
- * @see -download:didStopWithError:
+ When a download fails because of an HTTP error, the HTTP status code is transmitted as an `NSNumber` via the provided `NSError` parameter of the corresponding block or delegate method. Access to `error.userInfos[TCHTTPErrorCode]`
+ 
+ @see -download:didStopWithError:
+ 
+ @since 1.5.0
  */
-extern NSString * const TCHTTPErrorCode;
+extern NSString * const TCHTTPStatusCode;
+
+/**
+ The possible error codes for a `TCBlobDownloader` operation. When an error block or the corresponding delegate method are called, an `NSError` instance is passed as parameter. If the domain of this `NSError` is TCBlobDownload's, the `code` parameter will be set to one of these values.
+ 
+ @since 1.5.0
+ */
+typedef NS_ENUM(NSUInteger, TCBlobDownloadError) {
+    /** `NSURLConnection` was unable to handle the provided URL. */
+    TCErrorInvalidURL = 0,
+    /** The connection to the asked URL failed. */
+    TCErrorConnectionFailed,
+    /** The connection encountered an HTTP error. Please refer to `TCHTTPStatusCode` documentation for further details on how to handle such errors. */
+    TCErrorHTTPError,
+    /** The device has not enough free disk space to download the file. */
+    TCErrorNotEnoughFreeDiskSpace
+};
 
 @protocol TCBlobDownloaderDelegate;
 
@@ -32,11 +50,15 @@ extern NSString * const TCHTTPErrorCode;
  Each `TCBlobDownloader` instance will run in a background thread and will download files via an `NSURLConnection`. Each `TCBlobDownloader` can depend (or not) of a `TCBlobDownloaderDelegate` or use blocks to notify your UI from its status.
  
  @see TCBlobDownloaderDelegate protocol
+ 
+ @since 1.0
  */
 @interface TCBlobDownloader : NSOperation <NSURLConnectionDelegate>
 
 /**
  The delegate property of a `TCBlobDownloader` instance. Can be `nil`.
+ 
+ @since 1.0
  */
 @property (nonatomic, unsafe_unretained) id<TCBlobDownloaderDelegate> delegate;
 
@@ -44,6 +66,8 @@ extern NSString * const TCHTTPErrorCode;
  The directory where to download the file.
  
  @warning You should not set this property directly as it is managed in the initialization method.
+ 
+ @since 1.0
  */
 @property (nonatomic, copy) NSString *pathToDownloadDirectory;
 
@@ -51,6 +75,8 @@ extern NSString * const TCHTTPErrorCode;
  The path to the downloaded file, including the file name.
  
  @warning You should not set this property directly as the file name is managed by the library.
+ 
+ @since 1.0
  */
 @property (nonatomic, copy, readonly) NSString *pathToFile;
 
@@ -58,6 +84,8 @@ extern NSString * const TCHTTPErrorCode;
  The URL of the file to download.
  
  @warning You should not set this property directly, as it is managed by the initialization method.
+ 
+ @since 1.0
  */
 @property (nonatomic, copy, readonly) NSURL *downloadURL;
 
@@ -73,11 +101,15 @@ extern NSString * const TCHTTPErrorCode;
  @see TCBlobDownloaderDelegate protocol
  
  @warning You should not set this property directly, as it is retrieved from the download URL.
+ 
+ @since 1.0
  */
 @property (nonatomic, copy, readonly) NSString *fileName;
 
 /**
  The current speed of the download in bits/sec. This property updates itself regularly so you can retrieve it on a regular interval to update your UI.
+ 
+ @since 1.5.0
  */
 @property (nonatomic, assign, readonly) NSInteger speedRate;
 
@@ -85,6 +117,8 @@ extern NSString * const TCHTTPErrorCode;
  The estimated number of seconds before the download completes.
  
  `-1` if the remaining time has not been calculated yet.
+ 
+ @since 1.5.0
  */
 @property (nonatomic, assign, readonly) NSInteger remainingTime;
 
@@ -97,6 +131,8 @@ extern NSString * const TCHTTPErrorCode;
  @param pathToDLOrNil  An optional path to override the default download path of the `TCBlobDownloaderManager` instance. Can be `nil`.
  @param delegateOrNil  An optional delegate. Can be `nil`.
  @return The newly created `TCBlobDownloader`.
+ 
+ @since 1.0
  */
 - (instancetype)initWithURL:(NSURL *)url
                downloadPath:(NSString *)pathToDLOrNil
@@ -114,6 +150,8 @@ extern NSString * const TCHTTPErrorCode;
  @param errorBlock  Called when an error occur during the download. If this block is called, the download will be cancelled just after. Can be `nil`.
  @param completeBlock  Called when the download is completed or cancelled. Can be `nil`. If the download has been cancelled with the paramater `removeFile` set to `YES`, then the `pathToFile` parameter is `nil`. The `TCBlobDownloader` operation will be removed from `TCBlobDownloadManager` just after this block is called.
  @return The newly created `TCBlobDownloader`.
+ 
+ @since 1.3
  */
 - (instancetype)initWithURL:(NSURL *)url
                downloadPath:(NSString *)pathToDL
@@ -126,6 +164,8 @@ extern NSString * const TCHTTPErrorCode;
  Cancels the download. Remove already downloaded parts of the file from the disk is asked.
  
  @param remove  If `YES`, this method will remove the downloaded file parts from the disk. File parts are left untouched if set to `NO`. This will allow TCBlobDownload to restart the download from where it has ended in a future operation.
+ 
+ @since 1.0
  */
 - (void)cancelDownloadAndRemoveFile:(BOOL)remove;
 
@@ -133,6 +173,8 @@ extern NSString * const TCHTTPErrorCode;
  Makes the receiver download dependent of the given download. The receiver download will not execute itself until the given download has finished.
  
  @param blobDownload  The download on which to depend.
+ 
+ @since 1.2
  */
 - (void)addDependentDownload:(TCBlobDownloader *)blobDownload;
 
@@ -151,6 +193,8 @@ extern NSString * const TCHTTPErrorCode;
  
  @param blobDownload  The `TCBlobDownloader` object receiving the first response.
  @param response  The `NSURLResponse` from the server.
+ 
+ @since 1.0
  */
 - (void)download:(TCBlobDownloader *)blobDownload didReceiveFirstResponse:(NSURLResponse *)response;
 
@@ -164,6 +208,8 @@ extern NSString * const TCHTTPErrorCode;
  ## Note
  
  If you pause and restart later a download, the new `TCBlobDownloader` will resume it from where it has stopped (see `fileName` property for more explanations). Therefore, you might want to track yourself the total size of the file when you first tried to download it, otherwise the `totalLength` is the actual remaining length to download and might not suit your needs if you do something such as a progress bar.
+ 
+ @since 1.0
  */
 - (void)download:(TCBlobDownloader *)blobDownload
   didReceiveData:(uint64_t)receivedLength
@@ -176,6 +222,8 @@ extern NSString * const TCHTTPErrorCode;
  
  @param blobDownload  The `TCBlobDownloader` object which trigerred an error.
  @param error  The trigerred error.
+ 
+ @since 1.0
  */
 - (void)download:(TCBlobDownloader *)blobDownload
 didStopWithError:(NSError *)error;
@@ -186,6 +234,8 @@ didStopWithError:(NSError *)error;
  @param blobDownload  The `TCBlobDownloader` object whose execution is finished.
  @param downloadFinished  `YES` if the file has been downloaded, `NO` if not.
  @param pathToFile  The path where the file has been downloaded.
+ 
+ @since 1.3
  */
 - (void)download:(TCBlobDownloader *)blobDownload
 didFinishWithSucces:(BOOL)downloadFinished

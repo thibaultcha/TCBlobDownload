@@ -134,9 +134,6 @@
     
     [self waitForStatus:kDidReceiveDataMethodCalled timeout:kDefaultAsyncTimeout];
     XCTAssert(self.delegateCalledOnMainThread, @"download:didReceiveData: is not called on main thread");
-    
-    //[self waitForStatus:kDidFinishWithSuccessMethodCalled timeout:10];
-    //XCTAssert(self.delegateCalledOnMainThread, @"download:didFinishWithSuccess: is not called on main thread");
 }
 
 - (void)DelegateMethodsShouldBeCalledOnMainThreadTwo

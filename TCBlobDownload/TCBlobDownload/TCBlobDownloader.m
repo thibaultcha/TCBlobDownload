@@ -9,7 +9,8 @@ static const double kBufferSize = 1024*1024; // 1 MB
 static const NSTimeInterval kDefaultTimeout = 30;
 static const NSInteger kNumberOfSamples = 5;
 static NSString * const kErrorDomain = @"com.thibaultcha.tcblobdownload";
-static NSString * const TCHTTPErrorCode = @"httpStatus";
+
+NSString * const TCHTTPStatusCode = @"httpStatus";
 
 #import "TCBlobDownloader.h"
 #import "UIDevice-Hardware.h"
@@ -100,7 +101,7 @@ static NSString * const TCHTTPErrorCode = @"httpStatus";
     // If we can't handle the request, better cancelling the operation right now
     if (![NSURLConnection canHandleRequest:fileRequest]) {
         NSError *error = [NSError errorWithDomain:kErrorDomain
-                                             code:1
+                                             code:TCErrorInvalidURL
                                          userInfo:@{ NSLocalizedDescriptionKey:
                                         [NSString stringWithFormat:@"Invalid URL provided: %@", fileRequest.URL] }];
         
@@ -169,7 +170,7 @@ static NSString * const TCHTTPErrorCode = @"httpStatus";
 - (void)connection:(NSURLConnection*)connection didFailWithError:(NSError *)error
 {
     NSError *downloadError = [NSError errorWithDomain:kErrorDomain
-                                                 code:4
+                                                 code:TCErrorConnectionFailed
                                              userInfo:@{ NSLocalizedDescriptionKey:[NSString stringWithFormat:@"Download failed for file: %@. Reason: %@",
                                                                                     self.fileName,
                                                                                     error.localizedDescription] }];
@@ -186,17 +187,17 @@ static NSString * const TCHTTPErrorCode = @"httpStatus";
     
     if (httpUrlResponse.statusCode >= 400) {
         error = [NSError errorWithDomain:kErrorDomain
-                                    code:2
+                                    code:TCErrorHTTPError
                                 userInfo:@{ NSLocalizedDescriptionKey:[NSString stringWithFormat:
                                                                        NSLocalizedString(@"HTTP error code %d (%@) ", @"HTTP error code {satus code} ({status code description})"),
                                                                        httpUrlResponse.statusCode,
                                                                        [NSHTTPURLResponse localizedStringForStatusCode:httpUrlResponse.statusCode]],
-                                            TCHTTPErrorCode: @(httpUrlResponse.statusCode) }];
+                                            TCHTTPStatusCode: @(httpUrlResponse.statusCode) }];
     }
     
     if ([[UIDevice currentDevice] freeDiskSpace].longLongValue < self.expectedDataLength && self.expectedDataLength != -1) {
         error = [NSError errorWithDomain:kErrorDomain
-                                    code:3
+                                    code:TCErrorNotEnoughFreeDiskSpace
                                 userInfo:@{ NSLocalizedDescriptionKey:NSLocalizedString(@"Not enough free disk space", @"") }];
     }
     

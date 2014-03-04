@@ -20,7 +20,7 @@ static NSString * const k404URLToDownload = @"https://github.com/thibaultCha/TCB
 
 static const NSTimeInterval kDefaultAsyncTimeout = 2;
 
-typedef NS_OPTIONS(NSUInteger, kDelegateMethodCalled) {
+typedef NS_ENUM(NSUInteger, kDelegateMethodCalled) {
     kDidReceiveFirstResponseMethodCalled = 10,
     kDidReceiveDataMethodCalled,
     kDidFinishWithSuccessMethodCalled,

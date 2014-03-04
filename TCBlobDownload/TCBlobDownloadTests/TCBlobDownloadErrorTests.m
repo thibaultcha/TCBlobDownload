@@ -22,6 +22,7 @@
                                  error:^(NSError *error) {
                                      XCTAssert([NSThread isMainThread], @"Error block is not called on main thread");
                                      XCTAssertNotNil(error, @"No error passed for invalid URL");
+                                     XCTAssertEqual((NSUInteger)error.code, TCErrorInvalidURL, @"Incoherent error code provided for invalud URL");
                                      [self notify:XCTAsyncTestCaseStatusSucceeded];
                                  }
                               complete:NULL];
@@ -36,8 +37,8 @@
                          firstResponse:NULL
                               progress:NULL
                                  error:^(NSError *error) {
-                                     XCTAssertNotNil(error.userInfo[TCHTTPErrorCode], @"error.userInfos does not contains TCHTTPErrorCode field.");
-                                     XCTAssertEqual([error.userInfo[TCHTTPErrorCode] integerValue], (long)404, @"Error code should equal 404 for this URL");
+                                     XCTAssertNotNil(error.userInfo[TCHTTPStatusCode], @"error.userInfos does not contains TCHTTPStatusCode field.");
+                                     XCTAssertEqual([error.userInfo[TCHTTPStatusCode] integerValue], (NSInteger)404, @"Error code should equal 404 for this URL");
                                      [self notify:XCTAsyncTestCaseStatusSucceeded];
                                  }
                               complete:NULL];

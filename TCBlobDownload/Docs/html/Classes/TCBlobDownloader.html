@@ -753,7 +753,7 @@
 		
 		<dl class="argument-def parameter-def">
 			<dt><em>completeBlock</em></dt>
-			<dd><p>Called when the download is completed or cancelled. Can be <code>nil</code>. If the download has been cancelled with the paramater <code>removeFile</code> set to <code>YES</code>, then the <a href="#//api/name/pathToFile"><code>pathToFile</code></a> parameter is <code>nil</code>.</p></dd>
+			<dd><p>Called when the download is completed or cancelled. Can be <code>nil</code>. If the download has been cancelled with the paramater <code>removeFile</code> set to <code>YES</code>, then the <a href="#//api/name/pathToFile"><code>pathToFile</code></a> parameter is <code>nil</code>. The <code>TCBlobDownloader</code> operation will be removed from <a href="../Classes/TCBlobDownloadManager.html"><code>TCBlobDownloadManager</code></a> just after this block is called.</p></dd>
 		</dl>
 		
 		<dl class="argument-def parameter-def">

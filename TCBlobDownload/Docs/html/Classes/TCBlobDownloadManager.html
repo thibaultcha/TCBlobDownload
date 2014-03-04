@@ -643,7 +643,7 @@
 	
 	
 	<div class="method-subsection brief-description">
-		<p>Creates and runs instantly a <a href="../Classes/TCBlobDownloader.html"><code>TCBlobDownloader</code></a> object.</p>
+		<p>Instanciates and runs instantly a <a href="../Classes/TCBlobDownloader.html"><code>TCBlobDownloader</code></a> object. Provides the same functionnalities than <a href="#//api/name/startDownloadWithURL:customPath:delegate:"><code>startDownloadWithURL:customPath:delegate:</code></a> but creates a <code>TCBlobDownloadObject</code> using blocks to update your view.</p>
 	</div>		
 	
     
@@ -677,7 +677,7 @@
 		
 		<dl class="argument-def parameter-def">
 			<dt><em>completeBlock</em></dt>
-			<dd><p>Called when the download is completed or cancelled. Can be <code>nil</code>. If the download has been cancelled with the paramater <code>removeFile</code> set to <code>YES</code>, then the <code>pathToFile</code> parameter is <code>nil</code>.</p></dd>
+			<dd><p>Called when the download is completed or cancelled. Can be <code>nil</code>. If the download has been cancelled with the paramater <code>removeFile</code> set to <code>YES</code>, then the <code>pathToFile</code> parameter is <code>nil</code>. The <a href="../Classes/TCBlobDownloader.html"><code>TCBlobDownloader</code></a> operation will be removed from <code>TCBlobDownloadManager</code> just after this block is called.</p></dd>
 		</dl>
 		
 	</div>
@@ -698,7 +698,7 @@
 			
 			<li><code><p><a href="#//api/name/startDownloadWithURL:customPath:delegate:">- startDownloadWithURL:customPath:delegate:</a></p>
 
-<p>Provides the same functionnality than <code>-startDownloadWithURL:customPath:delegate:</code> but creates a <code>TCBlobDownloadObject</code> using blocks to update your view.</p></code></li>
+<p>This method returns the created <code>TCBlobDownloader</code> object for further use.</p></code></li>
 			
 		</ul>
 	</div>
