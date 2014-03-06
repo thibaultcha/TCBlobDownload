@@ -38,11 +38,13 @@
                           @"Default download path is not set correctly");
 }
 
-- (void)testCreatePathFromPath
+/*
+- (void)testcreateDirFromPath
 {
     // test if null
     // test if exists
 }
+*/
 
 - (void)testAllOperationsCorrectlyCancelled
 {
@@ -59,7 +61,8 @@
               @"TCBlobDownloadManager cancelAllDownload did not properly finished all operations.");
 }
 
-/*- (void)testSetMaximumNumberOfDownloads
+/*
+- (void)testSetMaximumNumberOfDownloads
 {
     [self.manager setMaxConcurrentDownloads:3];
     
@@ -70,7 +73,8 @@
     }
     
     XCTAssertEqual(self.manager.downloadCount, 3, @"Maximum number of downloads is not respected.");
-}*/
+}
+*/
 
 
 @end

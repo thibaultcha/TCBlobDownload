@@ -126,7 +126,7 @@ You can either set a delegate which can implement those optional methods if dele
 ### 3. Other things you should know
 **Cool thing 1:** If a download has been stopped and the local file has not been deleted, when you will restart the download to the same local path, the download will start where it has stopped using the HTTP [Range](http://www.w3.org/Protocols/rfc2616/rfc2616-sec14.html) header (14.35).
 
-**Cool thing 2:** You can also set dependencies in your downloads using the `addDependentDownload:` method from `TCBlobDownload`.
+**Cool thing 2:** You can also set dependencies in your downloads using the `addDependentDownload:` method from `TCBlobDownloader`.
 
 See [documentation](#documentation-books) for more details.
 

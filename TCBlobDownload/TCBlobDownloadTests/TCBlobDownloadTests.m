@@ -123,7 +123,8 @@
     [self waitForStatus:XCTAsyncTestCaseStatusSucceeded timeout:5];
 }
 
-- (void)DelegateMethodsShouldBeCalledOnMainThreadOne
+/*
+- (void)testDelegateMethodsShouldBeCalledOnMainThreadOne
 {
     [self.manager startDownloadWithURL:self.validURL
                             customPath:nil
@@ -135,8 +136,10 @@
     [self waitForStatus:kDidReceiveDataMethodCalled timeout:kDefaultAsyncTimeout];
     XCTAssert(self.delegateCalledOnMainThread, @"download:didReceiveData: is not called on main thread");
 }
-
-- (void)DelegateMethodsShouldBeCalledOnMainThreadTwo
+*/
+    
+/*
+- (void)testDelegateMethodsShouldBeCalledOnMainThreadTwo
 {
     [self.manager startDownloadWithURL:[NSURL URLWithString:kInvalidURLToDownload]
                             customPath:nil
@@ -148,6 +151,7 @@
     //[self waitForStatus:kDidFinishWithSuccessMethodCalled timeout:5];
     //XCTAssert(self.delegateCalledOnMainThread, @"download:didFinishWithSuccess: is not called on main thread after error occurring");
 }
+*/
 
 
 #pragma mark - TCBlobDownloadDelegate
@@ -170,14 +174,14 @@
 
 - (void)download:(TCBlobDownloader *)blobDownload didFinishWithSucces:(BOOL)downloadFinished atPath:(NSString *)pathToFile
 {
-    //self.delegateCalledOnMainThread = YES;
-    //[self notify:kDidFinishWithSuccessMethodCalled];
+    self.delegateCalledOnMainThread = YES;
+    [self notify:kDidFinishWithSuccessMethodCalled];
 }
 
 - (void)download:(TCBlobDownloader *)blobDownload didStopWithError:(NSError *)error
 {
-    //self.delegateCalledOnMainThread = YES;
-    //[self notify:kDidStopWithErrorMethodCalled];
+    self.delegateCalledOnMainThread = YES;
+    [self notify:kDidStopWithErrorMethodCalled];
 }
 
 @end
