@@ -8,7 +8,7 @@ Tested with files from ~150MB to ~1.2GB, mostly videos.
 
 I've implemented **TCBlobDownloader** which extends NSOperation and use **TCBlobDownloadManager** to execute it. You can set a delegate or use blocks (your choice) for each download to update your views etc…
 
-Requires **iOS 5.0 or later** and ARC.
+Requires **iOS 5.1.1 or later** and ARC.
   
 - **[Features](#features)**
 - **[Documentation](#documentation-books)**
@@ -64,8 +64,6 @@ Blocks are cool.
 To immediately start a download in the default TCBlobDownloadManager directory (`tmp/` by default):
 
 ```objective-c
-#import "TCBlobDownloadManager.h"
-
 TCBlobDownloadManager *sharedManager = [TCBlobDownloadManager sharedInstance];
 
 TCBlobDownloader *downloader = [sharedManager startDownloadWithURL:@"http://give.me/abigfile.avi"
