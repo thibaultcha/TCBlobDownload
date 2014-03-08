@@ -18,10 +18,17 @@
 		21D06E11181847F400CAADCD /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 21D06E06181847F400CAADCD /* main.m */; };
 		21D06E13181847F400CAADCD /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 21D06E0A181847F400CAADCD /* ViewController.m */; };
 		21D06E14181847F400CAADCD /* ViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 21D06E0B181847F400CAADCD /* ViewController.xib */; };
-		C33448CD18C00E500050C1ED /* libTCBlobDownload.a in Frameworks */ = {isa = PBXBuildFile; fileRef = C33448CA18C000850050C1ED /* libTCBlobDownload.a */; };
+		C317CBD218CB668500160ED6 /* libTCBlobDownload.a in Frameworks */ = {isa = PBXBuildFile; fileRef = C33448CA18C000850050C1ED /* libTCBlobDownload.a */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
+		C317CBCD18CB666800160ED6 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = C33448C318C000850050C1ED /* TCBlobDownload.xcodeproj */;
+			proxyType = 1;
+			remoteGlobalIDString = 217761FB172FFBBB001956C7;
+			remoteInfo = TCBlobDownload;
+		};
 		C33448C918C000850050C1ED /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = C33448C318C000850050C1ED /* TCBlobDownload.xcodeproj */;
@@ -63,7 +70,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				C33448CD18C00E500050C1ED /* libTCBlobDownload.a in Frameworks */,
+				C317CBD218CB668500160ED6 /* libTCBlobDownload.a in Frameworks */,
 				217762391730025C001956C7 /* UIKit.framework in Frameworks */,
 				2177623B1730025C001956C7 /* Foundation.framework in Frameworks */,
 				2177623D1730025C001956C7 /* CoreGraphics.framework in Frameworks */,
@@ -159,6 +166,7 @@
 			buildRules = (
 			);
 			dependencies = (
+				C317CBCE18CB666800160ED6 /* PBXTargetDependency */,
 			);
 			name = TCBlobDownloadExample;
 			productName = SampleProject;
@@ -247,6 +255,14 @@
 		};
 /* End PBXSourcesBuildPhase section */
 
+/* Begin PBXTargetDependency section */
+		C317CBCE18CB666800160ED6 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = TCBlobDownload;
+			targetProxy = C317CBCD18CB666800160ED6 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
 /* Begin PBXVariantGroup section */
 		21D06E04181847F400CAADCD /* InfoPlist.strings */ = {
 			isa = PBXVariantGroup;
@@ -263,6 +279,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
+				ARCHS = "$(ARCHS_STANDARD_INCLUDING_64_BIT)";
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
 				CLANG_CXX_LIBRARY = "libc++";
 				CLANG_ENABLE_OBJC_ARC = YES;
@@ -295,6 +312,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
+				ARCHS = "$(ARCHS_STANDARD_INCLUDING_64_BIT)";
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
 				CLANG_CXX_LIBRARY = "libc++";
 				CLANG_ENABLE_OBJC_ARC = YES;
