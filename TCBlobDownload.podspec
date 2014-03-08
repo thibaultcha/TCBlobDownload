@@ -11,7 +11,7 @@ Pod::Spec.new do |s|
     :git => "https://github.com/thibaultCha/TCBlobDownload.git",
     :tag => "1.5.0"
   }
-  s.source_files = 'TCBlobDownload/TCBlobDownload/*.{h,m}'
+  s.source_files = 'TCBlobDownload/TCBlobDownload/**/*.{h,m}'
   s.requires_arc = true
-  s.xcconfig = { 'OTHER_LDFLAGS' => '-ObjC -all_load -force_load' }
+  s.xcconfig = { 'OTHER_LDFLAGS' => '-ObjC' }
 end

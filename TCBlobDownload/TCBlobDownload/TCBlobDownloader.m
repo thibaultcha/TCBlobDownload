@@ -195,7 +195,7 @@ NSString * const TCHTTPStatusCode = @"httpStatus";
                                             TCHTTPStatusCode: @(httpUrlResponse.statusCode) }];
     }
     
-    if ([[UIDevice currentDevice] freeDiskSpace].longLongValue < self.expectedDataLength && self.expectedDataLength != -1) {
+    if ((unsigned)[[UIDevice currentDevice] freeDiskSpace].longLongValue < self.expectedDataLength) {
         error = [NSError errorWithDomain:kErrorDomain
                                     code:TCErrorNotEnoughFreeDiskSpace
                                 userInfo:@{ NSLocalizedDescriptionKey:NSLocalizedString(@"Not enough free disk space", @"") }];
