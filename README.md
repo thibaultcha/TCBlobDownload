@@ -1,6 +1,8 @@
 # TCBlobDownload
 
 [![Build Status](https://api.travis-ci.org/thibaultCha/TCBlobDownload.png)](https://travis-ci.org/thibaultCha/TCBlobDownload)
+[![Pod version](https://cocoapod-badges.herokuapp.com/v/TCBlobDownload/badge.png)](https://cocoapod-badges.herokuapp.com/v/TCBlobDownload/badge.png)
+[![Pod platform](https://cocoapod-badges.herokuapp.com/p/TCBlobDownload/badge.png)](https://cocoapod-badges.herokuapp.com/p/TCBlobDownload/badge.png)
 
 TCBlobDownload uses **NSOperations** to download large files (typically videos, music... well: BLOBs) using **NSURLConnection** in background threads.
 
@@ -130,7 +132,7 @@ See [documentation](#documentation-books) for more details.
 
 ## Change log :memo:
 
-### v1.5 (3/04/2014)
+### v1.5 (8/04/2014)
 * Improved documentation and created a docset
 * Added a `speedRate` and `remainingTime` (in seconds) property on `TCBlobDownloader` thanks to [#16](https://github.com/thibaultCha/TCBlobDownload/issues/16)
 * Updated `TCBlobDownloader` properties to `readonly`
