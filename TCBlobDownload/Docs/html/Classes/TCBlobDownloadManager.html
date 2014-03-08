@@ -1,0 +1,876 @@
+<!DOCTYPE HTML>
+<html>
+	<head>
+		<meta http-equiv="Content-Type" content="html/html; charset=utf-8" />
+		<title>TCBlobDownloadManager Class Reference</title>
+		<meta id="xcode-display" name="xcode-display" content="render"/>
+		<link rel="stylesheet" type="text/css" href="../css/styles.css" media="all" />
+		<link rel="stylesheet" type="text/css" media="print" href="../css/stylesPrint.css" />
+		<meta name="generator" content="appledoc 2.2 (build 961)" />
+	</head>
+	<body>
+		<header id="top_header">
+			<div id="library" class="hideInXcode">
+				<h1><a id="libraryTitle" href="../index.html">TCBlobDownload </a></h1>
+				<a id="developerHome" href="../index.html">thibaultCha</a>
+			</div>
+			
+			<div id="title" role="banner">
+				<h1 class="hideInXcode">TCBlobDownloadManager Class Reference</h1>
+			</div>
+			<ul id="headerButtons" role="toolbar">
+				<li id="toc_button">
+					<button aria-label="Show Table of Contents" role="checkbox" class="open" id="table_of_contents"><span class="disclosure"></span>Table of Contents</button>
+				</li>
+				<li id="jumpto_button" role="navigation">
+					<select id="jumpTo">
+	<option value="top">Jump To&#133;</option>
+	
+	<option value="overview">Overview</option>
+	
+	
+	
+	
+	<option value="tasks">Tasks</option>
+	
+	
+	
+	
+	
+	<option value="properties">Properties</option>
+	
+	<option value="//api/name/defaultDownloadPath">&nbsp;&nbsp;&nbsp;&nbsp;defaultDownloadPath</option>
+	
+	<option value="//api/name/downloadCount">&nbsp;&nbsp;&nbsp;&nbsp;downloadCount</option>
+	
+	
+	
+	
+	<option value="class_methods">Class Methods</option>
+	
+	<option value="//api/name/sharedInstance">&nbsp;&nbsp;&nbsp;&nbsp;+ sharedInstance</option>
+	
+	
+	
+	
+	<option value="instance_methods">Instance Methods</option>
+	
+	<option value="//api/name/cancelAllDownloadsAndRemoveFiles:">&nbsp;&nbsp;&nbsp;&nbsp;- cancelAllDownloadsAndRemoveFiles:</option>
+	
+	<option value="//api/name/setDefaultDownloadPath:">&nbsp;&nbsp;&nbsp;&nbsp;- setDefaultDownloadPath:</option>
+	
+	<option value="//api/name/setMaxConcurrentDownloads:">&nbsp;&nbsp;&nbsp;&nbsp;- setMaxConcurrentDownloads:</option>
+	
+	<option value="//api/name/startDownload:">&nbsp;&nbsp;&nbsp;&nbsp;- startDownload:</option>
+	
+	<option value="//api/name/startDownloadWithURL:customPath:delegate:">&nbsp;&nbsp;&nbsp;&nbsp;- startDownloadWithURL:customPath:delegate:</option>
+	
+	<option value="//api/name/startDownloadWithURL:customPath:firstResponse:progress:error:complete:">&nbsp;&nbsp;&nbsp;&nbsp;- startDownloadWithURL:customPath:firstResponse:progress:error:complete:</option>
+	
+	
+	
+</select>
+				</li>
+			</ul>
+		</header>
+		<nav id="tocContainer" class="isShowingTOC">
+			<ul id="toc" role="tree">
+				
+<li role="treeitem"><span class="nodisclosure"></span><span class="sectionName"><a href="#overview">Overview</a></span></li>
+
+
+
+
+<li role="treeitem" id="task_treeitem"><span class="nodisclosure"></span><span class="sectionName"><a href="#tasks">Tasks</a></span><ul>
+	
+</ul></li>
+
+
+
+
+
+<li role="treeitem" class="children"><span class="disclosure"></span><span class="sectionName"><a href="#properties">Properties</a></span><ul>
+	
+	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#//api/name/defaultDownloadPath">defaultDownloadPath</a></span></li>
+	
+	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#//api/name/downloadCount">downloadCount</a></span></li>
+	
+</ul></li>
+
+
+
+<li role="treeitem" class="children"><span class="disclosure"></span><span class="sectionName"><a href="#class_methods">Class Methods</a></span><ul>
+	
+	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#//api/name/sharedInstance">sharedInstance</a></span></li>
+	
+</ul></li>
+
+
+
+<li role="treeitem" class="children"><span class="disclosure"></span><span class="sectionName"><a href="#instance_methods">Instance Methods</a></span><ul>
+	
+	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#//api/name/cancelAllDownloadsAndRemoveFiles:">cancelAllDownloadsAndRemoveFiles:</a></span></li>
+	
+	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#//api/name/setDefaultDownloadPath:">setDefaultDownloadPath:</a></span></li>
+	
+	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#//api/name/setMaxConcurrentDownloads:">setMaxConcurrentDownloads:</a></span></li>
+	
+	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#//api/name/startDownload:">startDownload:</a></span></li>
+	
+	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#//api/name/startDownloadWithURL:customPath:delegate:">startDownloadWithURL:customPath:delegate:</a></span></li>
+	
+	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#//api/name/startDownloadWithURL:customPath:firstResponse:progress:error:complete:">startDownloadWithURL:customPath:firstResponse:progress:error:complete:</a></span></li>
+	
+</ul></li>
+
+
+			</ul>
+		</nav>
+		<article>
+			<div id="contents" class="isShowingTOC" role="main">
+				<a title="TCBlobDownloadManager Class Reference" name="top"></a>
+				<div class="main-navigation navigation-top">
+					<ul>
+	<li><a href="../index.html">Index</a></li>
+	<li><a href="../hierarchy.html">Hierarchy</a></li>
+</ul>
+				</div>
+				<div id="header">
+					<div class="section-header">
+						<h1 class="title title-header">TCBlobDownloadManager Class Reference</h1>
+					</div>		
+				</div>
+				<div id="container">	
+					
+					<div class="section section-specification"><table cellspacing="0"><tbody>
+						<tr>
+	<td class="specification-title">Inherits from</td>
+	<td class="specification-value">NSObject</td>
+</tr><tr>
+	<td class="specification-title">Declared in</td>
+	<td class="specification-value">TCBlobDownloadManager.h</td>
+</tr>
+						</tbody></table></div>
+					
+                    
+                    
+					
+					<div class="section section-overview">
+						<a title="Overview" name="overview"></a>
+						<h2 class="subtitle subtitle-overview">Overview</h2>
+						<p><code>TCBlobDownloadManager</code> is a subclass of <code>NSOperationQueue</code> and is used to execute <a href="../Classes/TCBlobDownloader.html"><code>TCBlobDownloader</code></a> objects.</p>
+
+<p>It provides methods to start and cancel a download, as well as defining a maximum amount of simultaneous downloads.</p>
+
+<h2>Note</h2>
+
+<p>This class should be used as a singleton using the <a href="#//api/name/sharedInstance"><code>sharedInstance</code></a> method.</p>
+					</div>
+					
+					
+					
+					
+					
+					<div class="section section-tasks">
+						<a title="Tasks" name="tasks"></a>
+						<h2 class="subtitle subtitle-tasks">Tasks</h2>
+						
+						
+						
+						
+
+						<ul class="task-list">
+							<li>
+	<span class="tooltip">
+		<code><a href="#//api/name/defaultDownloadPath">&nbsp;&nbsp;defaultDownloadPath</a></code>
+	</span>
+	<span class="task-item-suffix">property</span>
+	
+</li><li>
+	<span class="tooltip">
+		<code><a href="#//api/name/downloadCount">&nbsp;&nbsp;downloadCount</a></code>
+	</span>
+	<span class="task-item-suffix">property</span>
+	
+</li><li>
+	<span class="tooltip">
+		<code><a href="#//api/name/sharedInstance">+&nbsp;sharedInstance</a></code>
+	</span>
+	
+	
+</li><li>
+	<span class="tooltip">
+		<code><a href="#//api/name/startDownloadWithURL:customPath:delegate:">&ndash;&nbsp;startDownloadWithURL:customPath:delegate:</a></code>
+	</span>
+	
+	
+</li><li>
+	<span class="tooltip">
+		<code><a href="#//api/name/startDownloadWithURL:customPath:firstResponse:progress:error:complete:">&ndash;&nbsp;startDownloadWithURL:customPath:firstResponse:progress:error:complete:</a></code>
+	</span>
+	
+	
+</li><li>
+	<span class="tooltip">
+		<code><a href="#//api/name/startDownload:">&ndash;&nbsp;startDownload:</a></code>
+	</span>
+	
+	
+</li><li>
+	<span class="tooltip">
+		<code><a href="#//api/name/setDefaultDownloadPath:">&ndash;&nbsp;setDefaultDownloadPath:</a></code>
+	</span>
+	
+	
+</li><li>
+	<span class="tooltip">
+		<code><a href="#//api/name/setMaxConcurrentDownloads:">&ndash;&nbsp;setMaxConcurrentDownloads:</a></code>
+	</span>
+	
+	
+</li><li>
+	<span class="tooltip">
+		<code><a href="#//api/name/cancelAllDownloadsAndRemoveFiles:">&ndash;&nbsp;cancelAllDownloadsAndRemoveFiles:</a></code>
+	</span>
+	
+	
+</li>
+						</ul>
+						
+					</div>
+					
+					
+					
+					
+					
+					<div class="section section-methods">
+						<a title="Properties" name="properties"></a>
+						<h2 class="subtitle subtitle-methods">Properties</h2>
+						
+						<div class="section-method">
+	<a name="//api/name/defaultDownloadPath" title="defaultDownloadPath"></a>
+	<h3 class="subsubtitle method-title">defaultDownloadPath</h3>
+	
+	
+	
+	<div class="method-subsection brief-description">
+		<p>The default download path for a file if no <code>customPath</code> property is set at the creation of the <a href="../Classes/TCBlobDownloader.html"><code>TCBlobDownloader</code></a> object.</p>
+	</div>		
+	
+    
+
+	<div class="method-subsection method-declaration"><code>@property (nonatomic, copy) NSString *defaultDownloadPath</code></div>
+
+    
+	
+	
+	
+	
+	
+	<div class="method-subsection availability">
+		<h4 class="method-subtitle parameter-title">Availability</h4>
+		<p>1.1</p>
+	</div>
+	
+	
+	
+	<div class="method-subsection discussion-section">
+		<h4 class="method-subtitle">Discussion</h4>
+		<p>The default value is <code>/tmp</code>.</p><div class="warning"><p><strong>Warning:</strong> Please be careful of the iOS Data Storage Guidelines when setting the download path.</p></div>
+	</div>
+	
+	
+	
+	
+	
+	
+	
+	<div class="method-subsection declared-in-section">
+		<h4 class="method-subtitle">Declared In</h4>
+		<code class="declared-in-ref">TCBlobDownloadManager.h</code><br />
+	</div>				
+	
+	
+</div>
+						
+						<div class="section-method">
+	<a name="//api/name/downloadCount" title="downloadCount"></a>
+	<h3 class="subsubtitle method-title">downloadCount</h3>
+	
+	
+	
+	<div class="method-subsection brief-description">
+		<p>The number of simultaneous active downloads at a given moment.</p>
+	</div>		
+	
+    
+
+	<div class="method-subsection method-declaration"><code>@property (nonatomic, assign) NSUInteger downloadCount</code></div>
+
+    
+	
+	
+	
+	
+	
+	<div class="method-subsection availability">
+		<h4 class="method-subtitle parameter-title">Availability</h4>
+		<p>1.0</p>
+	</div>
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	<div class="method-subsection declared-in-section">
+		<h4 class="method-subtitle">Declared In</h4>
+		<code class="declared-in-ref">TCBlobDownloadManager.h</code><br />
+	</div>				
+	
+	
+</div>
+						
+					</div>
+					
+					
+					
+					<div class="section section-methods">
+						<a title="Class Methods" name="class_methods"></a>
+						<h2 class="subtitle subtitle-methods">Class Methods</h2>
+						
+						<div class="section-method">
+	<a name="//api/name/sharedInstance" title="sharedInstance"></a>
+	<h3 class="subsubtitle method-title">sharedInstance</h3>
+	
+	
+	
+	<div class="method-subsection brief-description">
+		<p>Creates and returns a <code>TCBlobDownloadManager</code> object. If the singleton has already been created, it just returns the object.</p>
+	</div>		
+	
+    
+
+	<div class="method-subsection method-declaration"><code>+ (instancetype)sharedInstance</code></div>
+
+    
+	
+	
+	
+	
+	
+	<div class="method-subsection availability">
+		<h4 class="method-subtitle parameter-title">Availability</h4>
+		<p>1.5.0</p>
+	</div>
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	<div class="method-subsection declared-in-section">
+		<h4 class="method-subtitle">Declared In</h4>
+		<code class="declared-in-ref">TCBlobDownloadManager.h</code><br />
+	</div>				
+	
+	
+</div>
+						
+					</div>
+					
+					
+					
+					<div class="section section-methods">
+						<a title="Instance Methods" name="instance_methods"></a>
+						<h2 class="subtitle subtitle-methods">Instance Methods</h2>
+						
+						<div class="section-method">
+	<a name="//api/name/cancelAllDownloadsAndRemoveFiles:" title="cancelAllDownloadsAndRemoveFiles:"></a>
+	<h3 class="subsubtitle method-title">cancelAllDownloadsAndRemoveFiles:</h3>
+	
+	
+	
+	<div class="method-subsection brief-description">
+		<p>Cancels all downloads. Remove already downloaded parts of the files from the disk is asked.</p>
+	</div>		
+	
+    
+
+	<div class="method-subsection method-declaration"><code>- (void)cancelAllDownloadsAndRemoveFiles:(BOOL)<em>remove</em></code></div>
+
+    
+	
+	<div class="method-subsection arguments-section parameters">
+		<h4 class="method-subtitle parameter-title">Parameters</h4>
+		
+		<dl class="argument-def parameter-def">
+			<dt><em>remove</em></dt>
+			<dd><p>If <code>YES</code>, this method will remove all downloaded files parts from the disk. Files parts are left untouched if set to <code>NO</code>. This will allow TCBlobDownload to restart the download from where it has ended in a future operation.</p></dd>
+		</dl>
+		
+	</div>
+	
+	
+	
+	
+	
+	<div class="method-subsection availability">
+		<h4 class="method-subtitle parameter-title">Availability</h4>
+		<p>1.0</p>
+	</div>
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	<div class="method-subsection declared-in-section">
+		<h4 class="method-subtitle">Declared In</h4>
+		<code class="declared-in-ref">TCBlobDownloadManager.h</code><br />
+	</div>				
+	
+	
+</div>
+						
+						<div class="section-method">
+	<a name="//api/name/setDefaultDownloadPath:" title="setDefaultDownloadPath:"></a>
+	<h3 class="subsubtitle method-title">setDefaultDownloadPath:</h3>
+	
+	
+	
+	<div class="method-subsection brief-description">
+		<p>Specifies the default download path. (which is <code>/tmp</code> by default)</p>
+	</div>		
+	
+    
+
+	<div class="method-subsection method-declaration"><code>- (void)setDefaultDownloadPath:(NSString *)<em>pathToDL</em></code></div>
+
+    
+	
+	<div class="method-subsection arguments-section parameters">
+		<h4 class="method-subtitle parameter-title">Parameters</h4>
+		
+		<dl class="argument-def parameter-def">
+			<dt><em>pathToDL</em></dt>
+			<dd><p>The new default path.</p></dd>
+		</dl>
+		
+	</div>
+	
+	
+	
+	
+	
+	<div class="method-subsection availability">
+		<h4 class="method-subtitle parameter-title">Availability</h4>
+		<p>1.1</p>
+	</div>
+	
+	
+	
+	<div class="method-subsection discussion-section">
+		<h4 class="method-subtitle">Discussion</h4>
+		<p>The path can be non existant, if so, it will be created.</p>
+	</div>
+	
+	
+	
+	
+	
+	
+	
+	<div class="method-subsection declared-in-section">
+		<h4 class="method-subtitle">Declared In</h4>
+		<code class="declared-in-ref">TCBlobDownloadManager.h</code><br />
+	</div>				
+	
+	
+</div>
+						
+						<div class="section-method">
+	<a name="//api/name/setMaxConcurrentDownloads:" title="setMaxConcurrentDownloads:"></a>
+	<h3 class="subsubtitle method-title">setMaxConcurrentDownloads:</h3>
+	
+	
+	
+	<div class="method-subsection brief-description">
+		<p>Set the maximum number of concurrent downloads allowed. If more downloads are passed to the <code>TCBlobDownloadManager</code> singleton, they will wait for an older one to end before starting.</p>
+	</div>		
+	
+    
+
+	<div class="method-subsection method-declaration"><code>- (void)setMaxConcurrentDownloads:(NSInteger)<em>max</em></code></div>
+
+    
+	
+	<div class="method-subsection arguments-section parameters">
+		<h4 class="method-subtitle parameter-title">Parameters</h4>
+		
+		<dl class="argument-def parameter-def">
+			<dt><em>max</em></dt>
+			<dd><p>The maximum number of downloads.</p></dd>
+		</dl>
+		
+	</div>
+	
+	
+	
+	
+	
+	<div class="method-subsection availability">
+		<h4 class="method-subtitle parameter-title">Availability</h4>
+		<p>1.0</p>
+	</div>
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	<div class="method-subsection declared-in-section">
+		<h4 class="method-subtitle">Declared In</h4>
+		<code class="declared-in-ref">TCBlobDownloadManager.h</code><br />
+	</div>				
+	
+	
+</div>
+						
+						<div class="section-method">
+	<a name="//api/name/startDownload:" title="startDownload:"></a>
+	<h3 class="subsubtitle method-title">startDownload:</h3>
+	
+	
+	
+	<div class="method-subsection brief-description">
+		<p>Starts an already instanciated <a href="../Classes/TCBlobDownloader.html"><code>TCBlobDownloader</code></a> object.</p>
+	</div>		
+	
+    
+
+	<div class="method-subsection method-declaration"><code>- (void)startDownload:(TCBlobDownloader *)<em>download</em></code></div>
+
+    
+	
+	<div class="method-subsection arguments-section parameters">
+		<h4 class="method-subtitle parameter-title">Parameters</h4>
+		
+		<dl class="argument-def parameter-def">
+			<dt><em>download</em></dt>
+			<dd><p>A <a href="../Classes/TCBlobDownloader.html"><code>TCBlobDownloader</code></a> object.</p></dd>
+		</dl>
+		
+	</div>
+	
+	
+	
+	
+	
+	<div class="method-subsection availability">
+		<h4 class="method-subtitle parameter-title">Availability</h4>
+		<p>1.0</p>
+	</div>
+	
+	
+	
+	<div class="method-subsection discussion-section">
+		<h4 class="method-subtitle">Discussion</h4>
+		<p>You can instanciate a <a href="../Classes/TCBlobDownloader.html"><code>TCBlobDownloader</code></a> object and instead of executing it directly using <a href="#//api/name/startDownloadWithURL:customPath:delegate:"><code>startDownloadWithURL:customPath:delegate:</code></a> or the block equivalent, pass it to this method whenever you&rsquo;re ready.</p>
+	</div>
+	
+	
+	
+	
+	
+	
+	
+	<div class="method-subsection declared-in-section">
+		<h4 class="method-subtitle">Declared In</h4>
+		<code class="declared-in-ref">TCBlobDownloadManager.h</code><br />
+	</div>				
+	
+	
+</div>
+						
+						<div class="section-method">
+	<a name="//api/name/startDownloadWithURL:customPath:delegate:" title="startDownloadWithURL:customPath:delegate:"></a>
+	<h3 class="subsubtitle method-title">startDownloadWithURL:customPath:delegate:</h3>
+	
+	
+	
+	<div class="method-subsection brief-description">
+		<p>Instanciates and runs instantly a <code>TCBlobDownloadObject</code> with the specified URL, an optional customPath and an optional delegate. Runs in background thread the <a href="../Classes/TCBlobDownloader.html"><code>TCBlobDownloader</code></a> object (a subclass of <code>NSOperation</code>) in the <code>TCBlobDownloadManager</code> instance.</p>
+	</div>		
+	
+    
+
+	<div class="method-subsection method-declaration"><code>- (TCBlobDownloader *)startDownloadWithURL:(NSURL *)<em>url</em> customPath:(NSString *)<em>customPathOrNil</em> delegate:(id&lt;TCBlobDownloaderDelegate&gt;)<em>delegateOrNil</em></code></div>
+
+    
+	
+	<div class="method-subsection arguments-section parameters">
+		<h4 class="method-subtitle parameter-title">Parameters</h4>
+		
+		<dl class="argument-def parameter-def">
+			<dt><em>url</em></dt>
+			<dd><p>The URL of the file to download.</p></dd>
+		</dl>
+		
+		<dl class="argument-def parameter-def">
+			<dt><em>customPathOrNil</em></dt>
+			<dd><p>An optional path to override the default download path of the <code>TCBlobDownloadManager</code> instance. Can be <code>nil</code>.</p></dd>
+		</dl>
+		
+		<dl class="argument-def parameter-def">
+			<dt><em>delegateOrNil</em></dt>
+			<dd><p>An optional delegate. Can be <code>nil</code>.</p></dd>
+		</dl>
+		
+	</div>
+	
+	
+	
+	<div class="method-subsection return">
+		<h4 class="method-subtitle parameter-title">Return Value</h4>
+		<p>The created and already running <code>TCBlobDownloadObject</code>.</p>
+	</div>
+	
+	
+	
+	<div class="method-subsection availability">
+		<h4 class="method-subtitle parameter-title">Availability</h4>
+		<p>1.4</p>
+	</div>
+	
+	
+	
+	<div class="method-subsection discussion-section">
+		<h4 class="method-subtitle">Discussion</h4>
+		<p>This method returns the created <a href="../Classes/TCBlobDownloader.html"><code>TCBlobDownloader</code></a> object for further use.</p>
+	</div>
+	
+	
+	
+	
+	
+	
+	
+	<div class="method-subsection declared-in-section">
+		<h4 class="method-subtitle">Declared In</h4>
+		<code class="declared-in-ref">TCBlobDownloadManager.h</code><br />
+	</div>				
+	
+	
+</div>
+						
+						<div class="section-method">
+	<a name="//api/name/startDownloadWithURL:customPath:firstResponse:progress:error:complete:" title="startDownloadWithURL:customPath:firstResponse:progress:error:complete:"></a>
+	<h3 class="subsubtitle method-title">startDownloadWithURL:customPath:firstResponse:progress:error:complete:</h3>
+	
+	
+	
+	<div class="method-subsection brief-description">
+		<p>Instanciates and runs instantly a <a href="../Classes/TCBlobDownloader.html"><code>TCBlobDownloader</code></a> object. Provides the same functionnalities than <a href="#//api/name/startDownloadWithURL:customPath:delegate:"><code>startDownloadWithURL:customPath:delegate:</code></a> but creates a <code>TCBlobDownloadObject</code> using blocks to update your view.</p>
+	</div>		
+	
+    
+
+	<div class="method-subsection method-declaration"><code>- (TCBlobDownloader *)startDownloadWithURL:(NSURL *)<em>url</em> customPath:(NSString *)<em>customPathOrNil</em> firstResponse:(void ( ^ ) ( NSURLResponse *response ))<em>firstResponseBlock</em> progress:(void ( ^ ) ( float receivedLength , float totalLength , NSInteger remainingTime ))<em>progressBlock</em> error:(void ( ^ ) ( NSError *error ))<em>errorBlock</em> complete:(void ( ^ ) ( BOOL downloadFinished , NSString *pathToFile ))<em>completeBlock</em></code></div>
+
+    
+	
+	<div class="method-subsection arguments-section parameters">
+		<h4 class="method-subtitle parameter-title">Parameters</h4>
+		
+		<dl class="argument-def parameter-def">
+			<dt><em>url</em></dt>
+			<dd><p>The URL of the file to download.</p></dd>
+		</dl>
+		
+		<dl class="argument-def parameter-def">
+			<dt><em>customPathOrNil</em></dt>
+			<dd><p>An optional path to override the default download path of the <code>TCBlobDownloadManager</code> instance. Can be <code>nil</code>.</p></dd>
+		</dl>
+		
+		<dl class="argument-def parameter-def">
+			<dt><em>firstResponseBlock</em></dt>
+			<dd><p>This block is called when receiving the first response from the server. Can be <code>nil</code>.</p></dd>
+		</dl>
+		
+		<dl class="argument-def parameter-def">
+			<dt><em>progressBlock</em></dt>
+			<dd><p>This block is called on each response from the server while the download is occurring. Can be <code>nil</code>. If the remaining time has not been calculated yet, the value is <code>-1</code>. @param errorBlock  Called when an error occur during the download. If this block is called, the download will be cancelled just after. Can be <code>nil</code>.</p></dd>
+		</dl>
+		
+		<dl class="argument-def parameter-def">
+			<dt><em>completeBlock</em></dt>
+			<dd><p>Called when the download is completed or cancelled. Can be <code>nil</code>. If the download has been cancelled with the paramater <code>removeFile</code> set to <code>YES</code>, then the <code>pathToFile</code> parameter is <code>nil</code>. The <a href="../Classes/TCBlobDownloader.html"><code>TCBlobDownloader</code></a> operation will be removed from <code>TCBlobDownloadManager</code> just after this block is called.</p></dd>
+		</dl>
+		
+	</div>
+	
+	
+	
+	
+	
+	<div class="method-subsection availability">
+		<h4 class="method-subtitle parameter-title">Availability</h4>
+		<p>1.4</p>
+	</div>
+	
+	
+	
+	
+	
+	
+	
+	<div class="method-subsection see-also-section">
+		<h4 class="method-subtitle">See Also</h4>
+		<ul>
+			
+			<li><code><p><a href="#//api/name/startDownloadWithURL:customPath:delegate:">- startDownloadWithURL:customPath:delegate:</a></p>
+
+<p>This method returns the created <code>TCBlobDownloader</code> object for further use.</p></code></li>
+			
+		</ul>
+	</div>
+	
+	
+	
+	<div class="method-subsection declared-in-section">
+		<h4 class="method-subtitle">Declared In</h4>
+		<code class="declared-in-ref">TCBlobDownloadManager.h</code><br />
+	</div>				
+	
+	
+</div>
+						
+					</div>
+					
+					
+                    
+                    
+				</div>
+				<div class="main-navigation navigation-bottom">
+					<ul>
+	<li><a href="../index.html">Index</a></li>
+	<li><a href="../hierarchy.html">Hierarchy</a></li>
+</ul>
+				</div>
+				<div id="footer">
+					<hr />
+					<div class="footer-copyright">
+						<p><span class="copyright">&copy; 2014 thibaultCha. All rights reserved. (Last updated: 2014-03-08)</span><br />
+						
+						<span class="generator">Generated by <a href="http://appledoc.gentlebytes.com">appledoc 2.2 (build 961)</a>.</span></p>
+						
+					</div>
+				</div>
+			</div>
+		</article>
+		<script type="text/javascript">
+			function jumpToChange()
+			{
+				window.location.hash = this.options[this.selectedIndex].value;
+			}
+			
+			function toggleTOC()
+			{
+				var contents = document.getElementById('contents');
+				var tocContainer = document.getElementById('tocContainer');
+				
+				if (this.getAttribute('class') == 'open')
+				{
+					this.setAttribute('class', '');
+					contents.setAttribute('class', '');
+					tocContainer.setAttribute('class', '');
+					
+					window.name = "hideTOC";
+				}
+				else
+				{
+					this.setAttribute('class', 'open');
+					contents.setAttribute('class', 'isShowingTOC');
+					tocContainer.setAttribute('class', 'isShowingTOC');
+					
+					window.name = "";
+				}
+				return false;
+			}
+			
+			function toggleTOCEntryChildren(e)
+			{
+				e.stopPropagation();
+				var currentClass = this.getAttribute('class');
+				if (currentClass == 'children') {
+					this.setAttribute('class', 'children open');
+				}
+				else if (currentClass == 'children open') {
+					this.setAttribute('class', 'children');
+				}
+				return false;
+			}
+			
+			function tocEntryClick(e)
+			{
+				e.stopPropagation();
+				return true;
+			}
+			
+			function init()
+			{
+				var selectElement = document.getElementById('jumpTo');
+				selectElement.addEventListener('change', jumpToChange, false);
+				
+				var tocButton = document.getElementById('table_of_contents');
+				tocButton.addEventListener('click', toggleTOC, false);
+				
+				var taskTreeItem = document.getElementById('task_treeitem');
+				if (taskTreeItem.getElementsByTagName('li').length > 0)
+				{
+					taskTreeItem.setAttribute('class', 'children');
+					taskTreeItem.firstChild.setAttribute('class', 'disclosure');
+				}
+				
+				var tocList = document.getElementById('toc');
+				
+				var tocEntries = tocList.getElementsByTagName('li');
+				for (var i = 0; i < tocEntries.length; i++) {
+					tocEntries[i].addEventListener('click', toggleTOCEntryChildren, false);
+				}
+				
+				var tocLinks = tocList.getElementsByTagName('a');
+				for (var i = 0; i < tocLinks.length; i++) {
+					tocLinks[i].addEventListener('click', tocEntryClick, false);
+				}
+				
+				if (window.name == "hideTOC") {
+					toggleTOC.call(tocButton);
+				}
+			}
+			
+			window.onload = init;
+			
+			// If showing in Xcode, hide the TOC and Header
+			if (navigator.userAgent.match(/xcode/i)) {
+				document.getElementById("contents").className = "hideInXcode"
+				document.getElementById("tocContainer").className = "hideInXcode"
+				document.getElementById("top_header").className = "hideInXcode"
+			}
+			
+		</script>
+	</body>
+</html>

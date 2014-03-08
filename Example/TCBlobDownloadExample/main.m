@@ -1,6 +1,6 @@
 //
 //  main.m
-//  SampleProject
+//  TCBlobDownloadExample
 //
 //  Created by Thibault Charbonnier on 30/04/13.
 //  Copyright (c) 2013 thibaultCha. All rights reserved.

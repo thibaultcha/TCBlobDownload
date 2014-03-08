@@ -6,13 +6,14 @@
 //
 
 #import "TCBlobDownloadManager.h"
+#import "TCBlobDownloader.h"
 
 @interface TCBlobDownloadManager ()
 @property (nonatomic, strong) NSOperationQueue *operationQueue;
+- (BOOL)createDirFromPath:(NSString *)path;
 @end
 
 @implementation TCBlobDownloadManager
-@dynamic downloadCount;
 
 
 #pragma mark - Init
@@ -28,11 +29,10 @@
     return self;
 }
 
-+ (id)sharedDownloadManager
++ (instancetype)sharedInstance
 {
     static dispatch_once_t onceToken;
     static id sharedManager = nil;
-    
     dispatch_once(&onceToken, ^{
         sharedManager = [[[self class] alloc] init];
     });
@@ -40,12 +40,65 @@
 }
 
 
-#pragma mark - Utilities
+#pragma mark - TCBlobDownloader Management
+
+
+- (TCBlobDownloader *)startDownloadWithURL:(NSURL *)url
+                              customPath:(NSString *)customPathOrNil
+                                delegate:(id<TCBlobDownloaderDelegate>)delegateOrNil
+{
+    NSString *downloadPath = [self createDirFromPath:customPathOrNil] ? customPathOrNil : self.defaultDownloadPath;
+    
+    TCBlobDownloader *downloader = [[TCBlobDownloader alloc] initWithURL:url
+                                                            downloadPath:downloadPath
+                                                                delegate:delegateOrNil];
+    [self.operationQueue addOperation:downloader];
+    
+    return downloader;
+}
+
+- (TCBlobDownloader *)startDownloadWithURL:(NSURL *)url
+                              customPath:(NSString *)customPathOrNil
+                           firstResponse:(void (^)(NSURLResponse *response))firstResponseBlock
+                                progress:(void (^)(float receivedLength, float totalLength, NSInteger remainingTime))progressBlock
+                                   error:(void (^)(NSError *error))errorBlock
+                                complete:(void (^)(BOOL downloadFinished, NSString *pathToFile))completeBlock
+{
+    NSString *downloadPath = [self createDirFromPath:customPathOrNil] ? customPathOrNil : self.defaultDownloadPath;
+    
+    TCBlobDownloader *downloader = [[TCBlobDownloader alloc] initWithURL:url
+                                                            downloadPath:downloadPath
+                                                           firstResponse:firstResponseBlock
+                                                                progress:progressBlock
+                                                                   error:errorBlock
+                                                                complete:completeBlock];
+    [self.operationQueue addOperation:downloader];
+    
+    return downloader;
+}
+
+- (void)startDownload:(TCBlobDownloader *)download
+{
+    if (download.pathToDownloadDirectory == nil) {
+        download.pathToDownloadDirectory = self.defaultDownloadPath;
+    }
+    [self.operationQueue addOperation:download];
+}
+
+- (void)cancelAllDownloadsAndRemoveFiles:(BOOL)remove
+{
+    for (TCBlobDownloader *blob in [self.operationQueue operations]) {
+        [blob cancelDownloadAndRemoveFile:remove];
+    }
+}
+
+
+#pragma mark - Custom Setters
 
 
 - (void)setDefaultDownloadPath:(NSString *)pathToDL
 {
-    if ([TCBlobDownloadManager createPathFromPath:pathToDL]) {
+    if ([self createDirFromPath:pathToDL]) {
         _defaultDownloadPath = pathToDL;
     }
 }
@@ -56,101 +109,33 @@
 }
 
 
-#pragma mark - Getters
+#pragma mark - Custom Getters
 
 
 - (NSUInteger)downloadCount
 {
-    return [_operationQueue operationCount];
+    return [self.operationQueue operationCount];
 }
 
 
-#pragma mark - TCBlobDownloads Management
+#pragma mark - Internal Methods
 
 
-- (TCBlobDownload *)startDownloadWithURL:(NSURL *)url
-                              customPath:(NSString *)customPathOrNil
-                                delegate:(id<TCBlobDownloadDelegate>)delegateOrNil
+- (BOOL)createDirFromPath:(NSString *)path
 {
-    NSString *downloadPath = self.defaultDownloadPath;
-    if ([TCBlobDownloadManager createPathFromPath:customPathOrNil]) {
-        downloadPath = customPathOrNil;
-    }
-    
-    TCBlobDownload *downloader = [[TCBlobDownload alloc] initWithURL:url
-                                                        downloadPath:downloadPath
-                                                            delegate:delegateOrNil];
-    [_operationQueue addOperation:downloader];
-    
-    return downloader;
-}
-
-- (TCBlobDownload *)startDownloadWithURL:(NSURL *)url
-                              customPath:(NSString *)customPathOrNil
-                           firstResponse:(FirstResponseBlock)firstResponseBlock
-                                progress:(ProgressBlock)progressBlock
-                                   error:(ErrorBlock)errorBlock
-                                complete:(CompleteBlock)completeBlock
-{
-    NSString *downloadPath = self.defaultDownloadPath;
-    if ([TCBlobDownloadManager createPathFromPath:customPathOrNil]) {
-        downloadPath = customPathOrNil;
-    }
-    
-    TCBlobDownload *downloader = [[TCBlobDownload alloc] initWithURL:url
-                                                        downloadPath:downloadPath
-                                                       firstResponse:firstResponseBlock
-                                                            progress:progressBlock
-                                                               error:errorBlock
-                                                            complete:completeBlock];
-    [self.operationQueue addOperation:downloader];
-    
-    return downloader;
-}
-
-- (void)startDownload:(TCBlobDownload *)download
-{
-    if (download.pathToDownloadDirectory == nil) {
-        download.pathToDownloadDirectory = self.defaultDownloadPath;
-    }
-    [self.operationQueue addOperation:download];
-}
-
-- (void)cancelAllDownloadsAndRemoveFiles:(BOOL)remove
-{
-    for (TCBlobDownload *blob in [self.operationQueue operations]) {
-        [blob cancelDownloadAndRemoveFile:remove];
-    }
-}
-
-
-#pragma mark - Custom
-
-
-+ (BOOL)createPathFromPath:(NSString *)path
-{
-    NSFileManager *fm = [NSFileManager defaultManager];
-    
     if (path == nil || [path isEqualToString:@""]) {
-        // handle error
-        return false;
+        return NO;
     }
     
-    if ([fm fileExistsAtPath:path]) {
-        return true;
+    NSError * __autoreleasing error;
+    BOOL createdOrExists = [[NSFileManager defaultManager] createDirectoryAtPath:path
+                                                     withIntermediateDirectories:YES
+                                                                      attributes:nil
+                                                                           error:&error];
+    if (error) {
+        // TODO
     }
-    else {
-        __autoreleasing NSError *error;
-        BOOL created = [fm createDirectoryAtPath:path
-                     withIntermediateDirectories:YES
-                                      attributes:nil
-                                           error:&error];
-        if (error) {
-            TCLog(@"Error creating download directory %@ - %@", path, error);
-            // TODO handle error
-        }
-        return created;
-    }
+    return createdOrExists;
 }
 
 @end

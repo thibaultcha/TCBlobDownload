@@ -6,47 +6,12 @@
 //  Copyright (c) 2013 thibaultCha. All rights reserved.
 //
 
-#import <XCTest/XCTest.h>
-#import "XCTestCase+AsyncTesting.h"
+#import "TCBlobDownloadTestsBase.h"
 
-#import "TestValues.h"
-#import "TCBlobDownloadManager.h"
-
-@interface TCBlobDownloadErrorTests : XCTestCase
-@property (nonatomic, strong) TCBlobDownloadManager *manager;
+@interface TCBlobDownloadErrorTests : TCBlobDownloadTestsBase
 @end
 
 @implementation TCBlobDownloadErrorTests
-
-- (void)setUp
-{
-    [super setUp];
-    
-    _manager = [[TCBlobDownloadManager alloc] init];
-    
-    __autoreleasing NSError *error;
-    [[NSFileManager defaultManager] createDirectoryAtPath:[NSString pathWithComponents:@[NSTemporaryDirectory(), pathToDownloadTests]]
-                              withIntermediateDirectories:YES
-                                               attributes:nil
-                                                    error:&error];
-    
-    XCTAssertNil(error, @"Error while creating tests directory - %@", error);
-    
-    [self.manager setDefaultDownloadPath:[NSString pathWithComponents:@[NSTemporaryDirectory(), pathToDownloadTests]]];
-}
-
-- (void)tearDown
-{
-    self.manager = nil;
-    
-    __autoreleasing NSError *error;
-    [[NSFileManager defaultManager]removeItemAtPath:[NSString pathWithComponents:@[NSTemporaryDirectory(), pathToDownloadTests]]
-                                              error:&error];
-    
-    XCTAssertNil(error, @"Error while removing tests directory - %@", error);
-    
-    [super tearDown];
-}
 
 - (void)testInvalidURL
 {
@@ -55,7 +20,9 @@
                          firstResponse:NULL
                               progress:NULL
                                  error:^(NSError *error) {
+                                     XCTAssert([NSThread isMainThread], @"Error block is not called on main thread");
                                      XCTAssertNotNil(error, @"No error passed for invalid URL");
+                                     XCTAssertEqual((NSUInteger)error.code, TCErrorInvalidURL, @"Incoherent error code provided for invalud URL");
                                      [self notify:XCTAsyncTestCaseStatusSucceeded];
                                  }
                               complete:NULL];
@@ -65,7 +32,18 @@
 
 - (void)testHTTPErrorStatusCode
 {
-
+    [self.manager startDownloadWithURL:[NSURL URLWithString:k404URLToDownload]
+                            customPath:nil
+                         firstResponse:NULL
+                              progress:NULL
+                                 error:^(NSError *error) {
+                                     XCTAssertNotNil(error.userInfo[TCHTTPStatusCode], @"error.userInfos does not contains TCHTTPStatusCode field.");
+                                     XCTAssertEqual([error.userInfo[TCHTTPStatusCode] integerValue], (NSInteger)404, @"Error code should equal 404 for this URL");
+                                     [self notify:XCTAsyncTestCaseStatusSucceeded];
+                                 }
+                              complete:NULL];
+    
+    [self waitForStatus:XCTAsyncTestCaseStatusSucceeded timeout:5];
 }
 
 @end

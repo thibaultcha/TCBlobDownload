@@ -6,124 +6,30 @@
 //  Copyright (c) 2013 thibaultCha. All rights reserved.
 //
 
-#import <XCTest/XCTest.h>
-#import "XCTestCase+AsyncTesting.h"
+#import "TCBlobDownloadTestsBase.h"
 
-#import "TestValues.h"
-#import "TCBlobDownloadManager.h"
-
-@interface TCBlobDownloadTests : XCTestCase
-@property (nonatomic, strong) TCBlobDownloadManager *manager;
-@property (nonatomic, copy) NSURL *validURL;
-@property (nonatomic, copy) NSString *testsDirectory;
+@interface TCBlobDownloadTests : TCBlobDownloadTestsBase <TCBlobDownloaderDelegate>
+@property (nonatomic, assign) BOOL delegateCalledOnMainThread;
 @end
 
 @implementation TCBlobDownloadTests
 
-- (void)setUp
-{
-    [super setUp];
-    
-    _manager = [[TCBlobDownloadManager alloc] init];
-    self.validURL = [NSURL URLWithString:kValidURLToDownload];
-    self.testsDirectory = [NSString pathWithComponents:@[NSHomeDirectory(), pathToDownloadTests]];
-    
-    __autoreleasing NSError *error;
-    [[NSFileManager defaultManager] createDirectoryAtPath:self.testsDirectory
-                              withIntermediateDirectories:YES
-                                               attributes:nil
-                                                    error:&error];
-
-    XCTAssertNil(error, @"Error while creating tests directory - %@", error);
-    
-    [self.manager setDefaultDownloadPath:self.testsDirectory];
-}
-
-- (void)tearDown
-{
-    self.manager = nil;
-    self.validURL = nil;
-    
-
-    __autoreleasing NSError *error;
-    [[NSFileManager defaultManager] removeItemAtPath:self.testsDirectory
-                                                   error:&error];
-
-    XCTAssertNil(error, @"Error while removing tests directory - %@", error);
-    
-    [super tearDown];
-}
-
-
-#pragma mark - TCBlobDownloadManager
-
-
-- (void)testSingleton
-{
-    TCBlobDownloadManager *manager = [TCBlobDownloadManager sharedDownloadManager];
-    XCTAssertNotNil(manager, @"TCBlobDownloadManager shared instance is nil.");
-}
-
-- (void)testSharedInstanceReturnsSameSingletonObject
-{
-    TCBlobDownloadManager *m1 = [TCBlobDownloadManager sharedDownloadManager];
-    TCBlobDownloadManager *m2 = [TCBlobDownloadManager sharedDownloadManager];
-    XCTAssertEqualObjects(m1, m2, @"sharedDownloadManager didn't return same object twice");
-}
-
-- (void)testDefaultDownloadPath
-{
-    XCTAssertNotNil(self.manager.defaultDownloadPath, @"TCBlobDownloadManager default download path is nil.");
-}
-
-- (void)testSetDefaultDownloadPath
-{
-    [self.manager setDefaultDownloadPath:NSHomeDirectory()];
-    XCTAssertEqualObjects(self.manager.defaultDownloadPath, NSHomeDirectory(),
-                          @"Default download path is not set correctly");
-}
-
-- (void)testCreatePathFromPath
-{
-    // test if null
-    // test if exists
-}
-
-- (void)testAllOperationsCorrectlyCancelled
-{
-    for (NSInteger i = 0; i < 10; i++) {
-        [self.manager startDownloadWithURL:self.validURL
-                                customPath:nil
-                                  delegate:nil];
-    }
-    
-    [self waitForTimeout:kDefaultAsyncTimeout];
-    
-    [self.manager cancelAllDownloadsAndRemoveFiles:YES];
-    XCTAssert(self.manager.downloadCount == 0,
-              @"TCBlobDownloadManager cancelAllDownload did not properly finished all operations.");
-}
-
-
-#pragma mark - TCBlobDownload
-
-
 - (void)testShouldHandleNilDownloadPath
 {
-    TCBlobDownload *download1 = [[TCBlobDownload alloc] initWithURL:self.validURL
+    TCBlobDownloader *download1 = [[TCBlobDownloader alloc] initWithURL:self.validURL
                                                        downloadPath:nil
                                                            delegate:nil];
     [self.manager startDownload:download1];
     XCTAssertEqualObjects(self.manager.defaultDownloadPath, download1.pathToDownloadDirectory,
                           @"TCBlobDownloadManager did not set defaultPath in startDownload:");
     
-    TCBlobDownload *download2 = [self.manager startDownloadWithURL:self.validURL
+    TCBlobDownloader *download2 = [self.manager startDownloadWithURL:self.validURL
                                                         customPath:nil
                                                           delegate:nil];
     XCTAssertEqualObjects(self.manager.defaultDownloadPath, download2.pathToDownloadDirectory,
                           @"TCBlobDownloadManager did not set defaultPath in startDownloadWithURL:customPath:delegate:");
     
-    TCBlobDownload *download3 = [self.manager startDownloadWithURL:self.validURL
+    TCBlobDownloader *download3 = [self.manager startDownloadWithURL:self.validURL
                                                         customPath:nil
                                                      firstResponse:NULL
                                                           progress:NULL
@@ -143,7 +49,7 @@
                          firstResponse:^(NSURLResponse *response) {
                              
                          }
-                              progress:^(float receivedLength, float totalLength) {
+                              progress:^(float receivedLength, float totalLength, NSInteger remainingTime) {
                                   BOOL exists = [[NSFileManager defaultManager] fileExistsAtPath:testDirectory];
                                   XCTAssert(exists, @"Custom download directory not created");
                              
@@ -166,7 +72,7 @@
 
 - (void)testOperationCorrectlyCancelled
 {
-    TCBlobDownload *download = [self.manager startDownloadWithURL:self.validURL
+    TCBlobDownloader *download = [self.manager startDownloadWithURL:self.validURL
                                                        customPath:nil
                                                          delegate:nil];
     [self waitForTimeout:kDefaultAsyncTimeout];
@@ -177,7 +83,7 @@
 
 - (void)testFileIsRemovedOnCancel
 {
-    TCBlobDownload *download = [self.manager startDownloadWithURL:self.validURL
+    TCBlobDownloader *download = [self.manager startDownloadWithURL:self.validURL
                                                        customPath:nil
                                                          delegate:nil];
     
@@ -190,12 +96,92 @@
                                                                           error:&fileError];
     if (fileError) {
         XCTFail(@"An error occured while listing files in test downloads directory.");
-        NSLog(@"Error : %d - %@", fileError.code, fileError.localizedDescription);
+        NSLog(@"Error : %ld - %@", fileError.code, fileError.localizedDescription);
     }
     if (content.count > 0) {
         XCTFail(@"Files not removed from disk after download cancellation.");
-        NSLog(@"%d file(s) located at %@", content.count, download.pathToDownloadDirectory);
+        NSLog(@"%ld file(s) located at %@", (unsigned long)content.count, download.pathToDownloadDirectory);
     }
+}
+
+- (void)testCallbacksBlocksShouldBeCalledOnMainThread
+{
+    [self.manager startDownloadWithURL:self.validURL
+                            customPath:nil
+                         firstResponse:^(NSURLResponse *response) {
+                             XCTAssert([NSThread isMainThread], @"First response block is not called on main thread");
+                         }
+                              progress:^(float receivedLength, float totalLength, NSInteger remainingTime) {
+                                  XCTAssert([NSThread isMainThread], @"Progress block is not called on main thread");
+                              }
+                                 error:NULL
+                              complete:^(BOOL downloadFinished, NSString *pathToFile) {
+                                  XCTAssert([NSThread isMainThread], @"Completion block is not called on main thread");
+                                  [self notify:XCTAsyncTestCaseStatusSucceeded];
+                              }];
+    
+    [self waitForStatus:XCTAsyncTestCaseStatusSucceeded timeout:5];
+}
+
+/*
+- (void)testDelegateMethodsShouldBeCalledOnMainThreadOne
+{
+    [self.manager startDownloadWithURL:self.validURL
+                            customPath:nil
+                              delegate:self];
+
+    [self waitForStatus:kDidReceiveFirstResponseMethodCalled timeout:kDefaultAsyncTimeout];
+    XCTAssert(self.delegateCalledOnMainThread, @"download:didReceiveFirstResponse: is not called on main thread");
+    
+    [self waitForStatus:kDidReceiveDataMethodCalled timeout:kDefaultAsyncTimeout];
+    XCTAssert(self.delegateCalledOnMainThread, @"download:didReceiveData: is not called on main thread");
+}
+*/
+    
+/*
+- (void)testDelegateMethodsShouldBeCalledOnMainThreadTwo
+{
+    [self.manager startDownloadWithURL:[NSURL URLWithString:kInvalidURLToDownload]
+                            customPath:nil
+                              delegate:self];
+    
+    [self waitForStatus:kDidStopWithErrorMethodCalled timeout:5];
+    XCTAssert(self.delegateCalledOnMainThread, @"download:didStopWithError: is not called on main thread");
+    
+    //[self waitForStatus:kDidFinishWithSuccessMethodCalled timeout:5];
+    //XCTAssert(self.delegateCalledOnMainThread, @"download:didFinishWithSuccess: is not called on main thread after error occurring");
+}
+*/
+
+
+#pragma mark - TCBlobDownloadDelegate
+
+
+- (void)download:(TCBlobDownloader *)blobDownload didReceiveFirstResponse:(NSURLResponse *)response
+{
+    self.delegateCalledOnMainThread = YES;
+    [self notify:kDidReceiveFirstResponseMethodCalled];
+}
+
+- (void)download:(TCBlobDownloader *)blobDownload didReceiveData:(uint64_t)receivedLength onTotal:(uint64_t)totalLength
+{
+    static dispatch_once_t onceToken;
+    dispatch_once(&onceToken, ^{
+        self.delegateCalledOnMainThread = YES;
+        [self notify:kDidReceiveDataMethodCalled];
+    });
+}
+
+- (void)download:(TCBlobDownloader *)blobDownload didFinishWithSucces:(BOOL)downloadFinished atPath:(NSString *)pathToFile
+{
+    self.delegateCalledOnMainThread = YES;
+    [self notify:kDidFinishWithSuccessMethodCalled];
+}
+
+- (void)download:(TCBlobDownloader *)blobDownload didStopWithError:(NSError *)error
+{
+    self.delegateCalledOnMainThread = YES;
+    [self notify:kDidStopWithErrorMethodCalled];
 }
 
 @end
