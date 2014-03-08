@@ -1,7 +1,7 @@
 Pod::Spec.new do |s|
   s.name         = "TCBlobDownload"
   s.version      = "1.5.0"
-  s.summary      = "Download large files competitively in Cocoa"
+  s.summary      = "Competitive large files downloads for iOS"
   s.homepage     = "https://github.com/thibaultCha/TCBlobDownload"
   s.license      = 'MIT'
   s.author       = { "Thibault Charbonnier" => "thibaultcha@me.com" }
@@ -13,4 +13,5 @@ Pod::Spec.new do |s|
   }
   s.source_files = 'TCBlobDownload/TCBlobDownload/*.{h,m}'
   s.requires_arc = true
+  s.xcconfig = { 'OTHER_LDFLAGS' => '-ObjC -all_load -force_load' }
 end

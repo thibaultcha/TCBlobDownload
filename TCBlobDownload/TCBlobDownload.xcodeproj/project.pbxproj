@@ -39,9 +39,8 @@
 		C30D071318C375FB00D5CBB3 /* TCBlobDownloadTestsBase.m in Sources */ = {isa = PBXBuildFile; fileRef = C30D071218C375FB00D5CBB3 /* TCBlobDownloadTestsBase.m */; };
 		C30D071618C3772F00D5CBB3 /* TCBlobDownloadManagerTests.m in Sources */ = {isa = PBXBuildFile; fileRef = C30D071518C3772F00D5CBB3 /* TCBlobDownloadManagerTests.m */; };
 		C30D071918C380BB00D5CBB3 /* TCBlobDownload.h in Headers */ = {isa = PBXBuildFile; fileRef = C30D071818C380BB00D5CBB3 /* TCBlobDownload.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		C30D076418C398FF00D5CBB3 /* UIDevice-Hardware.h in Headers */ = {isa = PBXBuildFile; fileRef = C30D076218C398FF00D5CBB3 /* UIDevice-Hardware.h */; };
-		C30D076518C398FF00D5CBB3 /* UIDevice-Hardware.m in Sources */ = {isa = PBXBuildFile; fileRef = C30D076318C398FF00D5CBB3 /* UIDevice-Hardware.m */; };
-		C30D076618C398FF00D5CBB3 /* UIDevice-Hardware.m in Sources */ = {isa = PBXBuildFile; fileRef = C30D076318C398FF00D5CBB3 /* UIDevice-Hardware.m */; };
+		C317CBD918CB69DB00160ED6 /* UIDevice-Hardware.h in Headers */ = {isa = PBXBuildFile; fileRef = C317CBD718CB69DB00160ED6 /* UIDevice-Hardware.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		C317CBDA18CB69DB00160ED6 /* UIDevice-Hardware.m in Sources */ = {isa = PBXBuildFile; fileRef = C317CBD818CB69DB00160ED6 /* UIDevice-Hardware.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -90,8 +89,8 @@
 		C30D071218C375FB00D5CBB3 /* TCBlobDownloadTestsBase.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TCBlobDownloadTestsBase.m; sourceTree = "<group>"; };
 		C30D071518C3772F00D5CBB3 /* TCBlobDownloadManagerTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TCBlobDownloadManagerTests.m; sourceTree = "<group>"; };
 		C30D071818C380BB00D5CBB3 /* TCBlobDownload.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = TCBlobDownload.h; path = TCBlobDownload/TCBlobDownload.h; sourceTree = "<group>"; };
-		C30D076218C398FF00D5CBB3 /* UIDevice-Hardware.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIDevice-Hardware.h"; sourceTree = "<group>"; };
-		C30D076318C398FF00D5CBB3 /* UIDevice-Hardware.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIDevice-Hardware.m"; sourceTree = "<group>"; };
+		C317CBD718CB69DB00160ED6 /* UIDevice-Hardware.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIDevice-Hardware.h"; sourceTree = "<group>"; };
+		C317CBD818CB69DB00160ED6 /* UIDevice-Hardware.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIDevice-Hardware.m"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -204,8 +203,8 @@
 		C30D076118C398FF00D5CBB3 /* Categories */ = {
 			isa = PBXGroup;
 			children = (
-				C30D076218C398FF00D5CBB3 /* UIDevice-Hardware.h */,
-				C30D076318C398FF00D5CBB3 /* UIDevice-Hardware.m */,
+				C317CBD718CB69DB00160ED6 /* UIDevice-Hardware.h */,
+				C317CBD818CB69DB00160ED6 /* UIDevice-Hardware.m */,
 			);
 			name = Categories;
 			path = TCBlobDownload/Categories;
@@ -220,9 +219,9 @@
 			files = (
 				C30D071918C380BB00D5CBB3 /* TCBlobDownload.h in Headers */,
 				21776215172FFC56001956C7 /* TCBlobDownloader.h in Headers */,
+				C317CBD918CB69DB00160ED6 /* UIDevice-Hardware.h in Headers */,
 				21776214172FFC4A001956C7 /* TCBlobDownloadManager.h in Headers */,
 				21776220172FFE64001956C7 /* TCBlobDownload-Prefix.pch in Headers */,
-				C30D076418C398FF00D5CBB3 /* UIDevice-Hardware.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -338,7 +337,6 @@
 				21203AE1178C593900C19335 /* TCBlobDownloadTests.m in Sources */,
 				21D06E26181852B600CAADCD /* XCTestCase+AsyncTesting.m in Sources */,
 				21203AEC178C63AB00C19335 /* TCBlobDownloadManager.m in Sources */,
-				C30D076618C398FF00D5CBB3 /* UIDevice-Hardware.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -347,7 +345,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				21776211172FFBD9001956C7 /* TCBlobDownloader.m in Sources */,
-				C30D076518C398FF00D5CBB3 /* UIDevice-Hardware.m in Sources */,
+				C317CBDA18CB69DB00160ED6 /* UIDevice-Hardware.m in Sources */,
 				21776212172FFBD9001956C7 /* TCBlobDownloadManager.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -463,6 +461,7 @@
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 5.1.1;
 				ONLY_ACTIVE_ARCH = YES;
+				OTHER_LDFLAGS = "";
 				SDKROOT = iphoneos;
 			};
 			name = Debug;
@@ -486,6 +485,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 5.1.1;
+				OTHER_LDFLAGS = "";
 				SDKROOT = iphoneos;
 				VALIDATE_PRODUCT = YES;
 			};
@@ -502,7 +502,9 @@
 				OTHER_LDFLAGS = "";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PUBLIC_HEADERS_FOLDER_PATH = "include/$(TARGET_NAME)";
+				SCAN_ALL_SOURCE_FILES_FOR_INCLUDES = NO;
 				SKIP_INSTALL = YES;
+				USER_HEADER_SEARCH_PATHS = "";
 			};
 			name = Debug;
 		};
@@ -517,7 +519,9 @@
 				OTHER_LDFLAGS = "";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PUBLIC_HEADERS_FOLDER_PATH = "include/$(TARGET_NAME)";
+				SCAN_ALL_SOURCE_FILES_FOR_INCLUDES = NO;
 				SKIP_INSTALL = YES;
+				USER_HEADER_SEARCH_PATHS = "";
 			};
 			name = Release;
 		};
