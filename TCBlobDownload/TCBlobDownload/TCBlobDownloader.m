@@ -320,7 +320,7 @@ NSString * const TCHTTPStatusCode = @"httpStatus";
         [self.samplesOfDownloadedBytes removeObjectAtIndex:0];
     }
     
-    static NSInteger totalReceived;
+    static uint64_t totalReceived;
     [self.samplesOfDownloadedBytes addObject:[NSNumber numberWithLong:self.receivedDataLength - totalReceived]];
     totalReceived = self.receivedDataLength;
     // Compute the speed rate on the average of the last seconds samples
@@ -355,7 +355,7 @@ NSString * const TCHTTPStatusCode = @"httpStatus";
 
 - (NSInteger)remainingTime
 {
-    return self.speedRate > 0 ? (self.expectedDataLength - self.receivedDataLength) / self.speedRate : -1;
+    return self.speedRate > 0 ? (unsigned long long) (self.expectedDataLength - self.receivedDataLength) / self.speedRate : -1;
 }
 
 @end
