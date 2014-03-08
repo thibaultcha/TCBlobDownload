@@ -39,7 +39,7 @@
 		C30D071318C375FB00D5CBB3 /* TCBlobDownloadTestsBase.m in Sources */ = {isa = PBXBuildFile; fileRef = C30D071218C375FB00D5CBB3 /* TCBlobDownloadTestsBase.m */; };
 		C30D071618C3772F00D5CBB3 /* TCBlobDownloadManagerTests.m in Sources */ = {isa = PBXBuildFile; fileRef = C30D071518C3772F00D5CBB3 /* TCBlobDownloadManagerTests.m */; };
 		C30D071918C380BB00D5CBB3 /* TCBlobDownload.h in Headers */ = {isa = PBXBuildFile; fileRef = C30D071818C380BB00D5CBB3 /* TCBlobDownload.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		C30D076418C398FF00D5CBB3 /* UIDevice-Hardware.h in Headers */ = {isa = PBXBuildFile; fileRef = C30D076218C398FF00D5CBB3 /* UIDevice-Hardware.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		C30D076418C398FF00D5CBB3 /* UIDevice-Hardware.h in Headers */ = {isa = PBXBuildFile; fileRef = C30D076218C398FF00D5CBB3 /* UIDevice-Hardware.h */; };
 		C30D076518C398FF00D5CBB3 /* UIDevice-Hardware.m in Sources */ = {isa = PBXBuildFile; fileRef = C30D076318C398FF00D5CBB3 /* UIDevice-Hardware.m */; };
 		C30D076618C398FF00D5CBB3 /* UIDevice-Hardware.m in Sources */ = {isa = PBXBuildFile; fileRef = C30D076318C398FF00D5CBB3 /* UIDevice-Hardware.m */; };
 /* End PBXBuildFile section */
@@ -221,8 +221,8 @@
 				C30D071918C380BB00D5CBB3 /* TCBlobDownload.h in Headers */,
 				21776215172FFC56001956C7 /* TCBlobDownloader.h in Headers */,
 				21776214172FFC4A001956C7 /* TCBlobDownloadManager.h in Headers */,
-				C30D076418C398FF00D5CBB3 /* UIDevice-Hardware.h in Headers */,
 				21776220172FFE64001956C7 /* TCBlobDownload-Prefix.pch in Headers */,
+				C30D076418C398FF00D5CBB3 /* UIDevice-Hardware.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -494,14 +494,12 @@
 		2177620B172FFBBB001956C7 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
 				ARCHS = "$(ARCHS_STANDARD_INCLUDING_64_BIT)";
 				DSTROOT = /tmp/TCBlobDownload.dst;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "TCBlobDownload/TCBlobDownload-Prefix.pch";
-				OTHER_LDFLAGS = (
-					"$(inherited)",
-					"-ObjC",
-				);
+				OTHER_LDFLAGS = "-ObjC";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PUBLIC_HEADERS_FOLDER_PATH = "include/$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
@@ -511,14 +509,12 @@
 		2177620C172FFBBB001956C7 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
 				ARCHS = "$(ARCHS_STANDARD_INCLUDING_64_BIT)";
 				DSTROOT = /tmp/TCBlobDownload.dst;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "TCBlobDownload/TCBlobDownload-Prefix.pch";
-				OTHER_LDFLAGS = (
-					"$(inherited)",
-					"-ObjC",
-				);
+				OTHER_LDFLAGS = "-ObjC";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PUBLIC_HEADERS_FOLDER_PATH = "include/$(TARGET_NAME)";
 				SKIP_INSTALL = YES;

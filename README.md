@@ -37,8 +37,6 @@ Browse the documentation on [Cocoadocs](http://cocoadocs.org/docsets/TCBlobDownl
 
 ## Installation
 
-For CocoaPod install or the static library import: `Project's Target -> Build Settings -> Other Linker Flags -> Add "-ObjC"`
-
 ### CocoaPods
 
 Add the following to your Podfile and run `$ pod install`:
@@ -49,11 +47,14 @@ pod 'TCBlobDownload'
 
 If you don't have CocoaPods installed or integrated into your project, you can learn how to do so [here](http://cocoapods.org).
 
+(Also be sure the `$(inherited)` flag is set in your `Project's Target -> Build Settings -> Other Linker Flags`)
+
 ### Import as a static library
 
 1. Drag and drop `TCBlobDownload.xcodeproj` from Finder to your opened project.
 2. Project's Target -> Build Phases -> **Target Dependencies** -> add `TCBlobDownload`. Then, click **Link binary with libraries** and add `libTCBlobDownload.a` (no worries if it's red).
 3. Go to **build settings**, switch "always search user paths" to `YES` and add `$(PROJECT_TEMP_DIR)/../UninstalledProducts/include` to "User Header Search Paths".
+4. Project's Target -> Build Settings -> **Other Linker Flags** -> Add `-ObjC`
 4. Import the lib. (no worries if no autocomplete)
 ```
 #import <TCBlobDownload/TCBlobDownload.h>
