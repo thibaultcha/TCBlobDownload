@@ -19,6 +19,7 @@
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
     if (self) {
         self.sharedDownloadManager = [TCBlobDownloadManager sharedInstance];
+        [self.sharedDownloadManager setMaxConcurrentDownloads:3];
     }
     
     return self;
@@ -36,27 +37,41 @@
 - (void)download:(id)sender
 {
     // Delegate
-    /*
-    [self.sharedDownloadManager startDownloadWithURL:self.urlField.text
-                                          customPath:nil
-                                         andDelegate:self];
-    */
+    for (NSInteger i = 0; i < 50; i++) {
+        [self.sharedDownloadManager startDownloadWithURL:[NSURL URLWithString:@"https://github.com/thibaultCha/TCBlobDownload/archive/master.zip"]
+                                              customPath:[NSString pathWithComponents:@[NSTemporaryDirectory(), [NSString stringWithFormat:@"%ld", (long)i]]]
+                                                delegate:self];
+    }
+    
+    [NSTimer scheduledTimerWithTimeInterval:1.0
+                                     target:self
+                                   selector:@selector(log)
+                                   userInfo:nil
+                                    repeats:YES];
+    //[[NSRunLoop currentRunLoop] addTimer:countTimer forMode:NSRunLoopCommonModes];
     
     // Blocks
-    [self.sharedDownloadManager startDownloadWithURL:[NSURL URLWithString:self.urlField.text]
-                                          customPath:[NSString pathWithComponents:@[NSTemporaryDirectory(), @"test"]]
+    /*[self.sharedDownloadManager startDownloadWithURL:[NSURL URLWithString:self.urlField.text]
+                                          customPath:[NSString pathWithComponents:@[NSTemporaryDirectory(), @"example"]]
                                        firstResponse:NULL
                                             progress:^(float receivedLength, float totalLength, NSInteger remainingTime) {
                                                 if (remainingTime != -1) {
                                                     [self.remainingTime setText:[NSString stringWithFormat:@"%lds", (long)remainingTime]];
                                                 }
                                             }
-                                               error:NULL
+                                               error:^(NSError *error) {
+                                                   NSLog(@"%@", error);
+                                               }
                                             complete:^(BOOL downloadFinished, NSString *pathToFile) {
                                                 NSString *str = downloadFinished ? @"Completed" : @"Cancelled";
                                                 [self.remainingTime setText:str];
-                                            }];
+                                            }];*/
     [self.urlField resignFirstResponder];
+}
+
+- (void)log
+{
+    NSLog(@"%d", self.sharedDownloadManager.downloadCount);
 }
 
 - (void)cancelAll:(id)sender
@@ -70,7 +85,7 @@
 
 - (void)download:(TCBlobDownloader *)blobDownload didReceiveFirstResponse:(NSURLResponse *)response
 {
-    
+    //NSLog(@"%@ downlaod started", blobDownload.pathToDownloadDirectory);
 }
 
 - (void)download:(TCBlobDownloader *)blobDownload
@@ -90,9 +105,9 @@
     
 }
 
-- (void)downloadDidFinishWithDownload:(TCBlobDownloader *)blobDownload
+- (void)download:(TCBlobDownloader *)blobDownload didFinishWithSucces:(BOOL)downloadFinished atPath:(NSString *)pathToFile
 {
-    
+    NSLog(@"%@ downlaod finished", [blobDownload.pathToDownloadDirectory lastPathComponent]);
 }
 
 @end

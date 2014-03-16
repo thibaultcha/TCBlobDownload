@@ -20,4 +20,6 @@
 - (IBAction)download:(id)sender;
 - (IBAction)cancelAll:(id)sender;
 
+- (void)log;
+
 @end

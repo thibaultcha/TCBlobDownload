@@ -14,7 +14,7 @@
 @end
 
 @implementation TCBlobDownloadManager
-
+@dynamic downloadCount;
 
 #pragma mark - Init
 

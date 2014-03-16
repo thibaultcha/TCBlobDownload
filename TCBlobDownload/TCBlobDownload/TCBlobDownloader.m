@@ -43,7 +43,9 @@ NSString * const TCHTTPStatusCode = @"httpStatus";
 @end
 
 @implementation TCBlobDownloader
-
+@dynamic fileName;
+@dynamic pathToFile;
+@dynamic remainingTime;
 
 #pragma mark - Dealloc
 
@@ -195,6 +197,9 @@ NSString * const TCHTTPStatusCode = @"httpStatus";
                                             TCHTTPStatusCode: @(httpUrlResponse.statusCode) }];
     }
     
+    //NSLog(@"%u", (unsigned)[[UIDevice currentDevice] freeDiskSpace].longLongValue);
+    //NSLog(@"%lld", self.expectedDataLength);
+    
     if ((unsigned)[[UIDevice currentDevice] freeDiskSpace].longLongValue < self.expectedDataLength) {
         error = [NSError errorWithDomain:kErrorDomain
                                     code:TCErrorNotEnoughFreeDiskSpace
@@ -320,9 +325,9 @@ NSString * const TCHTTPStatusCode = @"httpStatus";
         [self.samplesOfDownloadedBytes removeObjectAtIndex:0];
     }
     
-    static uint64_t totalReceived;
-    [self.samplesOfDownloadedBytes addObject:[NSNumber numberWithUnsignedLongLong:self.receivedDataLength - totalReceived]];
-    totalReceived = self.receivedDataLength;
+    static uint64_t previousTotal;
+    [self.samplesOfDownloadedBytes addObject:[NSNumber numberWithUnsignedLongLong:self.receivedDataLength - previousTotal]];
+    previousTotal = self.receivedDataLength;
     // Compute the speed rate on the average of the last seconds samples
     self.speedRate = [[self.samplesOfDownloadedBytes valueForKeyPath:@"@avg.longValue"] longValue];
 }
