@@ -50,7 +50,7 @@
 
 - (void)cancelAll:(id)sender
 {
-    [self.sharedDownloadManager cancelAllDownloadsAndRemoveFiles:YES];
+    [self.sharedDownloadManager cancelAllDownloadsAndRemoveFiles:NO];
     [self addLogOnTextView: @"\nDownload is canceled"];
 }
 

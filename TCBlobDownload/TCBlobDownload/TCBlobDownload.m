@@ -101,8 +101,7 @@ NSString * const HTTPErrorCode = @"httpStatus";
         [fm createFileAtPath:self.pathToFile
                     contents:nil
                   attributes:nil];
-    }
-    else {
+    } else {
         uint64_t fileSize = [[fm attributesOfItemAtPath:self.pathToFile error:nil] fileSize];
         NSString *range = [NSString stringWithFormat:@"bytes=%lld-", fileSize];
         [fileRequest setValue:range forHTTPHeaderField:@"Range"];
@@ -215,7 +214,6 @@ NSString * const HTTPErrorCode = @"httpStatus";
     if (self.progressBlock) {
         self.progressBlock(_receivedDataLength, _expectedDataLength);
     }
-    
     if ([self.delegate respondsToSelector:@selector(download:didReceiveData:onTotal:)]) {
         [self.delegate download:self
                  didReceiveData:_receivedDataLength

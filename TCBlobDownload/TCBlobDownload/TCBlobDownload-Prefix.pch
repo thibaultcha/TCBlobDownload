@@ -5,5 +5,3 @@
 #ifdef __OBJC__
     #import <Foundation/Foundation.h>
 #endif
-
-#define DEFAULT_PATH NSTemporaryDirectory()
