@@ -135,6 +135,9 @@ NSString * const TCHTTPStatusCode = @"httpStatus";
     _connection = [[NSURLConnection alloc] initWithRequest:fileRequest
                                                   delegate:self
                                           startImmediately:NO];
+    
+    _state = TCBlobDownloadStateDownloading;
+    
     if (self.connection) {
         // Start the download
         NSRunLoop* runLoop = [NSRunLoop currentRunLoop];
@@ -152,8 +155,6 @@ NSString * const TCHTTPStatusCode = @"httpStatus";
         [runLoop addTimer:self.speedTimer forMode:NSRunLoopCommonModes];
         [runLoop run];
         [self didChangeValueForKey:@"isExecuting"];
-        
-        _state = TCBlobDownloadStateDownloading;
     }
 }
 
@@ -184,6 +185,8 @@ NSString * const TCHTTPStatusCode = @"httpStatus";
 
 - (void)connection:(NSURLConnection*)connection didReceiveResponse:(NSURLResponse *)response
 {
+
+    
     self.expectedDataLength = [response expectedContentLength];
     NSHTTPURLResponse *httpUrlResponse = (NSHTTPURLResponse *)response;
     
