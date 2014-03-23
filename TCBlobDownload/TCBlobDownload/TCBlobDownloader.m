@@ -67,6 +67,7 @@ NSString * const TCHTTPStatusCode = @"httpStatus";
         self.downloadURL = url;
         self.delegate = delegateOrNil;
         self.pathToDownloadDirectory = pathToDL;
+        _state = TCBlobDownloadStateReady;
     }
     return self;
 }
@@ -84,6 +85,7 @@ NSString * const TCHTTPStatusCode = @"httpStatus";
         self.progressBlock = progressBlock;
         self.errorBlock = errorBlock;
         self.completeBlock = completeBlock;
+        _state = TCBlobDownloadStateReady;
     }
     return self;
 }
@@ -150,6 +152,8 @@ NSString * const TCHTTPStatusCode = @"httpStatus";
         [runLoop addTimer:self.speedTimer forMode:NSRunLoopCommonModes];
         [runLoop run];
         [self didChangeValueForKey:@"isExecuting"];
+        
+        _state = TCBlobDownloadStateDownloading;
     }
 }
 
@@ -289,6 +293,8 @@ NSString * const TCHTTPStatusCode = @"httpStatus";
 
 - (void)notifyFromError:(NSError *)error
 {
+    _state = TCBlobDownloadStateFailed;
+    
     dispatch_async(dispatch_get_main_queue(), ^{
         if (self.errorBlock) {
             self.errorBlock(error);
@@ -301,6 +307,8 @@ NSString * const TCHTTPStatusCode = @"httpStatus";
 
 - (void)notifyFromCompletionWithSuccess:(BOOL)success pathToFile:(NSString *)pathToFile
 {
+    _state = TCBlobDownloadStateDone;
+    
     dispatch_async(dispatch_get_main_queue(), ^{
         if (self.completeBlock) {
             self.completeBlock(success, pathToFile);

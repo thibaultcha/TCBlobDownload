@@ -14,6 +14,13 @@
 
 #import <Foundation/Foundation.h>
 
+typedef enum : NSUInteger {
+    TCBlobDownloadStateReady,
+    TCBlobDownloadStateDownloading,
+    TCBlobDownloadStateFailed,
+    TCBlobDownloadStateDone
+} TCBlobDownloadState;
+
 /**
  When a download fails because of an HTTP error, the HTTP status code is transmitted as an `NSNumber` via the provided `NSError` parameter of the corresponding block or delegate method. Access to `error.userInfos[TCHTTPErrorCode]`
  
@@ -126,6 +133,8 @@ typedef NS_ENUM(NSUInteger, TCBlobDownloadError) {
  The current progress of the file download. Value between 0 and 1.
  */
 @property (nonatomic, assign, readonly) float progress;
+
+@property (nonatomic, assign, readonly) TCBlobDownloadState state;
 
 /**
  Instanciates a `TCBlobDownloader` object with delegate. `TCBlobDownloader` objects instanciated this way will not be executed until they are passed to the `TCBlobDownloaderManager` singleton.
