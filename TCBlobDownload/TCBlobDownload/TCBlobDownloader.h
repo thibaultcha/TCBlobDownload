@@ -123,6 +123,11 @@ typedef NS_ENUM(NSUInteger, TCBlobDownloadError) {
 @property (nonatomic, assign, readonly) NSInteger remainingTime;
 
 /**
+ The current progress of the file download. Value between 0 and 1.
+ */
+@property (nonatomic, assign, readonly) float progress;
+
+/**
  Instanciates a `TCBlobDownloader` object with delegate. `TCBlobDownloader` objects instanciated this way will not be executed until they are passed to the `TCBlobDownloaderManager` singleton.
  
  @see startDownload:

@@ -358,4 +358,12 @@ NSString * const TCHTTPStatusCode = @"httpStatus";
     return self.speedRate > 0 ? ((NSInteger)(self.expectedDataLength - self.receivedDataLength) / self.speedRate) : -1;
 }
 
+- (float)progress
+{
+    if (_expectedDataLength == 0)
+        return 0;
+    else
+        return _receivedDataLength / _expectedDataLength;
+}
+
 @end
