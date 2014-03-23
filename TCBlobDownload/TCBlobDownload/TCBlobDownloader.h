@@ -111,7 +111,7 @@ typedef NS_ENUM(NSUInteger, TCBlobDownloadError) {
  
  @since 1.0
  */
-@property (nonatomic, copy, readonly) NSString *fileName;
+@property (nonatomic, copy, readwrite) NSString *fileName;
 
 /**
  The current speed of the download in bits/sec. This property updates itself regularly so you can retrieve it on a regular interval to update your UI.

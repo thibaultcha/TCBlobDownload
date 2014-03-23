@@ -356,6 +356,9 @@ NSString * const TCHTTPStatusCode = @"httpStatus";
 
 - (NSString *)fileName
 {
+    if (_fileName) {
+        return _fileName;
+    }
     return [[NSURL URLWithString:[self.downloadURL absoluteString]] lastPathComponent];
 }
 
