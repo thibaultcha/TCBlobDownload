@@ -252,7 +252,7 @@ didStopWithError:(NSError *)error;
  @since 1.3
  */
 - (void)download:(TCBlobDownloader *)blobDownload
-didFinishWithSucces:(BOOL)downloadFinished
+didFinishWithSuccess:(BOOL)downloadFinished
           atPath:(NSString *)pathToFile;
 
 @end

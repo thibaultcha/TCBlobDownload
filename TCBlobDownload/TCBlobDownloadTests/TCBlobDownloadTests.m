@@ -172,7 +172,7 @@
     });
 }
 
-- (void)download:(TCBlobDownloader *)blobDownload didFinishWithSucces:(BOOL)downloadFinished atPath:(NSString *)pathToFile
+- (void)download:(TCBlobDownloader *)blobDownload didFinishWithSuccess:(BOOL)downloadFinished atPath:(NSString *)pathToFile
 {
     self.delegateCalledOnMainThread = YES;
     [self notify:kDidFinishWithSuccessMethodCalled];
