@@ -6,7 +6,7 @@
 //
 
 static const double kBufferSize = 1024*1024; // 1 MB
-static const NSTimeInterval kDefaultTimeout = 30;
+static const NSTimeInterval kDefaultRequestTimeout = 30;
 static const NSInteger kNumberOfSamples = 5;
 static NSString * const kErrorDomain = @"com.thibaultcha.tcblobdownload";
 
@@ -96,7 +96,7 @@ NSString * const TCHTTPStatusCode = @"httpStatus";
 {
     NSMutableURLRequest *fileRequest = [NSMutableURLRequest requestWithURL:self.downloadURL
                                                                cachePolicy:NSURLRequestUseProtocolCachePolicy
-                                                           timeoutInterval:kDefaultTimeout];
+                                                           timeoutInterval:kDefaultRequestTimeout];
     
     // If we can't handle the request, better cancelling the operation right now
     if (![NSURLConnection canHandleRequest:fileRequest]) {
