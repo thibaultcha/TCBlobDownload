@@ -133,7 +133,10 @@ See [documentation](#documentation-books) for more details.
 
 ## Change log :memo:
 
-### v1.5 (8/04/2014)
+### v1.5.1 (7/04/2014)
+* Important fix for [#21](https://github.com/thibaultCha/TCBlobDownload/issues/21
+
+### v1.5 (8/03/2014)
 * Improved documentation and created a docset
 * Added a `speedRate` and `remainingTime` (in seconds) property on `TCBlobDownloader` thanks to [#16](https://github.com/thibaultCha/TCBlobDownload/issues/16)
 * Updated `TCBlobDownloader` properties to `readonly`
