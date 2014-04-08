@@ -200,7 +200,7 @@ NSString * const TCHTTPStatusCode = @"httpStatus";
     //NSLog(@"%u", (unsigned)[[UIDevice currentDevice] freeDiskSpace].longLongValue);
     //NSLog(@"%lld", self.expectedDataLength);
     
-    NSInteger expected = @(self.expectedDataLength).longLongValue;
+    long long expected = @(self.expectedDataLength).longLongValue;
     if ([[UIDevice currentDevice] freeDiskSpace].longLongValue < expected && expected != -1) {
 
         error = [NSError errorWithDomain:kErrorDomain
