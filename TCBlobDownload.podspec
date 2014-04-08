@@ -1,6 +1,6 @@
 Pod::Spec.new do |s|
   s.name         = "TCBlobDownload"
-  s.version      = "1.5.0"
+  s.version      = "1.5.1"
   s.summary      = "Competitive large files downloads for iOS"
   s.homepage     = "https://github.com/thibaultCha/TCBlobDownload"
   s.license      = 'MIT'
