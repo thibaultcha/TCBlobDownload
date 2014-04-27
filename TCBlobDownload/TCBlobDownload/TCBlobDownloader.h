@@ -14,6 +14,13 @@
 
 #import <Foundation/Foundation.h>
 
+typedef enum : NSUInteger {
+    TCBlobDownloadStateReady,
+    TCBlobDownloadStateDownloading,
+    TCBlobDownloadStateFailed,
+    TCBlobDownloadStateDone
+} TCBlobDownloadState;
+
 /**
  When a download fails because of an HTTP error, the HTTP status code is transmitted as an `NSNumber` via the provided `NSError` parameter of the corresponding block or delegate method. Access to `error.userInfos[TCHTTPErrorCode]`
  
@@ -104,7 +111,7 @@ typedef NS_ENUM(NSUInteger, TCBlobDownloadError) {
  
  @since 1.0
  */
-@property (nonatomic, copy, readonly) NSString *fileName;
+@property (nonatomic, copy, readwrite) NSString *fileName;
 
 /**
  The current speed of the download in bits/sec. This property updates itself regularly so you can retrieve it on a regular interval to update your UI.
@@ -121,6 +128,13 @@ typedef NS_ENUM(NSUInteger, TCBlobDownloadError) {
  @since 1.5.0
  */
 @property (nonatomic, assign, readonly) NSInteger remainingTime;
+
+/**
+ The current progress of the file download. Value between 0 and 1.
+ */
+@property (nonatomic, assign, readonly) float progress;
+
+@property (nonatomic, assign, readonly) TCBlobDownloadState state;
 
 /**
  Instanciates a `TCBlobDownloader` object with delegate. `TCBlobDownloader` objects instanciated this way will not be executed until they are passed to the `TCBlobDownloaderManager` singleton.
@@ -238,7 +252,7 @@ didStopWithError:(NSError *)error;
  @since 1.3
  */
 - (void)download:(TCBlobDownloader *)blobDownload
-didFinishWithSucces:(BOOL)downloadFinished
+didFinishWithSuccess:(BOOL)downloadFinished
           atPath:(NSString *)pathToFile;
 
 @end
