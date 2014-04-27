@@ -60,7 +60,7 @@
 - (TCBlobDownloader *)startDownloadWithURL:(NSURL *)url
                               customPath:(NSString *)customPathOrNil
                            firstResponse:(void (^)(NSURLResponse *response))firstResponseBlock
-                                progress:(void (^)(float receivedLength, float totalLength, NSInteger remainingTime))progressBlock
+                                progress:(void (^)(float receivedLength, float totalLength, NSInteger remainingTime, float progress))progressBlock
                                    error:(void (^)(NSError *error))errorBlock
                                 complete:(void (^)(BOOL downloadFinished, NSString *pathToFile))completeBlock
 {

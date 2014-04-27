@@ -7,6 +7,7 @@
 //
 
 #import "ViewController.h"
+#import "MultipleViewController.h"
 
 @implementation ViewController
 
@@ -66,6 +67,14 @@
     [self.sharedDownloadManager cancelAllDownloadsAndRemoveFiles:YES];
 }
 
+- (IBAction)switchToMultipleDownloads:(id)sender
+{
+    MultipleViewController *multipleViewController = [MultipleViewController new];
+    
+    UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:multipleViewController];
+    
+    [self presentViewController:navController animated:YES completion:nil];
+}
 
 #pragma mark - TCBlobDownloaderDelegate
 
