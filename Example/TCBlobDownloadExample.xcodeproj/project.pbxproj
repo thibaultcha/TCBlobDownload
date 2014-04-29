@@ -19,6 +19,8 @@
 		21D06E13181847F400CAADCD /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 21D06E0A181847F400CAADCD /* ViewController.m */; };
 		21D06E14181847F400CAADCD /* ViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 21D06E0B181847F400CAADCD /* ViewController.xib */; };
 		C317CBD218CB668500160ED6 /* libTCBlobDownload.a in Frameworks */ = {isa = PBXBuildFile; fileRef = C33448CA18C000850050C1ED /* libTCBlobDownload.a */; };
+		E17B6757190CEBE100B81CD8 /* MultipleViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = E17B6755190CEBE100B81CD8 /* MultipleViewController.m */; };
+		E17B6758190CEBE100B81CD8 /* MultipleViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = E17B6756190CEBE100B81CD8 /* MultipleViewController.xib */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -63,6 +65,9 @@
 		21D06E0A181847F400CAADCD /* ViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ViewController.m; sourceTree = "<group>"; };
 		21D06E0B181847F400CAADCD /* ViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ViewController.xib; sourceTree = "<group>"; };
 		C33448C318C000850050C1ED /* TCBlobDownload.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = TCBlobDownload.xcodeproj; path = ../TCBlobDownload/TCBlobDownload.xcodeproj; sourceTree = "<group>"; };
+		E17B6754190CEBE100B81CD8 /* MultipleViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MultipleViewController.h; sourceTree = "<group>"; };
+		E17B6755190CEBE100B81CD8 /* MultipleViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MultipleViewController.m; sourceTree = "<group>"; };
+		E17B6756190CEBE100B81CD8 /* MultipleViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = MultipleViewController.xib; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -116,6 +121,9 @@
 				21D06E09181847F400CAADCD /* ViewController.h */,
 				21D06E0A181847F400CAADCD /* ViewController.m */,
 				21D06E0B181847F400CAADCD /* ViewController.xib */,
+				E17B6754190CEBE100B81CD8 /* MultipleViewController.h */,
+				E17B6755190CEBE100B81CD8 /* MultipleViewController.m */,
+				E17B6756190CEBE100B81CD8 /* MultipleViewController.xib */,
 				21D06E15181847FF00CAADCD /* Ressources */,
 				21D06E161818480A00CAADCD /* Supporting Files */,
 			);
@@ -236,6 +244,7 @@
 				21D06E10181847F400CAADCD /* InfoPlist.strings in Resources */,
 				21D06E0D181847F400CAADCD /* Default-568h@2x.png in Resources */,
 				21D06E0E181847F400CAADCD /* Default.png in Resources */,
+				E17B6758190CEBE100B81CD8 /* MultipleViewController.xib in Resources */,
 				21D06E14181847F400CAADCD /* ViewController.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -249,6 +258,7 @@
 			files = (
 				21D06E13181847F400CAADCD /* ViewController.m in Sources */,
 				21D06E11181847F400CAADCD /* main.m in Sources */,
+				E17B6757190CEBE100B81CD8 /* MultipleViewController.m in Sources */,
 				21D06E0C181847F400CAADCD /* AppDelegate.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

@@ -19,5 +19,6 @@
 
 - (IBAction)download:(id)sender;
 - (IBAction)cancelAll:(id)sender;
+- (IBAction)switchToMultipleDownloads:(id)sender;
 
 @end
