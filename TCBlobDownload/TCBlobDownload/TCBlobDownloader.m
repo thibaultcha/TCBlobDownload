@@ -15,7 +15,9 @@ NSString * const TCHTTPStatusCode = @"httpStatus";
 #import "TCBlobDownloader.h"
 #import "UIDevice-Hardware.h"
 
-@interface TCBlobDownloader ()
+@interface TCBlobDownloader () {
+    uint64_t previousTotal;
+}
 // Public
 @property (nonatomic, copy, readwrite) NSURL *downloadURL;
 @property (nonatomic, copy, readwrite) NSString *pathToFile;
@@ -134,6 +136,7 @@ NSString * const TCHTTPStatusCode = @"httpStatus";
     [self.file seekToEndOfFile];
     _receivedDataBuffer = [[NSMutableData alloc] init];
     _samplesOfDownloadedBytes = [[NSMutableArray alloc] init];
+    previousTotal = 0;
     _connection = [[NSURLConnection alloc] initWithRequest:fileRequest
                                                   delegate:self
                                           startImmediately:NO];
@@ -354,7 +357,6 @@ NSString * const TCHTTPStatusCode = @"httpStatus";
         [self.samplesOfDownloadedBytes removeObjectAtIndex:0];
     }
     
-    static uint64_t previousTotal;
     [self.samplesOfDownloadedBytes addObject:[NSNumber numberWithUnsignedLongLong:self.receivedDataLength - previousTotal]];
     previousTotal = self.receivedDataLength;
     // Compute the speed rate on the average of the last seconds samples
