@@ -62,8 +62,8 @@
  @since 1.4
 */
 - (TCBlobDownloader *)startDownloadWithURL:(NSURL *)url
-                              customPath:(NSString *)customPathOrNil
-                                delegate:(id<TCBlobDownloaderDelegate>)delegateOrNil;
+                                customPath:(NSString *)customPathOrNil
+                                  delegate:(id<TCBlobDownloaderDelegate>)delegateOrNil;
 
 /**
  Instanciates and runs instantly a `TCBlobDownloader` object. Provides the same functionnalities than `-startDownloadWithURL:customPath:delegate:` but creates a `TCBlobDownloadObject` using blocks to update your view.
@@ -85,7 +85,7 @@
 - (TCBlobDownloader *)startDownloadWithURL:(NSURL *)url
                               customPath:(NSString *)customPathOrNil
                            firstResponse:(void (^)(NSURLResponse *response))firstResponseBlock
-                                progress:(void (^)(float receivedLength, float totalLength, NSInteger remainingTime))progressBlock
+                                progress:(void (^)(uint64_t receivedLength, uint64_t totalLength, NSInteger remainingTime, float progress))progressBlock
                                    error:(void (^)(NSError *error))errorBlock
                                 complete:(void (^)(BOOL downloadFinished, NSString *pathToFile))completeBlock;
 

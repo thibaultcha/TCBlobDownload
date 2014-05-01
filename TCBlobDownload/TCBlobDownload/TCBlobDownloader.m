@@ -15,9 +15,7 @@ NSString * const TCHTTPStatusCode = @"httpStatus";
 #import "TCBlobDownloader.h"
 #import "UIDevice-Hardware.h"
 
-@interface TCBlobDownloader () {
-    uint64_t previousTotal;
-}
+@interface TCBlobDownloader ()
 // Public
 @property (nonatomic, copy, readwrite) NSURL *downloadURL;
 @property (nonatomic, copy, readwrite) NSString *pathToFile;
@@ -32,11 +30,12 @@ NSString * const TCHTTPStatusCode = @"httpStatus";
 @property (nonatomic, strong) NSMutableArray *samplesOfDownloadedBytes;
 @property (nonatomic, assign) uint64_t expectedDataLength;
 @property (nonatomic, assign) uint64_t receivedDataLength;
+@property (nonatomic, assign) uint64_t previousTotal;
 @property (nonatomic, assign, readwrite) NSInteger speedRate;
 @property (nonatomic, assign, readwrite) NSInteger remainingTime;
 // Blocks
 @property (nonatomic, copy) void (^firstResponseBlock)(NSURLResponse *response);
-@property (nonatomic, copy) void (^progressBlock)(float receivedLength, float totalLength, NSInteger remainingTime, float progress);
+@property (nonatomic, copy) void (^progressBlock)(uint64_t receivedLength, uint64_t totalLength, NSInteger remainingTime, float progress);
 @property (nonatomic, copy) void (^errorBlock)(NSError *error);
 @property (nonatomic, copy) void (^completeBlock)(BOOL downloadFinished, NSString *pathToFile);
 - (void)notifyFromError:(NSError *)error;
@@ -48,6 +47,7 @@ NSString * const TCHTTPStatusCode = @"httpStatus";
 @implementation TCBlobDownloader
 @dynamic pathToFile;
 @dynamic remainingTime;
+
 
 #pragma mark - Dealloc
 
@@ -79,7 +79,7 @@ NSString * const TCHTTPStatusCode = @"httpStatus";
 - (instancetype)initWithURL:(NSURL *)url
                downloadPath:(NSString *)pathToDL
               firstResponse:(void (^)(NSURLResponse *response))firstResponseBlock
-                   progress:(void (^)(float receivedLength, float totalLength, NSInteger remainingTime, float progress))progressBlock
+                   progress:(void (^)(uint64_t receivedLength, uint64_t totalLength, NSInteger remainingTime, float progress))progressBlock
                       error:(void (^)(NSError *error))errorBlock
                    complete:(void (^)(BOOL downloadFinished, NSString *pathToFile))completeBlock
 {
@@ -136,7 +136,6 @@ NSString * const TCHTTPStatusCode = @"httpStatus";
     [self.file seekToEndOfFile];
     _receivedDataBuffer = [[NSMutableData alloc] init];
     _samplesOfDownloadedBytes = [[NSMutableArray alloc] init];
-    previousTotal = 0;
     _connection = [[NSURLConnection alloc] initWithRequest:fileRequest
                                                   delegate:self
                                           startImmediately:NO];
@@ -243,8 +242,8 @@ NSString * const TCHTTPStatusCode = @"httpStatus";
     self.receivedDataLength += [data length];
 
     TCLog(@"%@ | %.2f%% - Received: %ld - Total: %ld",
-          self.fileName,
-          (float) _receivedDataLength / self.expectedDataLength * 100
+          self.pathToFile,
+          (float) _receivedDataLength / self.expectedDataLength * 100,
           (long)self.receivedDataLength, (long)self.expectedDataLength);
     
     if (self.receivedDataBuffer.length > kBufferSize && self.file) {
@@ -357,8 +356,8 @@ NSString * const TCHTTPStatusCode = @"httpStatus";
         [self.samplesOfDownloadedBytes removeObjectAtIndex:0];
     }
     
-    [self.samplesOfDownloadedBytes addObject:[NSNumber numberWithUnsignedLongLong:self.receivedDataLength - previousTotal]];
-    previousTotal = self.receivedDataLength;
+    [self.samplesOfDownloadedBytes addObject:[NSNumber numberWithUnsignedLongLong:self.receivedDataLength - self.previousTotal]];
+    self.previousTotal = self.receivedDataLength;
     // Compute the speed rate on the average of the last seconds samples
     self.speedRate = [[self.samplesOfDownloadedBytes valueForKeyPath:@"@avg.longValue"] longValue];
 }
@@ -381,12 +380,7 @@ NSString * const TCHTTPStatusCode = @"httpStatus";
 
 - (NSString *)fileName
 {
-    if (_fileName) {
-        return _fileName;
-    }
-    else {
-        return [[NSURL URLWithString:[self.downloadURL absoluteString]] lastPathComponent];
-    }
+    return _fileName ? _fileName : [[NSURL URLWithString:[self.downloadURL absoluteString]] lastPathComponent];
 }
 
 - (NSString *)pathToFile
@@ -402,13 +396,6 @@ NSString * const TCHTTPStatusCode = @"httpStatus";
 - (float)progress
 {
     return (_expectedDataLength == 0) ? 0 : (float)_receivedDataLength / (float)_expectedDataLength;
-}
-
-- (void)setError:(NSError *)error
-{
-    _error = error;
-    
-    self.state = TCBlobDownloadStateFailed;
 }
 
 @end

@@ -6,10 +6,10 @@
 //  Copyright (c) 2013 thibaultCha. All rights reserved.
 //
 
-#import "ViewController.h"
+#import "SimpleViewController.h"
 #import "MultipleViewController.h"
 
-@implementation ViewController
+@implementation SimpleViewController
 
 
 #pragma mark - Init
@@ -34,7 +34,7 @@
 #pragma mark - Demo
 
 
-- (void)download:(id)sender
+- (IBAction)download:(id)sender
 {
     // Delegate
     /*
@@ -47,7 +47,7 @@
     [self.sharedDownloadManager startDownloadWithURL:[NSURL URLWithString:self.urlField.text]
                                           customPath:[NSString pathWithComponents:@[NSTemporaryDirectory(), @"example"]]
                                        firstResponse:NULL
-                                            progress:^(float receivedLength, float totalLength, NSInteger remainingTime) {
+                                            progress:^(uint64_t receivedLength, uint64_t totalLength, NSInteger remainingTime, float progress) {
                                                 if (remainingTime != -1) {
                                                     [self.remainingTime setText:[NSString stringWithFormat:@"%lds", (long)remainingTime]];
                                                 }
@@ -62,19 +62,6 @@
     [self.urlField resignFirstResponder];
 }
 
-- (void)cancelAll:(id)sender
-{
-    [self.sharedDownloadManager cancelAllDownloadsAndRemoveFiles:YES];
-}
-
-- (IBAction)switchToMultipleDownloads:(id)sender
-{
-    MultipleViewController *multipleViewController = [MultipleViewController new];
-    
-    UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:multipleViewController];
-    
-    [self presentViewController:navController animated:YES completion:nil];
-}
 
 #pragma mark - TCBlobDownloaderDelegate
 
@@ -104,6 +91,23 @@
 - (void)download:(TCBlobDownloader *)blobDownload didFinishWithSucces:(BOOL)downloadFinished atPath:(NSString *)pathToFile
 {
 
+}
+
+
+#pragma mark - Utilities
+
+
+- (void)cancelAll:(id)sender
+{
+    [self.sharedDownloadManager cancelAllDownloadsAndRemoveFiles:YES];
+}
+
+- (IBAction)switchToMultipleDownloads:(id)sender
+{
+    MultipleViewController *multipleViewController = [MultipleViewController new];
+    UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:multipleViewController];
+    
+    [self presentViewController:navController animated:YES completion:nil];
 }
 
 @end

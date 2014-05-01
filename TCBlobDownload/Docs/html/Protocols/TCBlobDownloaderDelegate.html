@@ -43,9 +43,9 @@
 	
 	<option value="instance_methods">Instance Methods</option>
 	
-	<option value="//api/name/download:didFinishWithSucces:atPath:">&nbsp;&nbsp;&nbsp;&nbsp;- download:didFinishWithSucces:atPath:</option>
+	<option value="//api/name/download:didFinishWithSuccess:atPath:">&nbsp;&nbsp;&nbsp;&nbsp;- download:didFinishWithSuccess:atPath:</option>
 	
-	<option value="//api/name/download:didReceiveData:onTotal:">&nbsp;&nbsp;&nbsp;&nbsp;- download:didReceiveData:onTotal:</option>
+	<option value="//api/name/download:didReceiveData:onTotal:progress:">&nbsp;&nbsp;&nbsp;&nbsp;- download:didReceiveData:onTotal:progress:</option>
 	
 	<option value="//api/name/download:didReceiveFirstResponse:">&nbsp;&nbsp;&nbsp;&nbsp;- download:didReceiveFirstResponse:</option>
 	
@@ -79,9 +79,9 @@
 
 <li role="treeitem" class="children"><span class="disclosure"></span><span class="sectionName"><a href="#instance_methods">Instance Methods</a></span><ul>
 	
-	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#//api/name/download:didFinishWithSucces:atPath:">download:didFinishWithSucces:atPath:</a></span></li>
+	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#//api/name/download:didFinishWithSuccess:atPath:">download:didFinishWithSuccess:atPath:</a></span></li>
 	
-	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#//api/name/download:didReceiveData:onTotal:">download:didReceiveData:onTotal:</a></span></li>
+	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#//api/name/download:didReceiveData:onTotal:progress:">download:didReceiveData:onTotal:progress:</a></span></li>
 	
 	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#//api/name/download:didReceiveFirstResponse:">download:didReceiveFirstResponse:</a></span></li>
 	
@@ -148,7 +148,7 @@
 	
 </li><li>
 	<span class="tooltip">
-		<code><a href="#//api/name/download:didReceiveData:onTotal:">&ndash;&nbsp;download:didReceiveData:onTotal:</a></code>
+		<code><a href="#//api/name/download:didReceiveData:onTotal:progress:">&ndash;&nbsp;download:didReceiveData:onTotal:progress:</a></code>
 	</span>
 	
 	
@@ -160,7 +160,7 @@
 	
 </li><li>
 	<span class="tooltip">
-		<code><a href="#//api/name/download:didFinishWithSucces:atPath:">&ndash;&nbsp;download:didFinishWithSucces:atPath:</a></code>
+		<code><a href="#//api/name/download:didFinishWithSuccess:atPath:">&ndash;&nbsp;download:didFinishWithSuccess:atPath:</a></code>
 	</span>
 	
 	
@@ -182,8 +182,8 @@
 						<h2 class="subtitle subtitle-methods">Instance Methods</h2>
 						
 						<div class="section-method">
-	<a name="//api/name/download:didFinishWithSucces:atPath:" title="download:didFinishWithSucces:atPath:"></a>
-	<h3 class="subsubtitle method-title">download:didFinishWithSucces:atPath:</h3>
+	<a name="//api/name/download:didFinishWithSuccess:atPath:" title="download:didFinishWithSuccess:atPath:"></a>
+	<h3 class="subsubtitle method-title">download:didFinishWithSuccess:atPath:</h3>
 	
 	
 	
@@ -193,7 +193,7 @@
 	
     
 
-	<div class="method-subsection method-declaration"><code>- (void)download:(TCBlobDownloader *)<em>blobDownload</em> didFinishWithSucces:(BOOL)<em>downloadFinished</em> atPath:(NSString *)<em>pathToFile</em></code></div>
+	<div class="method-subsection method-declaration"><code>- (void)download:(TCBlobDownloader *)<em>blobDownload</em> didFinishWithSuccess:(BOOL)<em>downloadFinished</em> atPath:(NSString *)<em>pathToFile</em></code></div>
 
     
 	
@@ -243,8 +243,8 @@
 </div>
 						
 						<div class="section-method">
-	<a name="//api/name/download:didReceiveData:onTotal:" title="download:didReceiveData:onTotal:"></a>
-	<h3 class="subsubtitle method-title">download:didReceiveData:onTotal:</h3>
+	<a name="//api/name/download:didReceiveData:onTotal:progress:" title="download:didReceiveData:onTotal:progress:"></a>
+	<h3 class="subsubtitle method-title">download:didReceiveData:onTotal:progress:</h3>
 	
 	
 	
@@ -254,7 +254,7 @@
 	
     
 
-	<div class="method-subsection method-declaration"><code>- (void)download:(TCBlobDownloader *)<em>blobDownload</em> didReceiveData:(uint64_t)<em>receivedLength</em> onTotal:(uint64_t)<em>totalLength</em></code></div>
+	<div class="method-subsection method-declaration"><code>- (void)download:(TCBlobDownloader *)<em>blobDownload</em> didReceiveData:(uint64_t)<em>receivedLength</em> onTotal:(uint64_t)<em>totalLength</em> progress:(float)<em>progress</em></code></div>
 
     
 	
@@ -273,7 +273,12 @@
 		
 		<dl class="argument-def parameter-def">
 			<dt><em>totalLength</em></dt>
-			<dd><p>The total number of bytes of the file.</p>
+			<dd><p>The total number of bytes of the file.</p></dd>
+		</dl>
+		
+		<dl class="argument-def parameter-def">
+			<dt><em>progress</em></dt>
+			<dd><p>A value between 0 and 1 defining the progress of the download.</p>
 
 <h2>Note</h2>
 
@@ -434,7 +439,7 @@
 				<div id="footer">
 					<hr />
 					<div class="footer-copyright">
-						<p><span class="copyright">&copy; 2014 thibaultCha. All rights reserved. (Last updated: 2014-04-21)</span><br />
+						<p><span class="copyright">&copy; 2014 thibaultCha. All rights reserved. (Last updated: 2014-04-30)</span><br />
 						
 						<span class="generator">Generated by <a href="http://appledoc.gentlebytes.com">appledoc 2.2 (build 961)</a>.</span></p>
 						

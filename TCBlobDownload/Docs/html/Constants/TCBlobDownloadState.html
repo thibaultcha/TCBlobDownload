@@ -2,7 +2,7 @@
 <html>
 	<head>
 		<meta http-equiv="Content-Type" content="html/html; charset=utf-8" />
-		<title>TCBlobDownloadError Constants Reference</title>
+		<title>TCBlobDownloadState Constants Reference</title>
 		<meta id="xcode-display" name="xcode-display" content="render"/>
 		<link rel="stylesheet" type="text/css" href="../css/styles.css" media="all" />
 		<link rel="stylesheet" type="text/css" media="print" href="../css/stylesPrint.css" />
@@ -16,7 +16,7 @@
 			</div>
 			
 			<div id="title" role="banner">
-				<h1 class="hideInXcode">TCBlobDownloadError Constants Reference</h1>
+				<h1 class="hideInXcode">TCBlobDownloadState Constants Reference</h1>
 			</div>
 			<ul id="headerButtons" role="toolbar">
 				<li id="toc_button">
@@ -45,7 +45,7 @@
 		</nav>
 		<article>
 			<div id="contents" class="isShowingTOC" role="main">
-				<a title="TCBlobDownloadError Constants Reference" name="top"></a>
+				<a title="TCBlobDownloadState Constants Reference" name="top"></a>
 				<div class="main-navigation navigation-top">
 					<ul>
 	<li><a href="../index.html">Index</a></li>
@@ -54,7 +54,7 @@
 				</div>
 				<div id="header">
 					<div class="section-header">
-						<h1 class="title title-header">TCBlobDownloadError Constants Reference</h1>
+						<h1 class="title title-header">TCBlobDownloadState Constants Reference</h1>
 					</div>		
 				</div>
 				<div id="container">	
@@ -65,7 +65,7 @@
 	<td class="specification-value">TCBlobDownloader.h</td>
 </tr><tr>
 	<td class="specification-title">Availability</td>
-	<td class="specification-value">1.5.0</td>
+	<td class="specification-value">1.6.0</td>
 </tr>
 						</tbody></table></div>
 					
@@ -77,11 +77,11 @@
 					
                     
                     
-                    <h3 class="subsubtitle method-title">TCBlobDownloadError</h3>
+                    <h3 class="subsubtitle method-title">TCBlobDownloadState</h3>
                     
 					
 					<div class="section section-overview">
-                        <p>The possible error codes for a <a href="../Classes/TCBlobDownloader.html"><code>TCBlobDownloader</code></a> operation. When an error block or the corresponding delegate method are called, an <code>NSError</code> instance is passed as parameter. If the domain of this <code>NSError</code> is TCBlobDownload&rsquo;s, the <code>code</code> parameter will be set to one of these values.</p>
+                        <p>The current state of the download.</p>
 					</div>
 					
 					
@@ -89,15 +89,17 @@
                         <!-- display enum values -->
                         
                         <h4 class="method-subtitle">Definition</h4>
-                        <code>typedef NS_ENUM(NSUInteger, TCBlobDownloadError ) {<br/>
+                        <code>typedef NS_ENUM(NSUInteger, TCBlobDownloadState ) {<br/>
                             
-                            &nbsp;&nbsp; <a href="">TCErrorInvalidURL</a> = 0,<br/>
+                            &nbsp;&nbsp; <a href="">TCBlobDownloadStateReady</a> = 0,<br/>
                             
-                            &nbsp;&nbsp; <a href="">TCErrorConnectionFailed</a>,<br/>
+                            &nbsp;&nbsp; <a href="">TCBlobDownloadStateDownloading</a>,<br/>
                             
-                            &nbsp;&nbsp; <a href="">TCErrorHTTPError</a>,<br/>
+                            &nbsp;&nbsp; <a href="">TCBlobDownloadStateDone</a>,<br/>
                             
-                            &nbsp;&nbsp; <a href="">TCErrorNotEnoughFreeDiskSpace</a>,<br/>
+                            &nbsp;&nbsp; <a href="">TCBlobDownloadStateCancelled</a>,<br/>
+                            
+                            &nbsp;&nbsp; <a href="">TCBlobDownloadStateFailed</a>,<br/>
                             
                             };</code>
                     
@@ -107,13 +109,15 @@
                         <h4 class="method-subtitle">Constants</h4>
                         <dl class="termdef">
                             
-                            <dt><a name="" title="TCErrorInvalidURL"></a><code>TCErrorInvalidURL</code></dt>
+                            <dt><a name="" title="TCBlobDownloadStateReady"></a><code>TCBlobDownloadStateReady</code></dt>
 <dd>
 
 
-<p><code>NSURLConnection</code> was unable to handle the provided URL.</p>
+<p>The current state of the download.</p>
 
     
+
+    <p>Available in 1.6.0</p>
 
     
 
@@ -124,13 +128,15 @@
 	
 </dd>
                             
-                            <dt><a name="" title="TCErrorConnectionFailed"></a><code>TCErrorConnectionFailed</code></dt>
+                            <dt><a name="" title="TCBlobDownloadStateDownloading"></a><code>TCBlobDownloadStateDownloading</code></dt>
 <dd>
 
 
-<p>The connection to the asked URL failed.</p>
+<p>The current state of the download.</p>
 
     
+
+    <p>Available in 1.6.0</p>
 
     
 
@@ -141,13 +147,15 @@
 	
 </dd>
                             
-                            <dt><a name="" title="TCErrorHTTPError"></a><code>TCErrorHTTPError</code></dt>
+                            <dt><a name="" title="TCBlobDownloadStateDone"></a><code>TCBlobDownloadStateDone</code></dt>
 <dd>
 
 
-<p>The connection encountered an HTTP error. Please refer to <code>TCHTTPStatusCode</code> documentation for further details on how to handle such errors.</p>
+<p>The current state of the download.</p>
 
     
+
+    <p>Available in 1.6.0</p>
 
     
 
@@ -158,13 +166,34 @@
 	
 </dd>
                             
-                            <dt><a name="" title="TCErrorNotEnoughFreeDiskSpace"></a><code>TCErrorNotEnoughFreeDiskSpace</code></dt>
+                            <dt><a name="" title="TCBlobDownloadStateCancelled"></a><code>TCBlobDownloadStateCancelled</code></dt>
 <dd>
 
 
-<p>The device has not enough free disk space to download the file.</p>
+<p>The current state of the download.</p>
 
     
+
+    <p>Available in 1.6.0</p>
+
+    
+
+    
+	<p>
+		Declared In <code class="declared-in-ref">TCBlobDownloader.h</code>.
+	</p>
+	
+</dd>
+                            
+                            <dt><a name="" title="TCBlobDownloadStateFailed"></a><code>TCBlobDownloadStateFailed</code></dt>
+<dd>
+
+
+<p>The current state of the download.</p>
+
+    
+
+    <p>Available in 1.6.0</p>
 
     
 
@@ -183,7 +212,7 @@
                     
                     <div class="method-subsection availability">
                         <h4 class="method-subtitle parameter-title">Availability</h4>
-                        <p>1.5.0</p>
+                        <p>1.6.0</p>
                     </div>
                     
 

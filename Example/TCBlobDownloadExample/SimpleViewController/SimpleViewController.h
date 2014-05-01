@@ -9,7 +9,7 @@
 #import <UIKit/UIKit.h>
 #import <TCBlobDownload/TCBlobDownload.h>
 
-@interface ViewController : UIViewController <TCBlobDownloaderDelegate>
+@interface SimpleViewController : UIViewController <TCBlobDownloaderDelegate>
 
 @property (nonatomic , strong) TCBlobDownloadManager *sharedDownloadManager;
 @property (weak, nonatomic) IBOutlet UITextField *urlField;
