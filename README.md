@@ -76,7 +76,7 @@ TCBlobDownloader *downloader = [sharedManager startDownloadWithURL:@"http://give
                  firstResponse:^(NSURLResponse *response) {
 		      
                  }
-                 progress:^(float receivedLength, float totalLength, NSInteger remainingTime){
+                 progress:^(uint64_t receivedLength, uint64_t totalLength, NSInteger remainingTime, float progress){
                    // wow moving progress bar!
                  }
                  error:^(NSError *error){
@@ -134,6 +134,11 @@ You can either set a delegate which can implement those optional methods if dele
 See [documentation](#documentation-books) for more details.
 
 ## Change log :memo:
+
+### v1.6.0
+Thanks to [#26](https://github.com/thibaultCha/TCBlobDownload/issues/26),
+* Instances of `TCBlobDownloader` now have a state property
+* The example project has now a multiple downloads example
 
 ### v1.5.1 (7/04/2014)
 * Important fix for [#21](https://github.com/thibaultCha/TCBlobDownload/issues/21)

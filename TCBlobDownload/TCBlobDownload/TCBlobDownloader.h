@@ -45,10 +45,15 @@ typedef NS_ENUM(NSUInteger, TCBlobDownloadError) {
  @since 1.6.0
  */
 typedef NS_ENUM(NSUInteger, TCBlobDownloadState) {
+    /** The download is instanciated but has not been started yet. */
     TCBlobDownloadStateReady = 0,
+    /** The download has started the HTTP connection to retrieve the file. */
     TCBlobDownloadStateDownloading,
+    /** The download has been completed successfully. */
     TCBlobDownloadStateDone,
+    /** The download has been cancelled manually. */
     TCBlobDownloadStateCancelled,
+    /** The download failed, probably because of an error. It is possible to access the error in the appropriate delegate method or block property. */
     TCBlobDownloadStateFailed
 };
 

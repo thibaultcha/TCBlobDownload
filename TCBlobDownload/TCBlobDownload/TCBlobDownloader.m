@@ -69,10 +69,10 @@ NSString * const TCHTTPStatusCode = @"httpStatus";
 {
     self = [super init];
     if (self) {
-        self.state = TCBlobDownloadStateReady;
         self.downloadURL = url;
         self.delegate = delegateOrNil;
         self.pathToDownloadDirectory = pathToDL;
+        self.state = TCBlobDownloadStateReady;
     }
     return self;
 }
@@ -86,7 +86,6 @@ NSString * const TCHTTPStatusCode = @"httpStatus";
 {
     self = [self initWithURL:url downloadPath:pathToDL delegate:nil];
     if (self) {
-        self.state = TCBlobDownloadStateReady;
         self.firstResponseBlock = firstResponseBlock;
         self.progressBlock = progressBlock;
         self.errorBlock = errorBlock;
@@ -156,6 +155,7 @@ NSString * const TCHTTPStatusCode = @"httpStatus";
                                                           repeats:YES];
         [runLoop addTimer:self.speedTimer forMode:NSRunLoopCommonModes];
         [runLoop run];
+        self.state = TCBlobDownloadStateDownloading;
         [self didChangeValueForKey:@"isExecuting"];
     }
 }
@@ -187,8 +187,6 @@ NSString * const TCHTTPStatusCode = @"httpStatus";
 
 - (void)connection:(NSURLConnection*)connection didReceiveResponse:(NSURLResponse *)response
 {
-    self.state = TCBlobDownloadStateDownloading;
-    
     self.expectedDataLength = [response expectedContentLength];
     NSHTTPURLResponse *httpUrlResponse = (NSHTTPURLResponse *)response;
     
