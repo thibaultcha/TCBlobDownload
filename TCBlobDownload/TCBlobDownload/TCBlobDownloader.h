@@ -83,7 +83,7 @@ typedef NS_ENUM(NSUInteger, TCBlobDownloadState) {
  
  @since 1.0
  */
-@property (nonatomic, copy) NSString *pathToDownloadDirectory;
+@property (nonatomic, copy, setter = setPathToDownloadDirectory:) NSString *pathToDownloadDirectory;
 
 /**
  The path to the downloaded file, including the file name.

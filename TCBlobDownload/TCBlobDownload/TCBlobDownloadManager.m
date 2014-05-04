@@ -7,19 +7,20 @@
 
 #import "TCBlobDownloadManager.h"
 #import "TCBlobDownloader.h"
+#import "NSFileManager+TCBlobDownload.h"
 
 @interface TCBlobDownloadManager ()
 @property (nonatomic, strong) NSOperationQueue *operationQueue;
-- (BOOL)createDirFromPath:(NSString *)path;
 @end
 
 @implementation TCBlobDownloadManager
 @dynamic downloadCount;
 
+
 #pragma mark - Init
 
 
-- (id)init
+- (instancetype)init
 {
     self = [super init];
     if (self) {
@@ -47,7 +48,7 @@
                               customPath:(NSString *)customPathOrNil
                                 delegate:(id<TCBlobDownloaderDelegate>)delegateOrNil
 {
-    NSString *downloadPath = [self createDirFromPath:customPathOrNil] ? customPathOrNil : self.defaultDownloadPath;
+    NSString *downloadPath = customPathOrNil ? customPathOrNil : self.defaultDownloadPath;
     
     TCBlobDownloader *downloader = [[TCBlobDownloader alloc] initWithURL:url
                                                             downloadPath:downloadPath
@@ -64,7 +65,7 @@
                                    error:(void (^)(NSError *error))errorBlock
                                 complete:(void (^)(BOOL downloadFinished, NSString *pathToFile))completeBlock
 {
-    NSString *downloadPath = [self createDirFromPath:customPathOrNil] ? customPathOrNil : self.defaultDownloadPath;
+    NSString *downloadPath = customPathOrNil ? customPathOrNil : self.defaultDownloadPath;
     
     TCBlobDownloader *downloader = [[TCBlobDownloader alloc] initWithURL:url
                                                             downloadPath:downloadPath
@@ -98,7 +99,14 @@
 
 - (void)setDefaultDownloadPath:(NSString *)pathToDL
 {
-    if ([self createDirFromPath:pathToDL]) {
+    NSError *error;
+    BOOL createdOrExists = [NSFileManager createDirFromPath:pathToDL error:&error];
+    
+    if (error) {
+        NSLog(@"Error while setting default download path: %@", [error localizedDescription]);
+    }
+    
+    if (createdOrExists) {
         _defaultDownloadPath = pathToDL;
     }
 }
@@ -115,27 +123,6 @@
 - (NSUInteger)downloadCount
 {
     return [self.operationQueue operationCount];
-}
-
-
-#pragma mark - Internal Methods
-
-
-- (BOOL)createDirFromPath:(NSString *)path
-{
-    if (path == nil || [path isEqualToString:@""]) {
-        return NO;
-    }
-    
-    NSError * __autoreleasing error;
-    BOOL createdOrExists = [[NSFileManager defaultManager] createDirectoryAtPath:path
-                                                     withIntermediateDirectories:YES
-                                                                      attributes:nil
-                                                                           error:&error];
-    if (error) {
-        // TODO
-    }
-    return createdOrExists;
 }
 
 @end

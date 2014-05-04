@@ -14,6 +14,7 @@ NSString * const TCHTTPStatusCode = @"httpStatus";
 
 #import "TCBlobDownloader.h"
 #import "UIDevice-Hardware.h"
+#import "NSFileManager+TCBlobDownload.h"
 
 @interface TCBlobDownloader ()
 // Public
@@ -180,8 +181,6 @@ NSString * const TCHTTPStatusCode = @"httpStatus";
                                              userInfo:@{ NSLocalizedDescriptionKey:[NSString stringWithFormat:@"Download failed for file: %@. Reason: %@",
                                                                                     self.fileName,
                                                                                     error.localizedDescription] }];
-    self.error = downloadError;
-    
     [self notifyFromError:downloadError];
     [self cancelDownloadAndRemoveFile:NO];
 }
@@ -229,8 +228,6 @@ NSString * const TCHTTPStatusCode = @"httpStatus";
         });
     }
     else {
-        self.error = error;
-        
         [self notifyFromError:error];
         [self cancelDownloadAndRemoveFile:NO];
     }
@@ -311,6 +308,7 @@ NSString * const TCHTTPStatusCode = @"httpStatus";
 
 - (void)notifyFromError:(NSError *)error
 {
+    self.error = error;
     self.state = TCBlobDownloadStateFailed;
     
     dispatch_async(dispatch_get_main_queue(), ^{
@@ -396,6 +394,25 @@ NSString * const TCHTTPStatusCode = @"httpStatus";
 - (float)progress
 {
     return (_expectedDataLength == 0) ? 0 : (float)_receivedDataLength / (float)_expectedDataLength;
+}
+
+
+#pragma mark - Custom Getters
+
+
+- (void)setPathToDownloadDirectory:(NSString *)pathToDownloadDirectory
+{
+    NSError *__autoreleasing error;
+    BOOL createdOrExists = [NSFileManager createDirFromPath:pathToDownloadDirectory
+                                                      error:&error];
+    if (error) {
+        [self notifyFromError:error];
+        [self cancelDownloadAndRemoveFile:NO];
+    }
+    
+    if (createdOrExists) {
+        _pathToDownloadDirectory = pathToDownloadDirectory;
+    }
 }
 
 @end
