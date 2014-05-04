@@ -334,12 +334,12 @@ NSString * const TCHTTPStatusCode = @"httpStatus";
             self.state = TCBlobDownloadStateCancelled;
         }
     }
-    
+
     dispatch_async(dispatch_get_main_queue(), ^{
         if (self.completeBlock) {
             self.completeBlock(success, pathToFile);
         }
-        if ([self.delegate respondsToSelector:@selector(download:didFinishWithSucces:atPath:)]) {
+        if ([self.delegate respondsToSelector:@selector(download:didFinishWithSuccess:atPath:)]) {
             [self.delegate download:self didFinishWithSuccess:success atPath:pathToFile];
         }
         

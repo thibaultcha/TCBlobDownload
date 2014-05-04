@@ -11,12 +11,14 @@
 #define kDownloadPath [NSString pathWithComponents:@[NSTemporaryDirectory(), @"multipleExample"]]
 
 static NSString * const kDownloadCellIdentifier = @"downloadCell";
+static NSString * const kURLKey = @"URL";
+static NSString * const kNameKey = @"name";
 
 @interface MultipleViewController ()
-@property (nonatomic, strong) NSMutableArray *downloads;
+@property (nonatomic, strong) NSMutableArray *currentDownloads;
 - (void)dismiss:(id)sender;
 - (void)showAddDownloadAlert:(id)sender;
-- (void)addDownload:(NSURL *)url;
+- (NSArray *)defaultDownloads;
 - (NSString *)subtitleForDownload:(TCBlobDownloader *)download;
 @end
 
@@ -30,9 +32,10 @@ static NSString * const kDownloadCellIdentifier = @"downloadCell";
 {
     [super viewDidLoad];
     
-    _downloads = [NSMutableArray new];
+    _currentDownloads = [NSMutableArray new];
 
-    [self setTitle:@"Multiple Downloads Table"];
+    [self setTitle:@"Multiple Downloads"];
+
     [self.navigationItem setRightBarButtonItem:[[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemStop
                                                                                              target:self
                                                                                              action:@selector(dismiss:)]];
@@ -67,19 +70,26 @@ static NSString * const kDownloadCellIdentifier = @"downloadCell";
     [addAlertView show];
 }
 
-- (void)addDownload:(NSURL *)url
+- (NSArray *)defaultDownloads
 {
-    TCBlobDownloader *download = [[TCBlobDownloader alloc] initWithURL:url
-                                                          downloadPath:kDownloadPath
-                                                              delegate:self];
-    //[download setFileName:[url.absoluteString lastPathComponent]];
+    static NSMutableArray *_downloads = nil;
+    static dispatch_once_t onceToken;
+    dispatch_once(&onceToken, ^{
+        _downloads = [NSMutableArray new];
+        [_downloads addObject:@{ kURLKey : @"https://github.com/thibaultCha/TCBlobDownload/archive/master.zip",
+                                 kNameKey: @"TCBlobDownload master branch" }];
+        
+        [_downloads addObject:@{ kURLKey : @"https://github.com/thibaultCha/Equiprose/archive/master.zip",
+                                 kNameKey: @"Equiprose master branch" }];
+        
+        [_downloads addObject:@{ kURLKey : @"https://api.soundcloud.com/tracks/130355303/stream?client_id=b45b1aa10f1ac2941910a7f0d10f8e28",
+                                 kNameKey: @"Soundcloud 1" }];
+        
+        [_downloads addObject:@{ kURLKey : @"https://api.soundcloud.com/tracks/126240832/download?client_id=b45b1aa10f1ac2941910a7f0d10f8e28",
+                                 kNameKey: @"Soundcloud 2" }];
+    });
     
-    [[TCBlobDownloadManager sharedInstance] startDownload:download];
-    
-    [self.downloads addObject:download];
-    
-    [self.tableView reloadSections:[NSIndexSet indexSetWithIndex:0]
-                  withRowAnimation:UITableViewRowAnimationAutomatic];
+    return _downloads;
 }
 
 - (NSString *)subtitleForDownload:(TCBlobDownloader *)download
@@ -106,7 +116,10 @@ static NSString * const kDownloadCellIdentifier = @"downloadCell";
             break;
     }
     
-    return [NSString stringWithFormat:@"%i%% • %lis left • State: %@", (int)(download.progress * 100), (long)download.remainingTime, stateString];
+    return [NSString stringWithFormat:@"%i%% • %lis left • State: %@",
+            (int)(download.progress * 100),
+            (long)download.remainingTime,
+            stateString];
 }
 
 
@@ -119,13 +132,27 @@ static NSString * const kDownloadCellIdentifier = @"downloadCell";
         if (buttonIndex == 0) {
             NSString *urlString = [alertView textFieldAtIndex:0].text;
             
-            [self addDownload:[NSURL URLWithString:urlString]];
+            TCBlobDownloader *download = [[TCBlobDownloader alloc] initWithURL:[NSURL URLWithString:urlString]
+                                                                  downloadPath:kDownloadPath
+                                                                      delegate:self];
+            [self.currentDownloads addObject:download];
+            
+            [[TCBlobDownloadManager sharedInstance] startDownload:download];
         }
         else {
-            [self addDownload:[NSURL URLWithString:@"https://api.soundcloud.com/tracks/136369443/stream?client_id=b45b1aa10f1ac2941910a7f0d10f8e28"]];
-            [self addDownload:[NSURL URLWithString:@"https://api.soundcloud.com/tracks/130355303/stream?client_id=b45b1aa10f1ac2941910a7f0d10f8e28"]];
-            [self addDownload:[NSURL URLWithString:@"https://api.soundcloud.com/tracks/126240832/download?client_id=b45b1aa10f1ac2941910a7f0d10f8e28"]];
+            for (NSDictionary *downloadInfos in self.defaultDownloads) {
+                TCBlobDownloader *download = [[TCBlobDownloader alloc] initWithURL:[NSURL URLWithString:downloadInfos[kURLKey]]
+                                                                      downloadPath:kDownloadPath
+                                                                          delegate:self];
+                [download setFileName:downloadInfos[kNameKey]];
+                [self.currentDownloads addObject:download];
+                
+                [[TCBlobDownloadManager sharedInstance] startDownload:download];
+            }
         }
+        
+        [self.tableView reloadSections:[NSIndexSet indexSetWithIndex:0]
+                      withRowAnimation:UITableViewRowAnimationAutomatic];
     }
 }
 
@@ -135,7 +162,8 @@ static NSString * const kDownloadCellIdentifier = @"downloadCell";
 
 - (void)download:(TCBlobDownloader *)blobDownload didFinishWithSuccess:(BOOL)downloadFinished atPath:(NSString *)pathToFile
 {
-    NSInteger index = [self.downloads indexOfObject:blobDownload];
+    NSLog(@"FINISHED");
+    NSInteger index = [self.currentDownloads indexOfObject:blobDownload];
     
     UITableViewCell *cell = [self.tableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:index
                                                                                      inSection:0]];
@@ -147,7 +175,7 @@ static NSString * const kDownloadCellIdentifier = @"downloadCell";
          onTotal:(uint64_t)totalLength
         progress:(float)progress
 {
-    NSInteger index = [self.downloads indexOfObject:blobDownload];
+    NSInteger index = [self.currentDownloads indexOfObject:blobDownload];
     
     UITableViewCell *cell = [self.tableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:index
                                                                                      inSection:0]];
@@ -156,7 +184,7 @@ static NSString * const kDownloadCellIdentifier = @"downloadCell";
 
 - (void)download:(TCBlobDownloader *)blobDownload didReceiveFirstResponse:(NSURLResponse *)response
 {
-    NSInteger index = [self.downloads indexOfObject:blobDownload];
+    NSInteger index = [self.currentDownloads indexOfObject:blobDownload];
     
     UITableViewCell *cell = [self.tableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:index
                                                                                      inSection:0]];
@@ -165,7 +193,7 @@ static NSString * const kDownloadCellIdentifier = @"downloadCell";
 
 - (void)download:(TCBlobDownloader *)blobDownload didStopWithError:(NSError *)error
 {
-    NSInteger index = [self.downloads indexOfObject:blobDownload];
+    NSInteger index = [self.currentDownloads indexOfObject:blobDownload];
     
     UITableViewCell *cell = [self.tableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:index
                                                                                      inSection:0]];
@@ -178,7 +206,7 @@ static NSString * const kDownloadCellIdentifier = @"downloadCell";
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    return self.downloads.count;
+    return self.currentDownloads.count;
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
@@ -189,7 +217,7 @@ static NSString * const kDownloadCellIdentifier = @"downloadCell";
                                       reuseIdentifier:kDownloadCellIdentifier];
     }
     
-    TCBlobDownloader *download = self.downloads[indexPath.row];
+    TCBlobDownloader *download = self.currentDownloads[indexPath.row];
     
     [cell.textLabel setText:download.fileName];
     [cell.textLabel setFont:[UIFont systemFontOfSize:10.f]];
@@ -206,19 +234,22 @@ static NSString * const kDownloadCellIdentifier = @"downloadCell";
 - (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath
 {
     if (editingStyle == UITableViewCellEditingStyleDelete) {
-        TCBlobDownloader *download = self.downloads[indexPath.row];
+        TCBlobDownloader *download = self.currentDownloads[indexPath.row];
         [download cancelDownloadAndRemoveFile:YES];
         
-        NSInteger index = [self.downloads indexOfObject:download];
+        NSInteger index = [self.currentDownloads indexOfObject:download];
         
-        UITableViewCell *cell = [self.tableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:index inSection:0]];
+        UITableViewCell *cell = [self.tableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:index
+                                                                                         inSection:0]];
         [cell.detailTextLabel setText:[self subtitleForDownload:download]];
         
         [cell setEditing:NO animated:YES];
     }
 }
 
+
 #pragma mark - UITableView Delegate
+
 
 - (NSString *)tableView:(UITableView *)tableView titleForDeleteConfirmationButtonForRowAtIndexPath:(NSIndexPath *)indexPath
 {
