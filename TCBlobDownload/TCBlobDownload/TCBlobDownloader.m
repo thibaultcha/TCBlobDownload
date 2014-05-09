@@ -202,9 +202,6 @@ NSString * const TCHTTPStatusCode = @"httpStatus";
                                             TCHTTPStatusCode: @(httpUrlResponse.statusCode) }];
     }
     
-    //NSLog(@"%u", (unsigned)[[UIDevice currentDevice] freeDiskSpace].longLongValue);
-    //NSLog(@"%lld", self.expectedDataLength);
-    
     long long expected = @(self.expectedDataLength).longLongValue;
     if ([[UIDevice currentDevice] freeDiskSpace].longLongValue < expected && expected != -1) {
 

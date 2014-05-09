@@ -1,7 +1,5 @@
 # TCBlobDownload
 
-Work in progress for 1.6.0
-
 [![Build Status](https://api.travis-ci.org/thibaultCha/TCBlobDownload.png)](https://travis-ci.org/thibaultCha/TCBlobDownload)
 [![Pod version](https://cocoapod-badges.herokuapp.com/v/TCBlobDownload/badge.png)](https://cocoapod-badges.herokuapp.com/v/TCBlobDownload/badge.png)
 [![Pod platform](https://cocoapod-badges.herokuapp.com/p/TCBlobDownload/badge.png)](https://cocoapod-badges.herokuapp.com/p/TCBlobDownload/badge.png)
@@ -76,10 +74,10 @@ TCBlobDownloader *downloader = [sharedManager startDownloadWithURL:@"http://give
                  firstResponse:^(NSURLResponse *response) {
 		      
                  }
-                 progress:^(uint64_t receivedLength, uint64_t totalLength, NSInteger remainingTime, float progress){
+                 progress:^(uint64_t receivedLength, uint64_t totalLength, NSInteger remainingTime, float progress) {
                    // wow moving progress bar!
                  }
-                 error:^(NSError *error){
+                 error:^(NSError *error) {
                   // this not cool
                  }
                  complete:^(BOOL downloadFinished, NSString *pathToFile) {
@@ -135,15 +133,15 @@ See [documentation](#documentation-books) for more details.
 
 ## Change log :memo:
 
-### v1.6.0
+### v1.5.2 (5/08/2014)
 Thanks to [#26](https://github.com/thibaultCha/TCBlobDownload/issues/26),
 * Instances of `TCBlobDownloader` now have a state property
 * The example project has now a multiple downloads example
 
-### v1.5.1 (7/04/2014)
+### v1.5.1 (4/07/2014)
 * Important fix for [#21](https://github.com/thibaultCha/TCBlobDownload/issues/21)
 
-### v1.5 (8/03/2014)
+### v1.5 (3/08/2014)
 * Improved documentation and created a docset
 * Added a `speedRate` and `remainingTime` (in seconds) property on `TCBlobDownloader` thanks to [#16](https://github.com/thibaultCha/TCBlobDownload/issues/16)
 * Updated `TCBlobDownloader` properties to `readonly`

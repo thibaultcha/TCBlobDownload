@@ -42,7 +42,7 @@ typedef NS_ENUM(NSUInteger, TCBlobDownloadError) {
 /**
  The current state of the download.
  
- @since 1.6.0
+ @since 1.5.2
  */
 typedef NS_ENUM(NSUInteger, TCBlobDownloadState) {
     /** The download is instanciated but has not been started yet. */
