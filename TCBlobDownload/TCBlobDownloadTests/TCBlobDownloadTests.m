@@ -49,7 +49,7 @@
                          firstResponse:^(NSURLResponse *response) {
                              
                          }
-                              progress:^(float receivedLength, float totalLength, NSInteger remainingTime) {
+                              progress:^(uint64_t receivedLength, uint64_t totalLength, NSInteger remainingTime, float progress) {
                                   BOOL exists = [[NSFileManager defaultManager] fileExistsAtPath:testDirectory];
                                   XCTAssert(exists, @"Custom download directory not created");
                              
@@ -96,7 +96,7 @@
                                                                           error:&fileError];
     if (fileError) {
         XCTFail(@"An error occured while listing files in test downloads directory.");
-        NSLog(@"Error : %ld - %@", fileError.code, fileError.localizedDescription);
+        NSLog(@"Error : %ld - %@", (long) fileError.code, fileError.localizedDescription);
     }
     if (content.count > 0) {
         XCTFail(@"Files not removed from disk after download cancellation.");
@@ -111,7 +111,7 @@
                          firstResponse:^(NSURLResponse *response) {
                              XCTAssert([NSThread isMainThread], @"First response block is not called on main thread");
                          }
-                              progress:^(float receivedLength, float totalLength, NSInteger remainingTime) {
+                              progress:^(uint64_t receivedLength, uint64_t totalLength, NSInteger remainingTime, float progress) {
                                   XCTAssert([NSThread isMainThread], @"Progress block is not called on main thread");
                               }
                                  error:NULL

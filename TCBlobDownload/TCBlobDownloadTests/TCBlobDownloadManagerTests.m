@@ -23,7 +23,7 @@
 {
     TCBlobDownloadManager *m1 = [TCBlobDownloadManager sharedInstance];
     TCBlobDownloadManager *m2 = [TCBlobDownloadManager sharedInstance];
-    XCTAssertEqualObjects(m1, m2, @"sharedDownloadManager didn't return same object twice");
+    XCTAssertEqualObjects(m1, m2, @"sharedDownloadManager didn't return the same object twice");
 }
 
 - (void)testDefaultDownloadPath
@@ -38,14 +38,6 @@
                           @"Default download path is not set correctly");
 }
 
-/*
-- (void)testcreateDirFromPath
-{
-    // test if null
-    // test if exists
-}
-*/
-
 - (void)testAllOperationsCorrectlyCancelled
 {
     for (NSInteger i = 0; i < 10; i++) {
@@ -57,6 +49,9 @@
     [self waitForTimeout:kDefaultAsyncTimeout];
     
     [self.manager cancelAllDownloadsAndRemoveFiles:YES];
+    
+    [self waitForTimeout:kDefaultAsyncTimeout];
+    
     XCTAssert(self.manager.downloadCount == 0,
               @"TCBlobDownloadManager cancelAllDownload did not properly finished all operations.");
 }
@@ -75,6 +70,5 @@
     XCTAssertEqual(self.manager.downloadCount, 3, @"Maximum number of downloads is not respected.");
 }
 */
-
 
 @end

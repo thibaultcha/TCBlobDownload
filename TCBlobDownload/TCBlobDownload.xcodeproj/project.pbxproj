@@ -43,6 +43,8 @@
 		C317CBDA18CB69DB00160ED6 /* UIDevice-Hardware.m in Sources */ = {isa = PBXBuildFile; fileRef = C317CBD818CB69DB00160ED6 /* UIDevice-Hardware.m */; };
 		C32FAB251915DB1700BE39DB /* NSFileManager+TCBlobDownload.h in Headers */ = {isa = PBXBuildFile; fileRef = C32FAB231915DB1700BE39DB /* NSFileManager+TCBlobDownload.h */; };
 		C32FAB261915DB1700BE39DB /* NSFileManager+TCBlobDownload.m in Sources */ = {isa = PBXBuildFile; fileRef = C32FAB241915DB1700BE39DB /* NSFileManager+TCBlobDownload.m */; };
+		C3F05BC8191C98B600002575 /* NSFileManager+TCBlobDownload.m in Sources */ = {isa = PBXBuildFile; fileRef = C32FAB241915DB1700BE39DB /* NSFileManager+TCBlobDownload.m */; };
+		C3F05BC9191C98B900002575 /* UIDevice-Hardware.m in Sources */ = {isa = PBXBuildFile; fileRef = C317CBD818CB69DB00160ED6 /* UIDevice-Hardware.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -337,6 +339,8 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				C3F05BC9191C98B900002575 /* UIDevice-Hardware.m in Sources */,
+				C3F05BC8191C98B600002575 /* NSFileManager+TCBlobDownload.m in Sources */,
 				C30D071618C3772F00D5CBB3 /* TCBlobDownloadManagerTests.m in Sources */,
 				21203AED178C63AE00C19335 /* TCBlobDownloader.m in Sources */,
 				21D06E281818539500CAADCD /* TCBlobDownloadErrorTests.m in Sources */,
