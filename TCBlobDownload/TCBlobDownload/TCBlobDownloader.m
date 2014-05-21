@@ -65,7 +65,6 @@ NSString * const TCHTTPStatusCode = @"httpStatus";
 - (instancetype)initWithURL:(NSURL *)url
                downloadPath:(NSString *)pathToDL
                    delegate:(id<TCBlobDownloaderDelegate>)delegateOrNil
-
 {
     self = [super init];
     if (self) {

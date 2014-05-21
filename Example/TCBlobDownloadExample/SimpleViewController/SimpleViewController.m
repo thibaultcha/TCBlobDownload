@@ -42,7 +42,7 @@
                                           customPath:nil
                                             delegate:self];
     */
-    
+     
     // Blocks
     [self.sharedDownloadManager startDownloadWithURL:[NSURL URLWithString:self.urlField.text]
                                           customPath:[NSString pathWithComponents:@[NSTemporaryDirectory(), @"example"]]
@@ -88,7 +88,7 @@
     
 }
 
-- (void)download:(TCBlobDownloader *)blobDownload didFinishWithSucces:(BOOL)downloadFinished atPath:(NSString *)pathToFile
+- (void)download:(TCBlobDownloader *)blobDownload didFinishWithSuccess:(BOOL)downloadFinished atPath:(NSString *)pathToFile
 {
 
 }
