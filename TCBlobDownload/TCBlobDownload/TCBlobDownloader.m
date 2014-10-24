@@ -39,6 +39,7 @@ NSString * const TCHTTPStatusCode = @"httpStatus";
 @property (nonatomic, copy) void (^progressBlock)(uint64_t receivedLength, uint64_t totalLength, NSInteger remainingTime, float progress);
 @property (nonatomic, copy) void (^errorBlock)(NSError *error);
 @property (nonatomic, copy) void (^completeBlock)(BOOL downloadFinished, NSString *pathToFile);
+- (void)startDownload;
 - (void)notifyFromError:(NSError *)error;
 - (void)notifyFromCompletionWithSuccess:(BOOL)success pathToFile:(NSString *)pathToFile;
 - (void)updateTransferRate;
@@ -93,11 +94,7 @@ NSString * const TCHTTPStatusCode = @"httpStatus";
     return self;
 }
 
-
-#pragma mark - NSOperation Override
-
-
-- (void)start
+- (void)startDownload
 {
     NSMutableURLRequest *fileRequest = [NSMutableURLRequest requestWithURL:self.downloadURL
                                                                cachePolicy:NSURLRequestUseProtocolCachePolicy
@@ -130,6 +127,8 @@ NSString * const TCHTTPStatusCode = @"httpStatus";
         [fileRequest setValue:range forHTTPHeaderField:@"Range"];
     }
     
+    BOOL alreadyExecuting = [self isExecuting];
+    
     // Initialization of everything we'll need to download the file
     _file = [NSFileHandle fileHandleForWritingAtPath:self.pathToFile];
     [self.file seekToEndOfFile];
@@ -144,7 +143,10 @@ NSString * const TCHTTPStatusCode = @"httpStatus";
         [self.connection scheduleInRunLoop:runLoop
                                    forMode:NSDefaultRunLoopMode];
         
-        [self willChangeValueForKey:@"isExecuting"];
+        if (!alreadyExecuting) {
+            [self willChangeValueForKey:@"isExecuting"];
+        }
+        
         [self.connection start];
         // Start the speed timer to schedule speed download on a periodic basis
         self.speedTimer = [NSTimer scheduledTimerWithTimeInterval:1.0
@@ -155,8 +157,20 @@ NSString * const TCHTTPStatusCode = @"httpStatus";
         [runLoop addTimer:self.speedTimer forMode:NSRunLoopCommonModes];
         [runLoop run];
         self.state = TCBlobDownloadStateDownloading;
-        [self didChangeValueForKey:@"isExecuting"];
+        
+        if (!alreadyExecuting) {
+            [self didChangeValueForKey:@"isExecuting"];
+        }
     }
+}
+
+
+#pragma mark - NSOperation Override
+
+
+- (void)start
+{
+    [self startDownload];
 }
 
 - (BOOL)isExecuting
@@ -186,9 +200,22 @@ NSString * const TCHTTPStatusCode = @"httpStatus";
 
 - (void)connection:(NSURLConnection*)connection didReceiveResponse:(NSURLResponse *)response
 {
-    self.expectedDataLength = [response expectedContentLength];
     NSHTTPURLResponse *httpUrlResponse = (NSHTTPURLResponse *)response;
     
+    if (httpUrlResponse.statusCode == 416) { // Requested range not satisfiable
+        // Delete the file and retry (without the bad range header)
+        NSError *fileError;
+        if ([[NSFileManager defaultManager] removeItemAtPath:self.pathToFile error:&fileError]) {
+            [self startDownload];
+            return;
+        }
+        else {
+            TCLog(@"An error occured while removing file - %@", fileError);
+        }
+    }
+
+    self.expectedDataLength = [response expectedContentLength];
+
     NSError *error;
     
     if (httpUrlResponse.statusCode >= 400) {
