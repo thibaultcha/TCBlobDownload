@@ -59,7 +59,7 @@
 }
 
 /*
-- (void)testSetMaximumNumberOfDownloads
+- (void)testSetMaxConcurrentDownloads
 {
     [self.manager setMaxConcurrentDownloads:3];
     
@@ -69,7 +69,7 @@
                                   delegate:nil];
     }
     
-    XCTAssertEqual(self.manager.downloadCount, 3, @"Maximum number of downloads is not respected.");
+    XCTAssertEqual(self.manager.currentDownloadsCount, 3, @"Maximum number of downloads is not respected.");
 }
 */
  

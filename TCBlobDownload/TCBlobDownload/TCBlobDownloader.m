@@ -18,6 +18,7 @@ NSString * const TCHTTPStatusCode = @"httpStatus";
 
 @interface TCBlobDownloader ()
 // Public
+@property (nonatomic, strong, readwrite) NSMutableURLRequest *fileRequest;
 @property (nonatomic, copy, readwrite) NSURL *downloadURL;
 @property (nonatomic, copy, readwrite) NSString *pathToFile;
 @property (nonatomic, assign, readwrite) TCBlobDownloadState state;
@@ -72,6 +73,10 @@ NSString * const TCHTTPStatusCode = @"httpStatus";
         self.delegate = delegateOrNil;
         self.pathToDownloadDirectory = pathToDL;
         self.state = TCBlobDownloadStateReady;
+        
+        self.fileRequest = [NSMutableURLRequest requestWithURL:self.downloadURL
+                                                   cachePolicy:NSURLRequestUseProtocolCachePolicy
+                                               timeoutInterval:kDefaultRequestTimeout];
     }
     return self;
 }
@@ -99,16 +104,12 @@ NSString * const TCHTTPStatusCode = @"httpStatus";
 
 - (void)start
 {
-    NSMutableURLRequest *fileRequest = [NSMutableURLRequest requestWithURL:self.downloadURL
-                                                               cachePolicy:NSURLRequestUseProtocolCachePolicy
-                                                           timeoutInterval:kDefaultRequestTimeout];
-    
     // If we can't handle the request, better cancelling the operation right now
-    if (![NSURLConnection canHandleRequest:fileRequest]) {
+    if (![NSURLConnection canHandleRequest:self.fileRequest]) {
         NSError *error = [NSError errorWithDomain:kErrorDomain
                                              code:TCErrorInvalidURL
                                          userInfo:@{ NSLocalizedDescriptionKey:
-                                        [NSString stringWithFormat:@"Invalid URL provided: %@", fileRequest.URL] }];
+                                        [NSString stringWithFormat:@"Invalid URL provided: %@", self.fileRequest.URL] }];
         
         [self notifyFromError:error];
         [self cancelDownloadAndRemoveFile:NO];
@@ -127,7 +128,7 @@ NSString * const TCHTTPStatusCode = @"httpStatus";
     else {
         uint64_t fileSize = [[fm attributesOfItemAtPath:self.pathToFile error:nil] fileSize];
         NSString *range = [NSString stringWithFormat:@"bytes=%lld-", fileSize];
-        [fileRequest setValue:range forHTTPHeaderField:@"Range"];
+        [self.fileRequest setValue:range forHTTPHeaderField:@"Range"];
     }
     
     // Initialization of everything we'll need to download the file
@@ -136,16 +137,19 @@ NSString * const TCHTTPStatusCode = @"httpStatus";
     _receivedDataBuffer = [[NSMutableData alloc] init];
     _samplesOfDownloadedBytes = [[NSMutableArray alloc] init];
     [self willChangeValueForKey:@"isExecuting"];
-    _connection = [[NSURLConnection alloc] initWithRequest:fileRequest
+    _connection = [[NSURLConnection alloc] initWithRequest:self.fileRequest
                                                   delegate:self
                                           startImmediately:NO];
     if (self.connection) {
+        // Running state
+        self.state = TCBlobDownloadStateDownloading;
+        
         // Start the download
         NSRunLoop* runLoop = [NSRunLoop currentRunLoop];
         [self.connection scheduleInRunLoop:runLoop
                                    forMode:NSDefaultRunLoopMode];
-        
         [self.connection start];
+
         // Start the speed timer to schedule speed download on a periodic basis
         self.speedTimer = [NSTimer scheduledTimerWithTimeInterval:1.0
                                                            target:self
@@ -154,7 +158,6 @@ NSString * const TCHTTPStatusCode = @"httpStatus";
                                                           repeats:YES];
         [runLoop addTimer:self.speedTimer forMode:NSRunLoopCommonModes];
         [runLoop run];
-        self.state = TCBlobDownloadStateDownloading;
         [self didChangeValueForKey:@"isExecuting"];
     }
 }
@@ -348,6 +351,7 @@ NSString * const TCHTTPStatusCode = @"httpStatus";
         [self.samplesOfDownloadedBytes removeObjectAtIndex:0];
     }
     
+    // Add the sample
     [self.samplesOfDownloadedBytes addObject:[NSNumber numberWithUnsignedLongLong:self.receivedDataLength - self.previousTotal]];
     self.previousTotal = self.receivedDataLength;
     // Compute the speed rate on the average of the last seconds samples

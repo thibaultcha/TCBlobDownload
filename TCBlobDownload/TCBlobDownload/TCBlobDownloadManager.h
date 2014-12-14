@@ -33,11 +33,18 @@
 @property (nonatomic, copy) NSString *defaultDownloadPath;
 
 /**
- The number of simultaneous active downloads at a given moment.
+ The number of downloads currently in the queue
  
  @since 1.0
  */
 @property (nonatomic, assign) NSUInteger downloadCount;
+
+/**
+ The number of downloads currently being executed by the queue
+ 
+ @since 1.6.0
+ */
+@property (nonatomic, assign) NSUInteger currentDownloadsCount;
 
 /**
  Creates and returns a `TCBlobDownloadManager` object. If the singleton has already been created, it just returns the object.

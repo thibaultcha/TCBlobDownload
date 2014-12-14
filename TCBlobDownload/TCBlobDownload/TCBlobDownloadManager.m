@@ -15,6 +15,7 @@
 
 @implementation TCBlobDownloadManager
 @dynamic downloadCount;
+@dynamic currentDownloadsCount;
 
 
 #pragma mark - Init
@@ -123,6 +124,18 @@
 - (NSUInteger)downloadCount
 {
     return [self.operationQueue operationCount];
+}
+
+- (NSUInteger)currentDownloadsCount
+{
+    NSUInteger count = 0;
+    for (TCBlobDownloader *blob in [self.operationQueue operations]) {
+        if (blob.state == TCBlobDownloadStateDownloading) {
+            count++;
+        }
+    }
+
+    return count;
 }
 
 @end

@@ -109,6 +109,13 @@ typedef NS_ENUM(NSUInteger, TCBlobDownloadState) {
 @property (nonatomic, copy, readonly) NSURL *downloadURL;
 
 /**
+ The NSMutableURLRequest that will be performed by the NSURLConnection. Use this object to pass custom headers to your request if needed.
+ 
+ @since 1.6.0
+ */
+@property (nonatomic, copy, readonly) NSMutableURLRequest *fileRequest;
+
+/**
  If not manually set, the file name, which is by default based on the last path component of the download URL.
  
  ## Note
