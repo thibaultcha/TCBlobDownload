@@ -40,7 +40,7 @@
 @property (nonatomic, assign) NSUInteger downloadCount;
 
 /**
- The number of downloads currently being executed by the queue
+ The number of downloads currently being executed by the queue (currently downloading data).
  
  @since 1.6.0
  */
@@ -90,11 +90,11 @@
  @since 1.4
 */
 - (TCBlobDownloader *)startDownloadWithURL:(NSURL *)url
-                              customPath:(NSString *)customPathOrNil
-                           firstResponse:(void (^)(NSURLResponse *response))firstResponseBlock
-                                progress:(void (^)(uint64_t receivedLength, uint64_t totalLength, NSInteger remainingTime, float progress))progressBlock
-                                   error:(void (^)(NSError *error))errorBlock
-                                complete:(void (^)(BOOL downloadFinished, NSString *pathToFile))completeBlock;
+                                customPath:(NSString *)customPathOrNil
+                             firstResponse:(void (^)(NSURLResponse *response))firstResponseBlock
+                                  progress:(void (^)(uint64_t receivedLength, uint64_t totalLength, NSInteger remainingTime, float progress))progressBlock
+                                     error:(void (^)(NSError *error))errorBlock
+                                  complete:(void (^)(BOOL downloadFinished, NSString *pathToFile))completeBlock;
 
 /**
  Starts an already instanciated `TCBlobDownloader` object.
@@ -119,7 +119,7 @@
  
  @since 1.1
 */
-- (BOOL)setDefaultDownloadPath:(NSString *)pathToDL error:(NSError **)error;
+- (BOOL)setDefaultDownloadPath:(NSString *)pathToDL error:(NSError *__autoreleasing *)error;
 
 /**
  Set the maximum number of concurrent downloads allowed. If more downloads are passed to the `TCBlobDownloadManager` singleton, they will wait for an older one to end before starting.

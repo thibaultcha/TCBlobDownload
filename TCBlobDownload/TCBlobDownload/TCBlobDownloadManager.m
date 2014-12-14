@@ -7,7 +7,6 @@
 
 #import "TCBlobDownloadManager.h"
 #import "TCBlobDownloader.h"
-#import "NSFileManager+TCBlobDownload.h"
 
 @interface TCBlobDownloadManager ()
 @property (nonatomic, strong) NSOperationQueue *operationQueue;
@@ -46,8 +45,8 @@
 
 
 - (TCBlobDownloader *)startDownloadWithURL:(NSURL *)url
-                              customPath:(NSString *)customPathOrNil
-                                delegate:(id<TCBlobDownloaderDelegate>)delegateOrNil
+                                customPath:(NSString *)customPathOrNil
+                                  delegate:(id<TCBlobDownloaderDelegate>)delegateOrNil
 {
     NSString *downloadPath = customPathOrNil ? customPathOrNil : self.defaultDownloadPath;
     
@@ -60,11 +59,11 @@
 }
 
 - (TCBlobDownloader *)startDownloadWithURL:(NSURL *)url
-                              customPath:(NSString *)customPathOrNil
-                           firstResponse:(void (^)(NSURLResponse *response))firstResponseBlock
-                                progress:(void (^)(uint64_t receivedLength, uint64_t totalLength, NSInteger remainingTime, float progress))progressBlock
-                                   error:(void (^)(NSError *error))errorBlock
-                                complete:(void (^)(BOOL downloadFinished, NSString *pathToFile))completeBlock
+                                customPath:(NSString *)customPathOrNil
+                             firstResponse:(void (^)(NSURLResponse *response))firstResponseBlock
+                                  progress:(void (^)(uint64_t receivedLength, uint64_t totalLength, NSInteger remainingTime, float progress))progressBlock
+                                     error:(void (^)(NSError *error))errorBlock
+                                  complete:(void (^)(BOOL downloadFinished, NSString *pathToFile))completeBlock
 {
     NSString *downloadPath = customPathOrNil ? customPathOrNil : self.defaultDownloadPath;
     
@@ -81,9 +80,6 @@
 
 - (void)startDownload:(TCBlobDownloader *)download
 {
-    if (download.pathToDownloadDirectory == nil) {
-        download.pathToDownloadDirectory = self.defaultDownloadPath;
-    }
     [self.operationQueue addOperation:download];
 }
 
@@ -98,18 +94,14 @@
 #pragma mark - Custom Setters
 
 
-- (BOOL)setDefaultDownloadPath:(NSString *)pathToDL error:(NSError **)error
+- (BOOL)setDefaultDownloadPath:(NSString *)pathToDL error:(NSError *__autoreleasing *)error
 {
-    BOOL createdOrExists = [NSFileManager createDirFromPath:pathToDL error:error];
-    if (error) {
-        NSLog(@"Error while setting default download path: %@", [*error localizedDescription]);
-    }
-    
-    if (createdOrExists) {
+    if ([[NSFileManager defaultManager] createDirectoryAtPath:pathToDL withIntermediateDirectories:YES attributes:nil error:error]) {
         _defaultDownloadPath = pathToDL;
+        return YES;
+    } else {
+        return false;
     }
-    
-    return createdOrExists;
 }
 
 - (void)setMaxConcurrentDownloads:(NSInteger)maxConcurrent

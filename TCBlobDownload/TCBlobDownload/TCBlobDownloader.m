@@ -14,13 +14,13 @@ NSString * const TCHTTPStatusCode = @"httpStatus";
 
 #import "TCBlobDownloader.h"
 #import "UIDevice-Hardware.h"
-#import "NSFileManager+TCBlobDownload.h"
 
 @interface TCBlobDownloader ()
 // Public
 @property (nonatomic, strong, readwrite) NSMutableURLRequest *fileRequest;
 @property (nonatomic, copy, readwrite) NSURL *downloadURL;
 @property (nonatomic, copy, readwrite) NSString *pathToFile;
+@property (nonatomic, copy, readwrite) NSString *pathToDownloadDirectory;
 @property (nonatomic, assign, readwrite) TCBlobDownloadState state;
 // Download
 @property (nonatomic, strong) NSURLConnection *connection;
@@ -43,7 +43,6 @@ NSString * const TCHTTPStatusCode = @"httpStatus";
 - (void)notifyFromError:(NSError *)error;
 - (void)notifyFromCompletionWithSuccess:(BOOL)success pathToFile:(NSString *)pathToFile;
 - (void)updateTransferRate;
-- (void)finishOperation;
 @end
 
 @implementation TCBlobDownloader
@@ -113,13 +112,24 @@ NSString * const TCHTTPStatusCode = @"httpStatus";
         
         [self notifyFromError:error];
         [self cancelDownloadAndRemoveFile:NO];
-        
         return;
     }
     
-    // Test if file already exists (partly downloaded) to set HTTP `bytes` header or not
+
     NSFileManager *fm = [NSFileManager defaultManager];
 
+    // Create download directory
+    NSError *createDirError = nil;
+    if (![fm createDirectoryAtPath:self.pathToDownloadDirectory
+                 withIntermediateDirectories:YES
+                                  attributes:nil
+                                       error:&createDirError]) {
+        [self notifyFromError:createDirError];
+        [self cancelDownloadAndRemoveFile:NO];
+        return;
+    }
+
+    // Test if file already exists (partly downloaded) to set HTTP `bytes` header or not
     if (![fm fileExistsAtPath:self.pathToFile]) {
         [fm createFileAtPath:self.pathToFile
                     contents:nil
@@ -320,6 +330,7 @@ NSString * const TCHTTPStatusCode = @"httpStatus";
 
 - (void)notifyFromCompletionWithSuccess:(BOOL)success pathToFile:(NSString *)pathToFile
 {
+    [self willChangeValueForKey:@"isExecuting"];
     if (success) {
         self.state = TCBlobDownloadStateDone;
     }
@@ -331,6 +342,7 @@ NSString * const TCHTTPStatusCode = @"httpStatus";
             self.state = TCBlobDownloadStateCancelled;
         }
     }
+    [self didChangeValueForKey:@"isExecuting"];
     
     dispatch_async(dispatch_get_main_queue(), ^{
         if (self.completeBlock) {
@@ -342,7 +354,12 @@ NSString * const TCHTTPStatusCode = @"httpStatus";
     });
     
     // Let's finish the operation once and for all
-    [self finishOperation];
+    [self willChangeValueForKey:@"isFinished"];
+    [self.speedTimer invalidate];
+    [self.connection cancel];
+    [self.file closeFile];
+    [self setConnection:nil];
+    [self didChangeValueForKey:@"isFinished"];
 }
 
 - (void)updateTransferRate
@@ -356,18 +373,6 @@ NSString * const TCHTTPStatusCode = @"httpStatus";
     self.previousTotal = self.receivedDataLength;
     // Compute the speed rate on the average of the last seconds samples
     self.speedRate = [[self.samplesOfDownloadedBytes valueForKeyPath:@"@avg.longValue"] longValue];
-}
-
-- (void)finishOperation
-{
-    [self willChangeValueForKey:@"isExecuting"];
-    [self willChangeValueForKey:@"isFinished"];
-    [self.speedTimer invalidate];
-    [self.connection cancel];
-    [self.file closeFile];
-    [self setConnection:nil];
-    [self didChangeValueForKey:@"isFinished"];
-    [self didChangeValueForKey:@"isExecuting"];
 }
 
 
@@ -392,25 +397,6 @@ NSString * const TCHTTPStatusCode = @"httpStatus";
 - (float)progress
 {
     return (_expectedDataLength == 0) ? 0 : (float)_receivedDataLength / (float)_expectedDataLength;
-}
-
-
-#pragma mark - Custom Getters
-
-
-- (void)setPathToDownloadDirectory:(NSString *)pathToDownloadDirectory
-{
-    NSError *__autoreleasing error;
-    BOOL createdOrExists = [NSFileManager createDirFromPath:pathToDownloadDirectory
-                                                      error:&error];
-    if (error) {
-        [self notifyFromError:error];
-        [self cancelDownloadAndRemoveFile:NO];
-    }
-    
-    if (createdOrExists) {
-        _pathToDownloadDirectory = pathToDownloadDirectory;
-    }
 }
 
 @end

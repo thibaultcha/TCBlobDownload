@@ -82,13 +82,11 @@ typedef NS_ENUM(NSUInteger, TCBlobDownloadState) {
 @property (nonatomic, unsafe_unretained) id<TCBlobDownloaderDelegate> delegate;
 
 /**
- The directory where to download the file.
- 
- @warning You should not set this property directly as it is managed in the initialization method.
- 
+ The directory where the file is being downloaded.
+
  @since 1.0
  */
-@property (nonatomic, copy, setter = setPathToDownloadDirectory:) NSString *pathToDownloadDirectory;
+@property (nonatomic, copy, readonly) NSString *pathToDownloadDirectory;
 
 /**
  The path to the downloaded file, including the file name.
