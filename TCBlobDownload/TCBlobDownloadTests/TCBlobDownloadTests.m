@@ -17,24 +17,24 @@
 - (void)testShouldHandleNilDownloadPath
 {
     TCBlobDownloader *download1 = [[TCBlobDownloader alloc] initWithURL:self.validURL
-                                                       downloadPath:nil
-                                                           delegate:nil];
+                                                           downloadPath:nil
+                                                               delegate:nil];
     [self.manager startDownload:download1];
     XCTAssertEqualObjects(self.manager.defaultDownloadPath, download1.pathToDownloadDirectory,
                           @"TCBlobDownloadManager did not set defaultPath in startDownload:");
     
     TCBlobDownloader *download2 = [self.manager startDownloadWithURL:self.validURL
-                                                        customPath:nil
-                                                          delegate:nil];
+                                                          customPath:nil
+                                                            delegate:nil];
     XCTAssertEqualObjects(self.manager.defaultDownloadPath, download2.pathToDownloadDirectory,
                           @"TCBlobDownloadManager did not set defaultPath in startDownloadWithURL:customPath:delegate:");
     
     TCBlobDownloader *download3 = [self.manager startDownloadWithURL:self.validURL
-                                                        customPath:nil
-                                                     firstResponse:NULL
-                                                          progress:NULL
-                                                             error:NULL
-                                                          complete:NULL];
+                                                          customPath:nil
+                                                       firstResponse:NULL
+                                                            progress:NULL
+                                                               error:NULL
+                                                            complete:NULL];
     XCTAssertEqualObjects(self.manager.defaultDownloadPath, download3.pathToDownloadDirectory,
                           @"TCBlobDownloadManager did not set defaultPath in startDownloadWithURL:customPath:firstResponse:progress:error:complete:");
     
@@ -73,8 +73,8 @@
 - (void)testOperationCorrectlyCancelled
 {
     TCBlobDownloader *download = [self.manager startDownloadWithURL:self.validURL
-                                                       customPath:nil
-                                                         delegate:nil];
+                                                         customPath:nil
+                                                           delegate:nil];
     [self waitForTimeout:kDefaultAsyncTimeout];
     
     [download cancelDownloadAndRemoveFile:YES];
@@ -84,8 +84,8 @@
 - (void)testFileIsRemovedOnCancel
 {
     TCBlobDownloader *download = [self.manager startDownloadWithURL:self.validURL
-                                                       customPath:nil
-                                                         delegate:nil];
+                                                         customPath:nil
+                                                           delegate:nil];
     
     [self waitForTimeout:kDefaultAsyncTimeout];
     

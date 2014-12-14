@@ -11,7 +11,7 @@ Tested with files from ~150MB to ~1.2GB, mostly videos.
 I've implemented **TCBlobDownloader** which extends NSOperation and use **TCBlobDownloadManager** to execute it. You can set a delegate or use blocks (your choice) for each download to update your views etc…
 
 Requires **iOS 5.1.1 or later** and ARC.
-  
+
 - **[Features](#features)**
 - **[Documentation](#documentation-books)**
 - **[Installation](#installation)**
@@ -27,18 +27,16 @@ Requires **iOS 5.1.1 or later** and ARC.
 3. Pause and resume a download
 4. Set maximum number of concurrent downloads
 5. Custom download path and auto path creation
-6. Download speed and remaining time 
+6. Download speed and remaining time
 7. Download cancellation
 8. Download dependencies
 
 ## Documentation :books:
-
 Browse the documentation on [Cocoadocs](http://cocoadocs.org/docsets/TCBlobDownload) or add it directly to Xcode by [downloading](https://github.com/thibaultCha/TCBlobDownload/blob/master/TCBlobDownload/Docs/TCBlobDownloadDocset.zip?raw=true) the docset and placing it into `~/Library/Developer/Shared/Documentation/DocSets/`. (or use [Dash](http://kapeli.com/dash))
 
 ## Installation
 
 ### CocoaPods
-
 Add the following to your Podfile and run `$ pod install`:
 
 ```ruby
@@ -50,13 +48,12 @@ If you don't have CocoaPods installed or integrated into your project, you can l
 (Also be sure the `$(inherited)` flag is set in your `Project's Target -> Build Settings -> Other Linker Flags`)
 
 ### Import as a static library
-
 1. Drag and drop `TCBlobDownload.xcodeproj` from Finder to your opened project.
 2. Project's Target -> Build Phases -> **Target Dependencies** -> add `TCBlobDownload`. Then, click **Link binary with libraries** and add `libTCBlobDownload.a` (no worries if it's red).
 3. Go to **build settings**, switch "always search user paths" to `YES` and add `$(PROJECT_TEMP_DIR)/../UninstalledProducts/include` to "User Header Search Paths".
 4. Project's Target -> Build Settings -> **Other Linker Flags** -> Add `-ObjC`
 4. Import the lib. (no worries if no autocomplete)
-```
+```objective-c
 #import <TCBlobDownload/TCBlobDownload.h>
 ```
 
@@ -71,8 +68,8 @@ TCBlobDownloadManager *sharedManager = [TCBlobDownloadManager sharedInstance];
 
 TCBlobDownloader *downloader = [sharedManager startDownloadWithURL:@"http://give.me/abigfile.avi"
                 downloadPath:nil
-                 firstResponse:^(NSURLResponse *response) {
-		      
+               firstResponse:^(NSURLResponse *response) {
+
                  }
                  progress:^(uint64_t receivedLength, uint64_t totalLength, NSInteger remainingTime, float progress) {
                    // wow moving progress bar!

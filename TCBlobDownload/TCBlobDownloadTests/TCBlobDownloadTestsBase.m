@@ -40,7 +40,9 @@
     [[NSFileManager defaultManager] removeItemAtPath:self.testsDirectory
                                                error:&error];
     
-    XCTAssertNil(error, @"Error while removing tests directory - %@", error);
+    if (error.code != 513) {
+        XCTAssertNil(error, @"Error while removing tests directory - %@", error);
+    }
     
     [super tearDown];
 }

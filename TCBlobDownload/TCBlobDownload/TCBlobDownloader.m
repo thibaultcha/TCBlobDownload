@@ -65,7 +65,7 @@ NSString * const TCHTTPStatusCode = @"httpStatus";
 - (instancetype)initWithURL:(NSURL *)url
                downloadPath:(NSString *)pathToDL
                    delegate:(id<TCBlobDownloaderDelegate>)delegateOrNil
-{
+{    
     self = [super init];
     if (self) {
         self.downloadURL = url;
@@ -135,6 +135,7 @@ NSString * const TCHTTPStatusCode = @"httpStatus";
     [self.file seekToEndOfFile];
     _receivedDataBuffer = [[NSMutableData alloc] init];
     _samplesOfDownloadedBytes = [[NSMutableArray alloc] init];
+    [self willChangeValueForKey:@"isExecuting"];
     _connection = [[NSURLConnection alloc] initWithRequest:fileRequest
                                                   delegate:self
                                           startImmediately:NO];
@@ -144,7 +145,6 @@ NSString * const TCHTTPStatusCode = @"httpStatus";
         [self.connection scheduleInRunLoop:runLoop
                                    forMode:NSDefaultRunLoopMode];
         
-        [self willChangeValueForKey:@"isExecuting"];
         [self.connection start];
         // Start the speed timer to schedule speed download on a periodic basis
         self.speedTimer = [NSTimer scheduledTimerWithTimeInterval:1.0
@@ -161,12 +161,12 @@ NSString * const TCHTTPStatusCode = @"httpStatus";
 
 - (BOOL)isExecuting
 {
-    return self.connection != nil;
+    return self.state == TCBlobDownloadStateDownloading;
 }
 
 - (BOOL)isFinished
 {
-    return self.connection == nil;
+    return self.state == TCBlobDownloadStateCancelled || self.state == TCBlobDownloadStateDone || self.state == TCBlobDownloadStateFailed;
 }
 
 
@@ -328,7 +328,7 @@ NSString * const TCHTTPStatusCode = @"httpStatus";
             self.state = TCBlobDownloadStateCancelled;
         }
     }
-
+    
     dispatch_async(dispatch_get_main_queue(), ^{
         if (self.completeBlock) {
             self.completeBlock(success, pathToFile);
@@ -336,10 +336,10 @@ NSString * const TCHTTPStatusCode = @"httpStatus";
         if ([self.delegate respondsToSelector:@selector(download:didFinishWithSuccess:atPath:)]) {
             [self.delegate download:self didFinishWithSuccess:success atPath:pathToFile];
         }
-        
-        // Let's finish the operation once and for all
-        [self finishOperation];
     });
+    
+    // Let's finish the operation once and for all
+    [self finishOperation];
 }
 
 - (void)updateTransferRate

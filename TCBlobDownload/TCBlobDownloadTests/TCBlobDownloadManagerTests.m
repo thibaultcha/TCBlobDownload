@@ -41,6 +41,8 @@
 - (void)testAllOperationsCorrectlyCancelled
 {
     for (NSInteger i = 0; i < 10; i++) {
+        [self.manager setMaxConcurrentDownloads:1];
+        
         [self.manager startDownloadWithURL:self.validURL
                                 customPath:nil
                                   delegate:nil];
@@ -70,5 +72,5 @@
     XCTAssertEqual(self.manager.downloadCount, 3, @"Maximum number of downloads is not respected.");
 }
 */
-
+ 
 @end
