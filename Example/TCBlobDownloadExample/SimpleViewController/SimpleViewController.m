@@ -42,7 +42,7 @@
                                           customPath:nil
                                             delegate:self];
     */
-     
+    
     // Blocks
     [self.sharedDownloadManager startDownloadWithURL:[NSURL URLWithString:self.urlField.text]
                                           customPath:[NSString pathWithComponents:@[NSTemporaryDirectory(), @"example"]]

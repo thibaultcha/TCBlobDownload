@@ -98,18 +98,18 @@
 #pragma mark - Custom Setters
 
 
-- (void)setDefaultDownloadPath:(NSString *)pathToDL
+- (BOOL)setDefaultDownloadPath:(NSString *)pathToDL error:(NSError **)error
 {
-    NSError *error;
-    BOOL createdOrExists = [NSFileManager createDirFromPath:pathToDL error:&error];
-    
+    BOOL createdOrExists = [NSFileManager createDirFromPath:pathToDL error:error];
     if (error) {
-        NSLog(@"Error while setting default download path: %@", [error localizedDescription]);
+        NSLog(@"Error while setting default download path: %@", [*error localizedDescription]);
     }
     
     if (createdOrExists) {
         _defaultDownloadPath = pathToDL;
     }
+    
+    return createdOrExists;
 }
 
 - (void)setMaxConcurrentDownloads:(NSInteger)maxConcurrent

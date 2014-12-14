@@ -113,10 +113,13 @@
  The path can be non existant, if so, it will be created.
  
  @param pathToDL  The new default path.
+ @param error  
+ 
+ @return A boolean that is the result of [NSFileManager createDirFromPath:error:]
  
  @since 1.1
 */
-- (void)setDefaultDownloadPath:(NSString *)pathToDL;
+- (BOOL)setDefaultDownloadPath:(NSString *)pathToDL error:(NSError **)error;
 
 /**
  Set the maximum number of concurrent downloads allowed. If more downloads are passed to the `TCBlobDownloadManager` singleton, they will wait for an older one to end before starting.
