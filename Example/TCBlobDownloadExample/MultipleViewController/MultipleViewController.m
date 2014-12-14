@@ -129,7 +129,7 @@ static NSString * const kNameKey = @"name";
 - (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
 {
     if (buttonIndex != alertView.cancelButtonIndex) {
-        if (buttonIndex == 0) {
+        if (buttonIndex == 1) {
             NSString *urlString = [alertView textFieldAtIndex:0].text;
             
             TCBlobDownloader *download = [[TCBlobDownloader alloc] initWithURL:[NSURL URLWithString:urlString]
