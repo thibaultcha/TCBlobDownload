@@ -8,7 +8,7 @@ TCBlobDownload uses **NSOperations** to download large files (typically videos, 
 
 Tested with files from ~150MB to ~1.2GB, mostly videos.
 
-I've implemented **TCBlobDownloader** which extends NSOperation and use **TCBlobDownloadManager** to execute it. You can set a delegate or use blocks (your choice) for each download to update your views etc…
+I've implemented **TCBlobDownloader** which extends NSOperation and use **TCBlobDownloadManager** to execute it. You can set a delegate or use blocks for each download to update your views etc…
 
 Requires **iOS 5.1.1 or later** and ARC.
 
@@ -24,8 +24,8 @@ Requires **iOS 5.1.1 or later** and ARC.
 1. Download files in background threads
 2. Blocks or delegate style
 3. Pause and resume a download
-4. Set maximum number of concurrent downloads
-5. Custom download path and auto path creation
+4. Set a maximum number of concurrent downloads
+5. Custom download path
 6. Download speed and remaining time
 7. Download cancellation
 8. Download dependencies
@@ -69,16 +69,16 @@ TCBlobDownloader *downloader = [sharedManager startDownloadWithURL:@"http://give
                 downloadPath:nil
                firstResponse:^(NSURLResponse *response) {
 
-                 }
-                 progress:^(uint64_t receivedLength, uint64_t totalLength, NSInteger remainingTime, float progress) {
-                   // wow moving progress bar!
-                 }
-                 error:^(NSError *error) {
-                  // this not cool
-                 }
-                 complete:^(BOOL downloadFinished, NSString *pathToFile) {
-                  // okay
-                 }];
+               }
+               progress:^(uint64_t receivedLength, uint64_t totalLength, NSInteger remainingTime, float progress) {
+                 // wow moving progress bar!
+               }
+               error:^(NSError *error) {
+                 // this not cool
+               }
+               complete:^(BOOL downloadFinished, NSString *pathToFile) {
+                 // okay
+               }];
 ```
 
 If you set a custom path:
