@@ -71,13 +71,13 @@ TCBlobDownloader *downloader = [sharedManager startDownloadWithURL:@"http://give
 
                }
                progress:^(uint64_t receivedLength, uint64_t totalLength, NSInteger remainingTime, float progress) {
-                 // wow moving progress bar!
+                 
                }
                error:^(NSError *error) {
-                 // this not cool
+                               
                }
                complete:^(BOOL downloadFinished, NSString *pathToFile) {
-                 // okay
+                 
                }];
 ```
 
@@ -104,19 +104,18 @@ You can either set a delegate which can implement those optional methods if dele
 
 - (void)download:(TCBlobDownloader *)blobDownload didReceiveData:(uint64_t)received onTotal:(uint64_t)total
 {
-  // wow moving progress bar! (bis)
   // blobDownload.remainingTime
   // blobDownload.speedRate
 }
 
 - (void)download:(TCBlobDownloader *)blobDownload didStopWithError:(NSError *)error
 {
-  // this is not cool
+ 
 }
 
 - (void)download:(TCBlobDownloader *)blobDownload didFinishWithSucces:(BOOL)downloadFinished atPath:(NSString *)pathToFile
 {
-  // okay, okay
+
 }
 ```
 
