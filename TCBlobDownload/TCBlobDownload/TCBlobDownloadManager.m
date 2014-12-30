@@ -36,6 +36,7 @@
     static id sharedManager = nil;
     dispatch_once(&onceToken, ^{
         sharedManager = [[[self class] alloc] init];
+        [sharedManager setName:@"TCBlobDownloadManager Queue"];
     });
     return sharedManager;
 }
@@ -49,12 +50,12 @@
                                   delegate:(id<TCBlobDownloaderDelegate>)delegateOrNil
 {
     NSString *downloadPath = customPathOrNil ? customPathOrNil : self.defaultDownloadPath;
-    
+
     TCBlobDownloader *downloader = [[TCBlobDownloader alloc] initWithURL:url
                                                             downloadPath:downloadPath
                                                                 delegate:delegateOrNil];
     [self.operationQueue addOperation:downloader];
-    
+
     return downloader;
 }
 
@@ -66,7 +67,7 @@
                                   complete:(void (^)(BOOL downloadFinished, NSString *pathToFile))completeBlock
 {
     NSString *downloadPath = customPathOrNil ? customPathOrNil : self.defaultDownloadPath;
-    
+
     TCBlobDownloader *downloader = [[TCBlobDownloader alloc] initWithURL:url
                                                             downloadPath:downloadPath
                                                            firstResponse:firstResponseBlock
@@ -74,7 +75,7 @@
                                                                    error:errorBlock
                                                                 complete:completeBlock];
     [self.operationQueue addOperation:downloader];
-    
+
     return downloader;
 }
 

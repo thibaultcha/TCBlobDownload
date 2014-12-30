@@ -18,8 +18,6 @@ Requires **iOS 5.1.1 or later** and ARC.
 - **[Example](#example-eyeglasses)**
 - **[Roadmap](#roadmap-rocket)**
 
-======
-
 ## Features
 1. Download files in background threads
 2. Blocks or delegate style
