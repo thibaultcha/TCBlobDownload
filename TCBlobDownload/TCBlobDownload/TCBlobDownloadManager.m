@@ -36,7 +36,7 @@
     static id sharedManager = nil;
     dispatch_once(&onceToken, ^{
         sharedManager = [[[self class] alloc] init];
-        [sharedManager setName:@"TCBlobDownloadManager Queue"];
+        [sharedManager setName:@"TCBlobDownloadManager_SharedInstance_Queue"];
     });
     return sharedManager;
 }

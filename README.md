@@ -15,7 +15,7 @@ Requires **iOS 5.1.1 or later** and ARC.
 - **[Features](#features)**
 - **[Documentation](#documentation-books)**
 - **[Installation](#installation)**
-- **[Example](#example-eyeglasses)**
+- **[Examples](#examples-eyeglasses)**
 - **[Roadmap](#roadmap-rocket)**
 
 ## Features

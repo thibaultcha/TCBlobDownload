@@ -111,7 +111,7 @@ typedef NS_ENUM(NSUInteger, TCBlobDownloadState) {
  
  @since 1.6.0
  */
-@property (nonatomic, copy, readonly) NSMutableURLRequest *fileRequest;
+@property (nonatomic, strong, readonly) NSMutableURLRequest *fileRequest;
 
 /**
  If not manually set, the file name, which is by default based on the last path component of the download URL.
