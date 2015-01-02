@@ -69,13 +69,14 @@ TCBlobDownloader *downloader = [sharedManager startDownloadWithURL:@"http://give
 
                }
                progress:^(uint64_t receivedLength, uint64_t totalLength, NSInteger remainingTime, float progress) {
-                 
+                 // downloader.remainingTime
+                 // downloader.speedRate
                }
                error:^(NSError *error) {
-                               
+
                }
                complete:^(BOOL downloadFinished, NSString *pathToFile) {
-                 
+
                }];
 ```
 
@@ -85,8 +86,8 @@ If you set a custom path:
 NSString *customPath = [NSTemporaryDirectory() stringByAppendingPathComponent:@"My/Custom/Path/"];
 
 TCBlobDownloader *downloader = [sharedManager startDownloadWithURL:@"http://give.me/abigfile.avi"
-                                                            customPath:customPath // important
-                                                           andDelegate:nil];
+                                                        customPath:customPath // here we set the path
+                                                       andDelegate:nil];
 ```
 
 This will **create** the given path if needed and download the file in the `Path/` directory. Please note that during the download process you have no control over the file name as explained with reasons why in the documentation. **Remember that you should follow the [iOS Data Storage Guidelines](https://developer.apple.com/icloud/documentation/data-storage/)**.
@@ -108,7 +109,7 @@ You can either set a delegate which can implement those optional methods if dele
 
 - (void)download:(TCBlobDownloader *)blobDownload didStopWithError:(NSError *)error
 {
- 
+
 }
 
 - (void)download:(TCBlobDownloader *)blobDownload didFinishWithSucces:(BOOL)downloadFinished atPath:(NSString *)pathToFile

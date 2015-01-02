@@ -1,5 +1,10 @@
 ## Changelog :memo:
 
+### 2.0.1 (01/01/2015)
+* Fix a warning regarding a property's attribute in `TCBlobDownload`
+* The `TCBlobDownloadManager` sharedInstance's `NSOperationQueue` is named
+* Small documentation updates
+
 ### 2.0.0 (16/12/2014)
 * **Breaking**: changed `setDefaultDownloadPath:` to `setDefaultDownloadPath:error:`
 * Fix threads management issue [#30](https://github.com/thibaultCha/TCBlobDownload/issues/30), [#41](https://github.com/thibaultCha/TCBlobDownload/issues/41)
