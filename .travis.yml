@@ -1,3 +1,4 @@
 language: objective-c
 xcode_project: TCBlobDownload/TCBlobDownload.xcodeproj
 xcode_scheme: TCBlobDownloadTests
+xcode_sdk: iphonesimulator7.1
