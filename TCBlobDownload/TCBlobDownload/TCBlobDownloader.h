@@ -15,13 +15,20 @@
 #import <Foundation/Foundation.h>
 
 /**
- When a download fails because of an HTTP error, the HTTP status code is transmitted as an `NSNumber` via the provided `NSError` parameter of the corresponding block or delegate method. Access to `error.userInfos[TCHTTPErrorCode]`
+ When a download fails because of an HTTP error, the HTTP status code is transmitted as an `NSNumber` via the provided `NSError` parameter of the corresponding block or delegate method. Access to `error.userInfos[TCBlobDownloadErrorHTTPStatusKey]`
  
  @see -download:didStopWithError:
  
  @since 1.5.0
  */
-extern NSString * const TCHTTPStatusCode;
+extern NSString * const TCBlobDownloadErrorHTTPStatusKey;
+
+/**
+ TCBlobDownload specific errors
+ 
+ @since 2.1.0
+*/
+extern NSString * const TCBlobDownloadErrorDomain;
 
 /**
  The possible error codes for a `TCBlobDownloader` operation. When an error block or the corresponding delegate method are called, an `NSError` instance is passed as parameter. If the domain of this `NSError` is TCBlobDownload's, the `code` parameter will be set to one of these values.
@@ -30,13 +37,13 @@ extern NSString * const TCHTTPStatusCode;
  */
 typedef NS_ENUM(NSUInteger, TCBlobDownloadError) {
     /** `NSURLConnection` was unable to handle the provided URL. */
-    TCErrorInvalidURL = 0,
+    TCBlobDownloadErrorInvalidURL = 0,
     /** The connection to the asked URL failed. */
-    TCErrorConnectionFailed,
+    TCBlobDownloadErrorConnectionFailed,
     /** The connection encountered an HTTP error. Please refer to `TCHTTPStatusCode` documentation for further details on how to handle such errors. */
-    TCErrorHTTPError,
+    TCBlobDownloadErrorHTTPError,
     /** The device has not enough free disk space to download the file. */
-    TCErrorNotEnoughFreeDiskSpace
+    TCBlobDownloadErrorNotEnoughFreeDiskSpace
 };
 
 /**

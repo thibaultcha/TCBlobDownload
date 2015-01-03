@@ -8,7 +8,7 @@
 
 #import "TCBlobDownloadTestsBase.h"
 
-
+/*
 #pragma mark - Download Handler Mock
 
 
@@ -57,8 +57,10 @@
 
 @implementation TCBlobDownloadTests
 
-- (void)testInvalidDownloadPatp
+- (void)testInvalidDownloadPath
 {
+    //XCTestExpectation *expectation = [self expectationWithDescription:@"should cancel all downloads"];
+ 
     TCBlobDownloader *download = [[TCBlobDownloader alloc] initWithURL:self.validURL
                                                           downloadPath:nil
                                                          firstResponse:NULL
@@ -165,3 +167,4 @@
 }
 
 @end
+*/

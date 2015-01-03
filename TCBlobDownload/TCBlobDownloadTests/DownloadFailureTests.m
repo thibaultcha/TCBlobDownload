@@ -8,7 +8,7 @@
 
 #import "TCBlobDownloadTestsBase.h"
 
-
+/*
 #pragma mark - Download Handler Mock
 
 
@@ -50,7 +50,7 @@
 
 - (void)testInvalidURL
 {
-    [self.manager startDownloadWithURL:[NSURL URLWithString:kInvalidURLToDownload]
+    [self.manager startDownloadWithURL:self.invalidURL
                             customPath:nil
                          firstResponse:NULL
                               progress:NULL
@@ -67,7 +67,7 @@
 
 - (void)testHTTPErrorStatusCode
 {
-    [self.manager startDownloadWithURL:[NSURL URLWithString:k404URLToDownload]
+    [self.manager startDownloadWithURL:self.invalidURL
                             customPath:nil
                          firstResponse:NULL
                               progress:NULL
@@ -94,3 +94,4 @@
 }
 
 @end
+*/

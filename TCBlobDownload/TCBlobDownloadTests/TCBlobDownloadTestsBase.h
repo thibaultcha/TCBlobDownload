@@ -10,7 +10,8 @@
 #import "XCTestCase+AsyncTesting.h"
 #import "TCBlobDownload.h"
 
-static NSString * const kPathToDownloadTests = @"com.thibaultcha.tcblobdltests";
+static NSString * const kTestsDirectory = @"com.thibaultcha.tcblobdltests";
+static NSString * const kHttpbinURL = @"http://httpbin.org";
 static NSString * const kValidURLToDownload = @"http://github.com/thibaultCha/TCBlobDownload/archive/master.zip";
 static NSString * const kInvalidURLToDownload = @"wait, where?";
 static NSString * const k404URLToDownload = @"http://github.com/thibaultCha/TCBlobDownload/archive/totoro";
@@ -23,7 +24,10 @@ typedef NS_ENUM(NSUInteger, kDelegateMethodCalled) {
 
 @interface TCBlobDownloadTestsBase : XCTestCase
 @property (nonatomic, strong) TCBlobDownloadManager *manager;
+@property (nonatomic, copy) NSURL *httpbinURL;
 @property (nonatomic, copy) NSURL *validURL;
 @property (nonatomic, copy) NSURL *invalidURL;
 @property (nonatomic, copy) NSString *testsDirectory;
+
+- (NSURL *)fixtureDownloadWithNumberOfBytes:(NSInteger)bytes;
 @end

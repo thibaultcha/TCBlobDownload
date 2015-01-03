@@ -8,9 +8,9 @@
 static const double kBufferSize = 1024*1024; // 1 MB
 static const NSTimeInterval kDefaultRequestTimeout = 30;
 static const NSInteger kNumberOfSamples = 5;
-static NSString * const kErrorDomain = @"com.thibaultcha.tcblobdownload";
 
-NSString * const TCHTTPStatusCode = @"httpStatus";
+NSString * const TCBlobDownloadErrorDomain = @"com.thibaultcha.tcblobdownload";
+NSString * const TCBlobDownloadErrorHTTPStatusKey = @"TCBlobDownloadErrorHTTPStatusKey";
 
 #import "TCBlobDownloader.h"
 #import "UIDevice-Hardware.h"
@@ -104,8 +104,8 @@ NSString * const TCHTTPStatusCode = @"httpStatus";
 {
     // If we can't handle the request, better cancelling the operation right now
     if (![NSURLConnection canHandleRequest:self.fileRequest]) {
-        NSError *error = [NSError errorWithDomain:kErrorDomain
-                                             code:TCErrorInvalidURL
+        NSError *error = [NSError errorWithDomain:TCBlobDownloadErrorDomain
+                                             code:TCBlobDownloadErrorInvalidURL
                                          userInfo:@{ NSLocalizedDescriptionKey:
                                         [NSString stringWithFormat:@"Invalid URL provided: %@", self.fileRequest.URL] }];
         
@@ -192,8 +192,8 @@ NSString * const TCHTTPStatusCode = @"httpStatus";
 
 - (void)connection:(NSURLConnection*)connection didFailWithError:(NSError *)error
 {
-    NSError *downloadError = [NSError errorWithDomain:kErrorDomain
-                                                 code:TCErrorConnectionFailed
+    NSError *downloadError = [NSError errorWithDomain:TCBlobDownloadErrorDomain
+                                                 code:TCBlobDownloadErrorConnectionFailed
                                              userInfo:@{ NSLocalizedDescriptionKey:[NSString stringWithFormat:@"Download failed for file: %@. Reason: %@",
                                                                                     self.fileName,
                                                                                     error.localizedDescription] }];
@@ -209,20 +209,20 @@ NSString * const TCHTTPStatusCode = @"httpStatus";
     NSError *error;
     
     if (httpUrlResponse.statusCode >= 400) {
-        error = [NSError errorWithDomain:kErrorDomain
-                                    code:TCErrorHTTPError
+        error = [NSError errorWithDomain:TCBlobDownloadErrorDomain
+                                    code:TCBlobDownloadErrorHTTPError
                                 userInfo:@{ NSLocalizedDescriptionKey:[NSString stringWithFormat:
                                                                        NSLocalizedString(@"HTTP error code %d (%@) ", @"HTTP error code {satus code} ({status code description})"),
                                                                        httpUrlResponse.statusCode,
                                                                        [NSHTTPURLResponse localizedStringForStatusCode:httpUrlResponse.statusCode]],
-                                            TCHTTPStatusCode: @(httpUrlResponse.statusCode) }];
+                                            TCBlobDownloadErrorHTTPStatusKey: @(httpUrlResponse.statusCode) }];
     }
     
     long long expected = @(self.expectedDataLength).longLongValue;
     if ([[UIDevice currentDevice] freeDiskSpace].longLongValue < expected && expected != -1) {
 
-        error = [NSError errorWithDomain:kErrorDomain
-                                    code:TCErrorNotEnoughFreeDiskSpace
+        error = [NSError errorWithDomain:TCBlobDownloadErrorDomain
+                                    code:TCBlobDownloadErrorNotEnoughFreeDiskSpace
                                 userInfo:@{ NSLocalizedDescriptionKey:NSLocalizedString(@"Not enough free disk space", @"") }];
     }
     

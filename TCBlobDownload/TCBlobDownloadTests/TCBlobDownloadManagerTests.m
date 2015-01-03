@@ -43,6 +43,7 @@
     TCBlobDownloader *download2 = [self.manager startDownloadWithURL:self.validURL
                                                           customPath:nil
                                                             delegate:nil];
+    
     XCTAssertEqualObjects(self.manager.defaultDownloadPath, download2.pathToDownloadDirectory,
                           @"TCBlobDownloadManager did not set defaultPath in startDownloadWithURL:customPath:delegate:");
     
@@ -52,29 +53,26 @@
                                                             progress:NULL
                                                                error:NULL
                                                             complete:NULL];
+    
     XCTAssertEqualObjects(self.manager.defaultDownloadPath, download3.pathToDownloadDirectory,
                           @"TCBlobDownloadManager did not set defaultPath in startDownloadWithURL:customPath:firstResponse:progress:error:complete:");
     
 }
 
+
 - (void)testAllOperationsCorrectlyCancelled
 {
-    [self.manager setMaxConcurrentDownloads:1];
-    
-    for (NSInteger i = 0; i < 10; i++) {
-        [self.manager startDownloadWithURL:self.validURL
+    for (NSInteger i = 0; i < 100; i++) {
+        [self.manager startDownloadWithURL:[self fixtureDownloadWithNumberOfBytes:2048]
                                 customPath:nil
                                   delegate:nil];
     }
     
-    [self waitForTimeout:5.0];
-    
-    [self.manager cancelAllDownloadsAndRemoveFiles:YES];
-    
-    [self waitForTimeout:kDefaultAsyncTimeout];
-    
-    XCTAssert(self.manager.downloadCount == 0,
-              @"TCBlobDownloadManager cancelAllDownloadsAndRemoveFiles: did not properly finished all operations.");
+    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(29 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+        [self.manager cancelAllDownloadsAndRemoveFiles:YES];
+        XCTAssert(self.manager.downloadCount == 0,
+                  @"TCBlobDownloadManager cancelAllDownloadsAndRemoveFiles: did not properly finish all its operations.");
+    });
 }
 
 /*
