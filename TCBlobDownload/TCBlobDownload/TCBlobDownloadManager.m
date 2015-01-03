@@ -24,8 +24,8 @@
 {
     self = [super init];
     if (self) {
-        _operationQueue = [[NSOperationQueue alloc] init];
-        _defaultDownloadPath = [NSString stringWithString:NSTemporaryDirectory()];
+        self.operationQueue = [[NSOperationQueue alloc] init];
+        self.defaultDownloadPath = [NSString stringWithString:NSTemporaryDirectory()];
     }
     return self;
 }
@@ -36,7 +36,7 @@
     static id sharedManager = nil;
     dispatch_once(&onceToken, ^{
         sharedManager = [[[self class] alloc] init];
-        [sharedManager setName:@"TCBlobDownloadManager_SharedInstance_Queue"];
+        [sharedManager setOperationQueueName:@"TCBlobDownloadManager_SharedInstance_Queue"];
     });
     return sharedManager;
 }
@@ -95,13 +95,21 @@
 #pragma mark - Custom Setters
 
 
+- (void)setOperationQueueName:(NSString *)name
+{
+    [self.operationQueue setName:name];
+}
+
 - (BOOL)setDefaultDownloadPath:(NSString *)pathToDL error:(NSError *__autoreleasing *)error
 {
-    if ([[NSFileManager defaultManager] createDirectoryAtPath:pathToDL withIntermediateDirectories:YES attributes:nil error:error]) {
+    if ([[NSFileManager defaultManager] createDirectoryAtPath:pathToDL
+                                  withIntermediateDirectories:YES
+                                                   attributes:nil
+                                                        error:error]) {
         _defaultDownloadPath = pathToDL;
         return YES;
     } else {
-        return false;
+        return NO;
     }
 }
 

@@ -108,6 +108,15 @@
 - (void)startDownload:(TCBlobDownloader *)download;
 
 /**
+ Name the underlying `NSOperationQueue`
+ 
+ @param name  Name to give to the `NSOperationQueue`
+ 
+ @since 2.1.0
+*/
+- (void)setOperationQueueName:(NSString *)name;
+
+/**
  Specifies the default download path. (which is `/tmp` by default)
  
  The path can be non existant, if so, it will be created.

@@ -23,7 +23,7 @@
 {
     TCBlobDownloadManager *m1 = [TCBlobDownloadManager sharedInstance];
     TCBlobDownloadManager *m2 = [TCBlobDownloadManager sharedInstance];
-    XCTAssertEqualObjects(m1, m2, @"sharedDownloadManager didn't return the same object twice");
+    XCTAssertEqualObjects(m1, m2, @"sharedDownloadManager is not a singleton");
 }
 
 - (void)testDefaultDownloadPath
@@ -38,24 +38,43 @@
                           @"Default download path is not set correctly");
 }
 
+- (void)testShouldHandleNilDownloadPath
+{
+    TCBlobDownloader *download2 = [self.manager startDownloadWithURL:self.validURL
+                                                          customPath:nil
+                                                            delegate:nil];
+    XCTAssertEqualObjects(self.manager.defaultDownloadPath, download2.pathToDownloadDirectory,
+                          @"TCBlobDownloadManager did not set defaultPath in startDownloadWithURL:customPath:delegate:");
+    
+    TCBlobDownloader *download3 = [self.manager startDownloadWithURL:self.validURL
+                                                          customPath:nil
+                                                       firstResponse:NULL
+                                                            progress:NULL
+                                                               error:NULL
+                                                            complete:NULL];
+    XCTAssertEqualObjects(self.manager.defaultDownloadPath, download3.pathToDownloadDirectory,
+                          @"TCBlobDownloadManager did not set defaultPath in startDownloadWithURL:customPath:firstResponse:progress:error:complete:");
+    
+}
+
 - (void)testAllOperationsCorrectlyCancelled
 {
+    [self.manager setMaxConcurrentDownloads:1];
+    
     for (NSInteger i = 0; i < 10; i++) {
-        [self.manager setMaxConcurrentDownloads:1];
-        
         [self.manager startDownloadWithURL:self.validURL
                                 customPath:nil
                                   delegate:nil];
     }
     
-    [self waitForTimeout:kDefaultAsyncTimeout];
+    [self waitForTimeout:5.0];
     
     [self.manager cancelAllDownloadsAndRemoveFiles:YES];
     
     [self waitForTimeout:kDefaultAsyncTimeout];
     
     XCTAssert(self.manager.downloadCount == 0,
-              @"TCBlobDownloadManager cancelAllDownload did not properly finished all operations.");
+              @"TCBlobDownloadManager cancelAllDownloadsAndRemoveFiles: did not properly finished all operations.");
 }
 
 /*

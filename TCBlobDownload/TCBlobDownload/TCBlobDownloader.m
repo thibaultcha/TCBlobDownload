@@ -65,14 +65,13 @@ NSString * const TCHTTPStatusCode = @"httpStatus";
 - (instancetype)initWithURL:(NSURL *)url
                downloadPath:(NSString *)pathToDL
                    delegate:(id<TCBlobDownloaderDelegate>)delegateOrNil
-{    
+{
     self = [super init];
     if (self) {
         self.downloadURL = url;
         self.delegate = delegateOrNil;
         self.pathToDownloadDirectory = pathToDL;
         self.state = TCBlobDownloadStateReady;
-        
         self.fileRequest = [NSMutableURLRequest requestWithURL:self.downloadURL
                                                    cachePolicy:NSURLRequestUseProtocolCachePolicy
                                                timeoutInterval:kDefaultRequestTimeout];
@@ -121,9 +120,9 @@ NSString * const TCHTTPStatusCode = @"httpStatus";
     // Create download directory
     NSError *createDirError = nil;
     if (![fm createDirectoryAtPath:self.pathToDownloadDirectory
-                 withIntermediateDirectories:YES
-                                  attributes:nil
-                                       error:&createDirError]) {
+       withIntermediateDirectories:YES
+                        attributes:nil
+                             error:&createDirError]) {
         [self notifyFromError:createDirError];
         [self cancelDownloadAndRemoveFile:NO];
         return;
@@ -142,15 +141,15 @@ NSString * const TCHTTPStatusCode = @"httpStatus";
     }
     
     // Initialization of everything we'll need to download the file
-    _file = [NSFileHandle fileHandleForWritingAtPath:self.pathToFile];
+    self.file = [NSFileHandle fileHandleForWritingAtPath:self.pathToFile];
     [self.file seekToEndOfFile];
-    _receivedDataBuffer = [[NSMutableData alloc] init];
-    _samplesOfDownloadedBytes = [[NSMutableArray alloc] init];
-    [self willChangeValueForKey:@"isExecuting"];
-    _connection = [[NSURLConnection alloc] initWithRequest:self.fileRequest
+    self.receivedDataBuffer = [[NSMutableData alloc] init];
+    self.samplesOfDownloadedBytes = [[NSMutableArray alloc] init];
+    self.connection = [[NSURLConnection alloc] initWithRequest:self.fileRequest
                                                   delegate:self
                                           startImmediately:NO];
     if (self.connection) {
+        [self willChangeValueForKey:@"isExecuting"];
         // Running state
         self.state = TCBlobDownloadStateDownloading;
         
@@ -175,6 +174,11 @@ NSString * const TCHTTPStatusCode = @"httpStatus";
 - (BOOL)isExecuting
 {
     return self.state == TCBlobDownloadStateDownloading;
+}
+
+- (BOOL)isCancelled
+{
+    return self.state == TCBlobDownloadStateCancelled;
 }
 
 - (BOOL)isFinished
@@ -284,17 +288,14 @@ NSString * const TCHTTPStatusCode = @"httpStatus";
 
 - (void)cancelDownloadAndRemoveFile:(BOOL)remove
 {
-    self.state = TCBlobDownloadStateCancelled;
-    
     [self.connection cancel];
     
-    NSFileManager *fm = [NSFileManager defaultManager];
+    self.state = TCBlobDownloadStateCancelled;
     
+    NSFileManager *fm = [NSFileManager defaultManager];
     if (remove && [fm fileExistsAtPath:self.pathToFile]) {
         NSError *fileError;
-        [fm removeItemAtPath:self.pathToFile error:&fileError];
-        if (fileError) {
-            TCLog(@"An error occured while removing file - %@", fileError);
+        if (![fm removeItemAtPath:self.pathToFile error:&fileError]) {
             [self notifyFromError:fileError];
         }
     }

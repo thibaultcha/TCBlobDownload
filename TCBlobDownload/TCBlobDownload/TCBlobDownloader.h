@@ -171,7 +171,7 @@ typedef NS_ENUM(NSUInteger, TCBlobDownloadState) {
  @since 1.0
  */
 - (instancetype)initWithURL:(NSURL *)url
-               downloadPath:(NSString *)pathToDLOrNil
+               downloadPath:(NSString *)pathToDL
                    delegate:(id<TCBlobDownloaderDelegate>)delegateOrNil;
 
 /**

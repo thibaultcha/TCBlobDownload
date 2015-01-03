@@ -42,7 +42,26 @@
       shouldUseLaunchSchemeArgsEnv = "YES"
       buildConfiguration = "Debug">
       <Testables>
+         <TestableReference
+            skipped = "NO">
+            <BuildableReference
+               BuildableIdentifier = "primary"
+               BlueprintIdentifier = "21203AD3178C593900C19335"
+               BuildableName = "TCBlobDownloadTests.xctest"
+               BlueprintName = "TCBlobDownloadTests"
+               ReferencedContainer = "container:TCBlobDownload.xcodeproj">
+            </BuildableReference>
+         </TestableReference>
       </Testables>
+      <MacroExpansion>
+         <BuildableReference
+            BuildableIdentifier = "primary"
+            BlueprintIdentifier = "217761FB172FFBBB001956C7"
+            BuildableName = "libTCBlobDownload.a"
+            BlueprintName = "TCBlobDownload"
+            ReferencedContainer = "container:TCBlobDownload.xcodeproj">
+         </BuildableReference>
+      </MacroExpansion>
    </TestAction>
    <LaunchAction
       selectedDebuggerIdentifier = "Xcode.DebuggerFoundation.Debugger.LLDB"
@@ -53,6 +72,15 @@
       ignoresPersistentStateOnLaunch = "NO"
       debugDocumentVersioning = "YES"
       allowLocationSimulation = "YES">
+      <MacroExpansion>
+         <BuildableReference
+            BuildableIdentifier = "primary"
+            BlueprintIdentifier = "217761FB172FFBBB001956C7"
+            BuildableName = "libTCBlobDownload.a"
+            BlueprintName = "TCBlobDownload"
+            ReferencedContainer = "container:TCBlobDownload.xcodeproj">
+         </BuildableReference>
+      </MacroExpansion>
       <AdditionalOptions>
       </AdditionalOptions>
    </LaunchAction>
@@ -62,6 +90,15 @@
       useCustomWorkingDirectory = "NO"
       buildConfiguration = "Release"
       debugDocumentVersioning = "YES">
+      <MacroExpansion>
+         <BuildableReference
+            BuildableIdentifier = "primary"
+            BlueprintIdentifier = "217761FB172FFBBB001956C7"
+            BuildableName = "libTCBlobDownload.a"
+            BlueprintName = "TCBlobDownload"
+            ReferencedContainer = "container:TCBlobDownload.xcodeproj">
+         </BuildableReference>
+      </MacroExpansion>
    </ProfileAction>
    <AnalyzeAction
       buildConfiguration = "Debug">

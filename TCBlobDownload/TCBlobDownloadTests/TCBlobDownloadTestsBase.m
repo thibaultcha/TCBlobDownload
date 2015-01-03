@@ -17,7 +17,7 @@
     _manager = [[TCBlobDownloadManager alloc] init];
     self.validURL = [NSURL URLWithString:kValidURLToDownload];
     self.invalidURL = [NSURL URLWithString:kInvalidURLToDownload];
-    self.testsDirectory = [NSString pathWithComponents:@[NSTemporaryDirectory(), pathToDownloadTests]];
+    self.testsDirectory = [NSString pathWithComponents:@[NSTemporaryDirectory(), kPathToDownloadTests]];
     
     NSError * __autoreleasing error;
     [[NSFileManager defaultManager] createDirectoryAtPath:self.testsDirectory
