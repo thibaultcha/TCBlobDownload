@@ -7,10 +7,9 @@
 //
 
 #import <XCTest/XCTest.h>
-#import "XCTestCase+AsyncTesting.h"
 #import "TCBlobDownload.h"
 
-static NSString * const kTestsDirectory = @"com.thibaultcha.tcblobdltests";
+static NSString * const kTestsDirectory = @"com.tcblobdownload.tests";
 static NSString * const kHttpbinURL = @"http://httpbin.org";
 static NSString * const kValidURLToDownload = @"http://github.com/thibaultCha/TCBlobDownload/archive/master.zip";
 static NSString * const kInvalidURLToDownload = @"wait, where?";
@@ -30,4 +29,7 @@ typedef NS_ENUM(NSUInteger, kDelegateMethodCalled) {
 @property (nonatomic, copy) NSString *testsDirectory;
 
 - (NSURL *)fixtureDownloadWithNumberOfBytes:(NSInteger)bytes;
+- (NSURL *)fixtureDownlaodWithStatusCode:(NSInteger)status;
+
+- (void)waitForCondition:(BOOL)condition;
 @end

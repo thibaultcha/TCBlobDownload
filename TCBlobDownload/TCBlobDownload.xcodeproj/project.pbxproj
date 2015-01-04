@@ -34,7 +34,6 @@
 		21776214172FFC4A001956C7 /* TCBlobDownloadManager.h in Headers */ = {isa = PBXBuildFile; fileRef = 2177620F172FFBD9001956C7 /* TCBlobDownloadManager.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		21776215172FFC56001956C7 /* TCBlobDownloader.h in Headers */ = {isa = PBXBuildFile; fileRef = 2177620D172FFBD9001956C7 /* TCBlobDownloader.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		21776220172FFE64001956C7 /* TCBlobDownload-Prefix.pch in Headers */ = {isa = PBXBuildFile; fileRef = 2177621F172FFE64001956C7 /* TCBlobDownload-Prefix.pch */; };
-		21D06E26181852B600CAADCD /* XCTestCase+AsyncTesting.m in Sources */ = {isa = PBXBuildFile; fileRef = 21D06E25181852B600CAADCD /* XCTestCase+AsyncTesting.m */; };
 		21D06E281818539500CAADCD /* DownloadFailureTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 21D06E271818539500CAADCD /* DownloadFailureTests.m */; };
 		C30D071318C375FB00D5CBB3 /* TCBlobDownloadTestsBase.m in Sources */ = {isa = PBXBuildFile; fileRef = C30D071218C375FB00D5CBB3 /* TCBlobDownloadTestsBase.m */; };
 		C30D071618C3772F00D5CBB3 /* TCBlobDownloadManagerTests.m in Sources */ = {isa = PBXBuildFile; fileRef = C30D071518C3772F00D5CBB3 /* TCBlobDownloadManagerTests.m */; };
@@ -81,11 +80,7 @@
 		2177620F172FFBD9001956C7 /* TCBlobDownloadManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = TCBlobDownloadManager.h; path = TCBlobDownload/TCBlobDownloadManager.h; sourceTree = "<group>"; };
 		21776210172FFBD9001956C7 /* TCBlobDownloadManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = TCBlobDownloadManager.m; path = TCBlobDownload/TCBlobDownloadManager.m; sourceTree = "<group>"; };
 		2177621F172FFE64001956C7 /* TCBlobDownload-Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "TCBlobDownload-Prefix.pch"; path = "TCBlobDownload/TCBlobDownload-Prefix.pch"; sourceTree = "<group>"; };
-		217AB36D17395D0700A174C5 /* fr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = fr; path = TCBlobDownload/fr.lproj/Localizable.strings; sourceTree = "<group>"; };
-		21D06E24181852B600CAADCD /* XCTestCase+AsyncTesting.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "XCTestCase+AsyncTesting.h"; sourceTree = "<group>"; };
-		21D06E25181852B600CAADCD /* XCTestCase+AsyncTesting.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "XCTestCase+AsyncTesting.m"; sourceTree = "<group>"; };
 		21D06E271818539500CAADCD /* DownloadFailureTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DownloadFailureTests.m; sourceTree = "<group>"; };
-		21EE597D17395AA10084CF48 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = TCBlobDownload/en.lproj/Localizable.strings; sourceTree = "<group>"; };
 		C30D071118C375FB00D5CBB3 /* TCBlobDownloadTestsBase.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TCBlobDownloadTestsBase.h; sourceTree = "<group>"; };
 		C30D071218C375FB00D5CBB3 /* TCBlobDownloadTestsBase.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TCBlobDownloadTestsBase.m; sourceTree = "<group>"; };
 		C30D071518C3772F00D5CBB3 /* TCBlobDownloadManagerTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TCBlobDownloadManagerTests.m; sourceTree = "<group>"; };
@@ -123,7 +118,6 @@
 				C30D071518C3772F00D5CBB3 /* TCBlobDownloadManagerTests.m */,
 				21203AE0178C593900C19335 /* TCBlobDownloadTests.m */,
 				21D06E271818539500CAADCD /* DownloadFailureTests.m */,
-				21D06E231818529000CAADCD /* libs */,
 				21203ADB178C593900C19335 /* Supporting Files */,
 			);
 			path = TCBlobDownloadTests;
@@ -133,8 +127,8 @@
 			isa = PBXGroup;
 			children = (
 				21203ADC178C593900C19335 /* TCBlobDownloadTests-Info.plist */,
-				21203ADD178C593900C19335 /* InfoPlist.strings */,
 				21203AE2178C593900C19335 /* TCBlobDownloadTests-Prefix.pch */,
+				21203ADD178C593900C19335 /* InfoPlist.strings */,
 			);
 			name = "Supporting Files";
 			sourceTree = "<group>";
@@ -178,18 +172,8 @@
 			isa = PBXGroup;
 			children = (
 				2177621F172FFE64001956C7 /* TCBlobDownload-Prefix.pch */,
-				21EE597C17395AA10084CF48 /* Localizable.strings */,
 			);
 			name = "Supporting Files";
-			sourceTree = "<group>";
-		};
-		21D06E231818529000CAADCD /* libs */ = {
-			isa = PBXGroup;
-			children = (
-				21D06E24181852B600CAADCD /* XCTestCase+AsyncTesting.h */,
-				21D06E25181852B600CAADCD /* XCTestCase+AsyncTesting.m */,
-			);
-			name = libs;
 			sourceTree = "<group>";
 		};
 		C30D071418C3760000D5CBB3 /* Base */ = {
@@ -337,7 +321,6 @@
 				21D06E281818539500CAADCD /* DownloadFailureTests.m in Sources */,
 				C30D071318C375FB00D5CBB3 /* TCBlobDownloadTestsBase.m in Sources */,
 				21203AE1178C593900C19335 /* TCBlobDownloadTests.m in Sources */,
-				21D06E26181852B600CAADCD /* XCTestCase+AsyncTesting.m in Sources */,
 				21203AEC178C63AB00C19335 /* TCBlobDownloadManager.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -369,15 +352,6 @@
 				21203ADE178C593900C19335 /* en */,
 			);
 			name = InfoPlist.strings;
-			sourceTree = "<group>";
-		};
-		21EE597C17395AA10084CF48 /* Localizable.strings */ = {
-			isa = PBXVariantGroup;
-			children = (
-				21EE597D17395AA10084CF48 /* en */,
-				217AB36D17395D0700A174C5 /* fr */,
-			);
-			name = Localizable.strings;
 			sourceTree = "<group>";
 		};
 /* End PBXVariantGroup section */

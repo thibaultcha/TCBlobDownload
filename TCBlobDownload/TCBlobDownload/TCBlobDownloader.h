@@ -36,10 +36,8 @@ extern NSString * const TCBlobDownloadErrorDomain;
  @since 1.5.0
  */
 typedef NS_ENUM(NSUInteger, TCBlobDownloadError) {
-    /** `NSURLConnection` was unable to handle the provided URL. */
+    /** `NSURLConnection` was unable to handle the provided request. */
     TCBlobDownloadErrorInvalidURL = 0,
-    /** The connection to the asked URL failed. */
-    TCBlobDownloadErrorConnectionFailed,
     /** The connection encountered an HTTP error. Please refer to `TCHTTPStatusCode` documentation for further details on how to handle such errors. */
     TCBlobDownloadErrorHTTPError,
     /** The device has not enough free disk space to download the file. */
@@ -215,11 +213,11 @@ typedef NS_ENUM(NSUInteger, TCBlobDownloadState) {
 /**
  Makes the receiver download dependent of the given download. The receiver download will not execute itself until the given download has finished.
  
- @param blobDownload  The download on which to depend.
+ @param download  The TCBlobDownloader on which to depend.
  
  @since 1.2
  */
-- (void)addDependentDownload:(TCBlobDownloader *)blobDownload;
+- (void)addDependentDownload:(TCBlobDownloader *)download;
 
 @end
 

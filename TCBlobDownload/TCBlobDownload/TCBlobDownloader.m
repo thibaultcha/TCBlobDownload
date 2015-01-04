@@ -5,7 +5,7 @@
 //  Copyright (c) 2013 Thibault Charbonnier. All rights reserved.
 //
 
-static const double kBufferSize = 1024*1024; // 1 MB
+static const double kBufferSize = 1000*1000; // 1 MB
 static const NSTimeInterval kDefaultRequestTimeout = 30;
 static const NSInteger kNumberOfSamples = 5;
 
@@ -26,7 +26,6 @@ NSString * const TCBlobDownloadErrorHTTPStatusKey = @"TCBlobDownloadErrorHTTPSta
 @property (nonatomic, strong) NSURLConnection *connection;
 @property (nonatomic, strong) NSMutableData *receivedDataBuffer;
 @property (nonatomic, strong) NSFileHandle *file;
-@property (nonatomic, strong) NSError *error;
 // Speed rate and remaining time
 @property (nonatomic, strong) NSTimer *speedTimer;
 @property (nonatomic, strong) NSMutableArray *samplesOfDownloadedBytes;
@@ -40,9 +39,11 @@ NSString * const TCBlobDownloadErrorHTTPStatusKey = @"TCBlobDownloadErrorHTTPSta
 @property (nonatomic, copy) void (^progressBlock)(uint64_t receivedLength, uint64_t totalLength, NSInteger remainingTime, float progress);
 @property (nonatomic, copy) void (^errorBlock)(NSError *error);
 @property (nonatomic, copy) void (^completeBlock)(BOOL downloadFinished, NSString *pathToFile);
-- (void)notifyFromError:(NSError *)error;
-- (void)notifyFromCompletionWithSuccess:(BOOL)success pathToFile:(NSString *)pathToFile;
+
+- (void)finishOperationWithState:(TCBlobDownloadState)state;
+- (void)notifyFromCompletionWithError:(NSError *)error pathToFile:(NSString *)pathToFile;
 - (void)updateTransferRate;
+- (BOOL)removeFileWithError:(NSError *__autoreleasing *)error;
 @end
 
 @implementation TCBlobDownloader
@@ -108,12 +109,10 @@ NSString * const TCBlobDownloadErrorHTTPStatusKey = @"TCBlobDownloadErrorHTTPSta
                                              code:TCBlobDownloadErrorInvalidURL
                                          userInfo:@{ NSLocalizedDescriptionKey:
                                         [NSString stringWithFormat:@"Invalid URL provided: %@", self.fileRequest.URL] }];
-        
-        [self notifyFromError:error];
-        [self cancelDownloadAndRemoveFile:NO];
+
+        [self notifyFromCompletionWithError:error pathToFile:nil];
         return;
     }
-    
 
     NSFileManager *fm = [NSFileManager defaultManager];
 
@@ -123,11 +122,10 @@ NSString * const TCBlobDownloadErrorHTTPStatusKey = @"TCBlobDownloadErrorHTTPSta
        withIntermediateDirectories:YES
                         attributes:nil
                              error:&createDirError]) {
-        [self notifyFromError:createDirError];
-        [self cancelDownloadAndRemoveFile:NO];
+        [self notifyFromCompletionWithError:createDirError pathToFile:nil];
         return;
     }
-
+    
     // Test if file already exists (partly downloaded) to set HTTP `bytes` header or not
     if (![fm fileExistsAtPath:self.pathToFile]) {
         [fm createFileAtPath:self.pathToFile
@@ -139,19 +137,21 @@ NSString * const TCBlobDownloadErrorHTTPStatusKey = @"TCBlobDownloadErrorHTTPSta
         NSString *range = [NSString stringWithFormat:@"bytes=%lld-", fileSize];
         [self.fileRequest setValue:range forHTTPHeaderField:@"Range"];
     }
-    
+
     // Initialization of everything we'll need to download the file
     self.file = [NSFileHandle fileHandleForWritingAtPath:self.pathToFile];
-    [self.file seekToEndOfFile];
     self.receivedDataBuffer = [[NSMutableData alloc] init];
     self.samplesOfDownloadedBytes = [[NSMutableArray alloc] init];
     self.connection = [[NSURLConnection alloc] initWithRequest:self.fileRequest
                                                   delegate:self
                                           startImmediately:NO];
-    if (self.connection) {
+    
+    if (self.connection && ![self isCancelled]) {
         [self willChangeValueForKey:@"isExecuting"];
-        // Running state
         self.state = TCBlobDownloadStateDownloading;
+        [self didChangeValueForKey:@"isExecuting"];
+        
+        [self.file seekToEndOfFile];
         
         // Start the download
         NSRunLoop* runLoop = [NSRunLoop currentRunLoop];
@@ -167,7 +167,6 @@ NSString * const TCBlobDownloadErrorHTTPStatusKey = @"TCBlobDownloadErrorHTTPSta
                                                           repeats:YES];
         [runLoop addTimer:self.speedTimer forMode:NSRunLoopCommonModes];
         [runLoop run];
-        [self didChangeValueForKey:@"isExecuting"];
     }
 }
 
@@ -192,43 +191,35 @@ NSString * const TCBlobDownloadErrorHTTPStatusKey = @"TCBlobDownloadErrorHTTPSta
 
 - (void)connection:(NSURLConnection*)connection didFailWithError:(NSError *)error
 {
-    NSError *downloadError = [NSError errorWithDomain:TCBlobDownloadErrorDomain
-                                                 code:TCBlobDownloadErrorConnectionFailed
-                                             userInfo:@{ NSLocalizedDescriptionKey:[NSString stringWithFormat:@"Download failed for file: %@. Reason: %@",
-                                                                                    self.fileName,
-                                                                                    error.localizedDescription] }];
-    [self notifyFromError:downloadError];
-    [self cancelDownloadAndRemoveFile:NO];
+    [self notifyFromCompletionWithError:error pathToFile:self.pathToFile];
 }
 
 - (void)connection:(NSURLConnection*)connection didReceiveResponse:(NSURLResponse *)response
 {
     self.expectedDataLength = [response expectedContentLength];
-    NSHTTPURLResponse *httpUrlResponse = (NSHTTPURLResponse *)response;
     
+    NSHTTPURLResponse *httpResponse = (NSHTTPURLResponse *)response;
     NSError *error;
-    
-    if (httpUrlResponse.statusCode >= 400) {
+
+    if (httpResponse.statusCode >= 400) {
         error = [NSError errorWithDomain:TCBlobDownloadErrorDomain
                                     code:TCBlobDownloadErrorHTTPError
-                                userInfo:@{ NSLocalizedDescriptionKey:[NSString stringWithFormat:
-                                                                       NSLocalizedString(@"HTTP error code %d (%@) ", @"HTTP error code {satus code} ({status code description})"),
-                                                                       httpUrlResponse.statusCode,
-                                                                       [NSHTTPURLResponse localizedStringForStatusCode:httpUrlResponse.statusCode]],
-                                            TCBlobDownloadErrorHTTPStatusKey: @(httpUrlResponse.statusCode) }];
+                                userInfo:@{ NSLocalizedDescriptionKey:[NSString stringWithFormat:@"Erroneous HTTP status code %ld (%@)",
+                                                                       (long) httpResponse.statusCode,
+                                                                       [NSHTTPURLResponse localizedStringForStatusCode:httpResponse.statusCode]],
+                                            TCBlobDownloadErrorHTTPStatusKey: @(httpResponse.statusCode) }];
     }
-    
+
     long long expected = @(self.expectedDataLength).longLongValue;
     if ([[UIDevice currentDevice] freeDiskSpace].longLongValue < expected && expected != -1) {
-
         error = [NSError errorWithDomain:TCBlobDownloadErrorDomain
                                     code:TCBlobDownloadErrorNotEnoughFreeDiskSpace
-                                userInfo:@{ NSLocalizedDescriptionKey:NSLocalizedString(@"Not enough free disk space", @"") }];
+                                userInfo:@{ NSLocalizedDescriptionKey:@"Not enough free disk space" }];
     }
-    
+
     if (!error) {
         [self.receivedDataBuffer setData:nil];
-        
+
         dispatch_async(dispatch_get_main_queue(), ^{
             if (self.firstResponseBlock) {
                 self.firstResponseBlock(response);
@@ -239,8 +230,7 @@ NSString * const TCBlobDownloadErrorHTTPStatusKey = @"TCBlobDownloadErrorHTTPSta
         });
     }
     else {
-        [self notifyFromError:error];
-        [self cancelDownloadAndRemoveFile:NO];
+        [self notifyFromCompletionWithError:error pathToFile:self.pathToFile];
     }
 }
 
@@ -252,13 +242,13 @@ NSString * const TCBlobDownloadErrorHTTPStatusKey = @"TCBlobDownloadErrorHTTPSta
     TCLog(@"%@ | %.2f%% - Received: %ld - Total: %ld",
           self.pathToFile,
           (float) _receivedDataLength / self.expectedDataLength * 100,
-          (long)self.receivedDataLength, (long)self.expectedDataLength);
-    
-    if (self.receivedDataBuffer.length > kBufferSize && self.file) {
+          (long) self.receivedDataLength, (long) self.expectedDataLength);
+
+    if (self.receivedDataBuffer.length > kBufferSize && [self isExecuting]) {
         [self.file writeData:self.receivedDataBuffer];
         [self.receivedDataBuffer setData:nil];
     }
-    
+
     dispatch_async(dispatch_get_main_queue(), ^{
         if (self.progressBlock) {
             self.progressBlock(self.receivedDataLength, self.expectedDataLength, self.remainingTime, self.progress);
@@ -274,12 +264,12 @@ NSString * const TCBlobDownloadErrorHTTPStatusKey = @"TCBlobDownloadErrorHTTPSta
 
 - (void)connectionDidFinishLoading:(NSURLConnection*)connection
 {
-    self.state = TCBlobDownloadStateDone;
-    
-    [self.file writeData:self.receivedDataBuffer];
-    [self.receivedDataBuffer setData:nil];
-    
-    [self notifyFromCompletionWithSuccess:YES pathToFile:self.pathToFile];
+    if ([self isExecuting]) {
+        [self.file writeData:self.receivedDataBuffer];
+        [self.receivedDataBuffer setData:nil];
+        
+        [self notifyFromCompletionWithError:nil pathToFile:self.pathToFile];
+    }
 }
 
 
@@ -288,63 +278,68 @@ NSString * const TCBlobDownloadErrorHTTPStatusKey = @"TCBlobDownloadErrorHTTPSta
 
 - (void)cancelDownloadAndRemoveFile:(BOOL)remove
 {
+    // Cancel the connection before deleting the file
     [self.connection cancel];
     
-    self.state = TCBlobDownloadStateCancelled;
-    
-    NSFileManager *fm = [NSFileManager defaultManager];
-    if (remove && [fm fileExistsAtPath:self.pathToFile]) {
-        NSError *fileError;
-        if (![fm removeItemAtPath:self.pathToFile error:&fileError]) {
-            [self notifyFromError:fileError];
+    if (remove) {
+        NSError *error;
+        if (![self removeFileWithError:&error]) {
+            [self notifyFromCompletionWithError:error pathToFile:nil];
+            return;
         }
     }
     
-    NSString *pathToFile = remove ? nil : self.fileName;
-    
-    [self notifyFromCompletionWithSuccess:NO pathToFile:pathToFile];
+    [self cancel];
 }
 
-- (void)addDependentDownload:(TCBlobDownloader *)blobDownload
+- (void)addDependentDownload:(TCBlobDownloader *)download
 {
-    [self addDependency:blobDownload];
+    [self addDependency:download];
 }
 
 
 #pragma mark - Internal Methods
 
 
-- (void)notifyFromError:(NSError *)error
-{
-    self.error = error;
-    self.state = TCBlobDownloadStateFailed;
+- (void)finishOperationWithState:(TCBlobDownloadState)state
+{    
+    // Cancel the connection in case cancel was called directly
+    [self.connection cancel];
+    [self.speedTimer invalidate];
+    [self.file closeFile];
     
-    dispatch_async(dispatch_get_main_queue(), ^{
-        if (self.errorBlock) {
-            self.errorBlock(error);
-        }
-        if ([self.delegate respondsToSelector:@selector(download:didStopWithError:)]) {
-            [self.delegate download:self didStopWithError:error];
-        }
-    });
+    // Let's finish the operation once and for all
+    [self willChangeValueForKey:@"isFinished"];
+    [self willChangeValueForKey:@"isExecuting"];
+    self.state = state;
+    [self didChangeValueForKey:@"isExecuting"];
+    [self didChangeValueForKey:@"isFinished"];
 }
 
-- (void)notifyFromCompletionWithSuccess:(BOOL)success pathToFile:(NSString *)pathToFile
+- (void)cancel
 {
-    [self willChangeValueForKey:@"isExecuting"];
-    if (success) {
-        self.state = TCBlobDownloadStateDone;
-    }
-    else {
-        if (self.error) {
-            self.state = TCBlobDownloadStateFailed;
-        }
-        else {
-            self.state = TCBlobDownloadStateCancelled;
-        }
-    }
-    [self didChangeValueForKey:@"isExecuting"];
+    [self willChangeValueForKey:@"isCancelled"];
+    [self finishOperationWithState:TCBlobDownloadStateCancelled];
+    [self didChangeValueForKey:@"isCancelled"];
+}
+
+- (void)notifyFromCompletionWithError:(NSError *)error pathToFile:(NSString *)pathToFile
+{
+    BOOL success = error == nil;
     
+    // Notify from error if any
+    if (error) {
+        dispatch_async(dispatch_get_main_queue(), ^{
+            if (self.errorBlock) {
+                self.errorBlock(error);
+            }
+            if ([self.delegate respondsToSelector:@selector(download:didStopWithError:)]) {
+                [self.delegate download:self didStopWithError:error];
+            }
+        });
+    }
+
+    // Notify from completion if the operation
     dispatch_async(dispatch_get_main_queue(), ^{
         if (self.completeBlock) {
             self.completeBlock(success, pathToFile);
@@ -354,13 +349,9 @@ NSString * const TCBlobDownloadErrorHTTPStatusKey = @"TCBlobDownloadErrorHTTPSta
         }
     });
     
-    // Let's finish the operation once and for all
-    [self willChangeValueForKey:@"isFinished"];
-    [self.speedTimer invalidate];
-    [self.connection cancel];
-    [self.file closeFile];
-    [self setConnection:nil];
-    [self didChangeValueForKey:@"isFinished"];
+    // Finish the operation
+    TCBlobDownloadState finalState = success ? TCBlobDownloadStateDone : TCBlobDownloadStateFailed;
+    [self finishOperationWithState:finalState];
 }
 
 - (void)updateTransferRate
@@ -368,12 +359,22 @@ NSString * const TCBlobDownloadErrorHTTPStatusKey = @"TCBlobDownloadErrorHTTPSta
     if (self.samplesOfDownloadedBytes.count > kNumberOfSamples) {
         [self.samplesOfDownloadedBytes removeObjectAtIndex:0];
     }
-    
+
     // Add the sample
     [self.samplesOfDownloadedBytes addObject:[NSNumber numberWithUnsignedLongLong:self.receivedDataLength - self.previousTotal]];
     self.previousTotal = self.receivedDataLength;
     // Compute the speed rate on the average of the last seconds samples
     self.speedRate = [[self.samplesOfDownloadedBytes valueForKeyPath:@"@avg.longValue"] longValue];
+}
+
+- (BOOL)removeFileWithError:(NSError *__autoreleasing *)error
+{
+    NSFileManager *fm = [NSFileManager defaultManager];
+    if ([fm fileExistsAtPath:self.pathToFile]) {
+        return [fm removeItemAtPath:self.pathToFile error:error];
+    }
+    
+    return YES;
 }
 
 

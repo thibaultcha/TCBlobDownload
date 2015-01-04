@@ -8,21 +8,22 @@
 
 #import "TCBlobDownloadTestsBase.h"
 
-/*
+
 #pragma mark - Download Handler Mock
 
 
 @interface DownloadHandlerFailure : XCTestCase <TCBlobDownloaderDelegate>
-@property (nonatomic, weak) TCBlobDownloadTestsBase *tests;
-- (instancetype)initWithTests:(TCBlobDownloadTestsBase *)tests;
+@property (nonatomic, strong) XCTestExpectation *expectation;
+@property (nonatomic, assign) BOOL didStopWithErrorCalled;
+- (instancetype)initWithExpecation:(XCTestExpectation *)expectation;
 @end
 
 @implementation DownloadHandlerFailure
-- (instancetype)initWithTests:(TCBlobDownloadTestsBase *)tests
+- (instancetype)initWithExpecation:(XCTestExpectation *)expectation
 {
     self = [super init];
     if (self) {
-        self.tests = tests;
+        self.expectation = expectation;
     }
     return self;
 }
@@ -30,12 +31,12 @@
 {
     XCTAssertTrue([NSThread isMainThread], @"didStopWithError: is not called on main thread");
     XCTAssertNotNil(error, @"Error is nil in delegate download:didStopWithError:");
-    [self.tests notify: kDidStopWithErrorMethodCalled];
+    self.didStopWithErrorCalled = YES;
 }
 - (void)download:(TCBlobDownloader *)blobDownload didFinishWithSuccess:(BOOL)downloadFinished atPath:(NSString *)pathToFile
 {
     XCTAssertFalse(downloadFinished);
-    [self.tests notify: kDidFinishWithSuccessMethodCalled];
+    [self.expectation fulfill];
 }
 @end
 
@@ -48,8 +49,10 @@
 
 @implementation DownloadFailureTests
 
-- (void)testInvalidURL
+- (void)testErrorInvalidURL
 {
+    XCTestExpectation *expectation = [self expectationWithDescription:@"should call the error block"];
+    
     [self.manager startDownloadWithURL:self.invalidURL
                             customPath:nil
                          firstResponse:NULL
@@ -57,41 +60,57 @@
                                  error:^(NSError *error) {
                                      XCTAssert([NSThread isMainThread], @"Error block is not called on main thread");
                                      XCTAssertNotNil(error, @"No error passed for invalid URL");
-                                     XCTAssertEqual((NSUInteger)error.code, TCErrorInvalidURL, @"Incoherent error code provided for invalud URL");
-                                     [self notify:XCTAsyncTestCaseStatusSucceeded];
+                                     XCTAssertEqual(error.code, TCBlobDownloadErrorInvalidURL, @"Incoherent error code provided for invalud URL");
+                                     [expectation fulfill];
                                  }
                               complete:NULL];
     
-    [self waitForStatus:XCTAsyncTestCaseStatusSucceeded timeout:5];
+    [self waitForExpectationsWithTimeout:kDefaultAsyncTimeout handler:^(NSError *error) {
+        if (error) {
+            XCTFail(@"Expectation error: %@", error);
+        }
+    }];
 }
 
-- (void)testHTTPErrorStatusCode
+- (void)testErrorHTTP
 {
-    [self.manager startDownloadWithURL:self.invalidURL
+    XCTestExpectation *expectation = [self expectationWithDescription:@"should call the error block"];
+    
+    [self.manager startDownloadWithURL:[self fixtureDownlaodWithStatusCode:404]
                             customPath:nil
                          firstResponse:NULL
                               progress:NULL
                                  error:^(NSError *error) {
-                                     XCTAssertNotNil(error.userInfo[TCHTTPStatusCode], @"error userInfo does not contains TCHTTPStatusCode field.");
-                                     XCTAssertEqual([error.userInfo[TCHTTPStatusCode] integerValue], (NSInteger)404, @"Error code should equal 404 for this URL");
-                                     [self notify:XCTAsyncTestCaseStatusSucceeded];
+                                     XCTAssertNotNil(error.userInfo[TCBlobDownloadErrorHTTPStatusKey], @"error userInfo does not contains TCHTTPStatusCode field.");
+                                     XCTAssertEqual([error.userInfo[TCBlobDownloadErrorHTTPStatusKey] integerValue], 404, @"Error code should equal 404 for this URL");
+                                     [expectation fulfill];
                                  }
                               complete:NULL];
     
-    [self waitForStatus:XCTAsyncTestCaseStatusSucceeded timeout:5];
+    [self waitForExpectationsWithTimeout:kDefaultAsyncTimeout handler:^(NSError *error) {
+        if (error) {
+            XCTFail(@"Expectation error: %@", error);
+        }
+    }];
 }
 
 - (void)testDelegateMethodsShouldBeCalled
 {
-    DownloadHandlerFailure *handler = [[DownloadHandlerFailure alloc] initWithTests:self];
+    XCTestExpectation *expectation = [self expectationWithDescription:@"should call the delegate error method"];
+    
+    DownloadHandlerFailure *handler = [[DownloadHandlerFailure alloc] initWithExpecation:expectation];
 
-    [self.manager startDownloadWithURL:[NSURL URLWithString:kInvalidURLToDownload]
+    [self.manager startDownloadWithURL:self.invalidURL
                             customPath:nil
                               delegate:handler];
+
+    [self waitForExpectationsWithTimeout:kDefaultAsyncTimeout handler:^(NSError *error) {
+        if (error) {
+            XCTFail(@"Expectation error: %@", error);
+        }
+    }];
     
-    [self waitForStatus:kDidStopWithErrorMethodCalled timeout:kDefaultAsyncTimeout];
-    [self waitForStatus:kDidFinishWithSuccessMethodCalled timeout:kDefaultAsyncTimeout];
+    XCTAssertTrue(handler.didStopWithErrorCalled, @"didStopWithError: not called");
 }
 
 @end
-*/

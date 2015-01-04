@@ -19,7 +19,7 @@
     XCTAssertNotNil(manager, @"TCBlobDownloadManager shared instance is nil.");
 }
 
-- (void)testSharedInstanceReturnsSameSingletonObject
+- (void)testSharedInstance
 {
     TCBlobDownloadManager *m1 = [TCBlobDownloadManager sharedInstance];
     TCBlobDownloadManager *m2 = [TCBlobDownloadManager sharedInstance];
@@ -34,20 +34,19 @@
 - (void)testSetDefaultDownloadPath
 {
     [self.manager setDefaultDownloadPath:NSHomeDirectory()];
-    XCTAssertEqualObjects(self.manager.defaultDownloadPath, NSHomeDirectory(),
-                          @"Default download path is not set correctly");
+    XCTAssertEqualObjects(self.manager.defaultDownloadPath, NSHomeDirectory(), @"Default download path is not set correctly");
 }
 
 - (void)testShouldHandleNilDownloadPath
 {
-    TCBlobDownloader *download2 = [self.manager startDownloadWithURL:self.validURL
+    TCBlobDownloader *download2 = [self.manager startDownloadWithURL:[self fixtureDownloadWithNumberOfBytes:1024]
                                                           customPath:nil
                                                             delegate:nil];
     
     XCTAssertEqualObjects(self.manager.defaultDownloadPath, download2.pathToDownloadDirectory,
                           @"TCBlobDownloadManager did not set defaultPath in startDownloadWithURL:customPath:delegate:");
     
-    TCBlobDownloader *download3 = [self.manager startDownloadWithURL:self.validURL
+    TCBlobDownloader *download3 = [self.manager startDownloadWithURL:[self fixtureDownloadWithNumberOfBytes:1024]
                                                           customPath:nil
                                                        firstResponse:NULL
                                                             progress:NULL
@@ -59,35 +58,47 @@
     
 }
 
-
-- (void)testAllOperationsCorrectlyCancelled
+- (void)DISABLED_testDownloadCount
 {
-    for (NSInteger i = 0; i < 100; i++) {
-        [self.manager startDownloadWithURL:[self fixtureDownloadWithNumberOfBytes:2048]
+    for (NSInteger i = 0; i < 50; i++) {
+        [self.manager startDownloadWithURL:[self fixtureDownloadWithNumberOfBytes:4096]
                                 customPath:nil
                                   delegate:nil];
     }
     
-    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(29 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-        [self.manager cancelAllDownloadsAndRemoveFiles:YES];
-        XCTAssert(self.manager.downloadCount == 0,
-                  @"TCBlobDownloadManager cancelAllDownloadsAndRemoveFiles: did not properly finish all its operations.");
-    });
+    XCTAssert(self.manager.downloadCount == 100);
 }
 
-/*
-- (void)testSetMaxConcurrentDownloads
+- (void)DISABLED_testCurrentDownloadCount_and_maxConcurrentDownloads
 {
-    [self.manager setMaxConcurrentDownloads:3];
+    [self.manager setMaxConcurrentDownloads:1];
     
-    for (NSInteger i = 0; i < 5; i++) {
-        [self.manager startDownloadWithURL:self.validURL
+    for (NSInteger i = 0; i < 50; i++) {
+        [self.manager startDownloadWithURL:[self fixtureDownloadWithNumberOfBytes:4096]
                                 customPath:nil
                                   delegate:nil];
     }
     
-    XCTAssertEqual(self.manager.currentDownloadsCount, 3, @"Maximum number of downloads is not respected.");
+    [self waitForCondition:self.manager.currentDownloadsCount > 0];
+    
+    XCTAssertEqual(1, self.manager.currentDownloadsCount, @"Maximum number of downloads is not respected.");
 }
-*/
- 
+
+- (void)DISABLED_testAllOperationsCorrectlyCancelled
+{
+    for (NSInteger i = 0; i < 50; i++) {
+        [self.manager startDownloadWithURL:[self fixtureDownloadWithNumberOfBytes:4096]
+                                customPath:nil
+                                  delegate:nil];
+    }
+    
+    [self waitForCondition:self.manager.downloadCount > 0];
+    
+    [self.manager cancelAllDownloadsAndRemoveFiles:YES];
+    
+    [self waitForCondition:self.manager.downloadCount == 0];
+    
+    XCTAssertEqual(0, self.manager.downloadCount, @"TCBlobDownloadManager cancelAllDownloadsAndRemoveFiles: did not properly finish all its operations.");
+}
+
 @end

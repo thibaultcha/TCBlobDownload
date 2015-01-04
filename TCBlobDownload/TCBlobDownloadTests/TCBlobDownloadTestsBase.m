@@ -33,25 +33,32 @@
 
 - (void)tearDown
 {
-    self.manager = nil;
-    self.validURL = nil;
-    self.invalidURL = nil;
-    self.testsDirectory = nil;
-    
-    NSError *error;
     [[NSFileManager defaultManager] removeItemAtPath:self.testsDirectory
-                                               error:&error];
-    
-    //if (error.code != 513) {
-        XCTAssertNil(error, @"Error while removing tests directory - %@", error);
-    //}
-    
+                                               error:nil];
     [super tearDown];
 }
 
 - (NSURL *)fixtureDownloadWithNumberOfBytes:(NSInteger)bytes
 {
     return [NSURL URLWithString:[NSString stringWithFormat:@"stream-bytes/%ld", (long) bytes] relativeToURL:self.httpbinURL];
+}
+
+- (NSURL *)fixtureDownlaodWithStatusCode:(NSInteger)status
+{
+    return [NSURL URLWithString:[NSString stringWithFormat:@"%ld", (long) status] relativeToURL:self.httpbinURL];
+}
+
+- (void)waitForCondition:(BOOL)condition
+{
+    NSDate *date = [NSDate date];
+    BOOL timedOut;
+    while (!condition && !timedOut) {
+        timedOut = [date timeIntervalSinceNow] < -5;
+    }
+    
+    if (timedOut) {
+        XCTFail(@"Timed out");
+    }
 }
 
 @end

@@ -8,23 +8,22 @@
 
 #import "TCBlobDownloadTestsBase.h"
 
-/*
+
 #pragma mark - Download Handler Mock
 
 
 @interface DownloadHandlerSuccess : XCTestCase <TCBlobDownloaderDelegate>
-@property (nonatomic, weak) TCBlobDownloadTestsBase *tests;
+@property (nonatomic, weak) XCTestExpectation *expectation;
 @property (nonatomic, assign) BOOL didReceiveFirstResponseCalled;
 @property (nonatomic, assign) BOOL didReceiveDataCalled;
-- (instancetype)initWithTests:(TCBlobDownloadTestsBase *)tests;
 @end
 
 @implementation DownloadHandlerSuccess
-- (instancetype)initWithTests:(TCBlobDownloadTestsBase *)tests
+- (instancetype)initWithExpectation:(XCTestExpectation *)expectation
 {
     self = [super init];
     if (self) {
-        self.tests = tests;
+        self.expectation = expectation;
     }
     return self;
 }
@@ -44,7 +43,7 @@
 - (void)download:(TCBlobDownloader *)blobDownload didFinishWithSuccess:(BOOL)downloadFinished atPath:(NSString *)pathToFile
 {
     XCTAssertTrue([NSThread isMainThread], @"didFinishWithSuccess: is not called on main thread");
-    [self.tests notify: kDidFinishWithSuccessMethodCalled];
+    [self.expectation fulfill];
 }
 @end
 
@@ -59,112 +58,126 @@
 
 - (void)testInvalidDownloadPath
 {
-    //XCTestExpectation *expectation = [self expectationWithDescription:@"should cancel all downloads"];
+    XCTestExpectation *expectation = [self expectationWithDescription:@"should return an error"];
  
-    TCBlobDownloader *download = [[TCBlobDownloader alloc] initWithURL:self.validURL
+    TCBlobDownloader *download = [[TCBlobDownloader alloc] initWithURL:[self fixtureDownloadWithNumberOfBytes:4096]
                                                           downloadPath:nil
                                                          firstResponse:NULL
                                                               progress:NULL
                                                                  error:^(NSError *error) {
                                                                      XCTAssertNotNil(error);
-                                                                     [self notify:XCTAsyncTestCaseStatusSucceeded];
+                                                                     [expectation fulfill];
                                                                  }
                                                               complete:NULL];
     [self.manager startDownload:download];
     
-    [self waitForStatus:XCTAsyncTestCaseStatusSucceeded timeout:kDefaultAsyncTimeout];
+    [self waitForExpectationsWithTimeout:kDefaultAsyncTimeout handler:^(NSError *error) {
+        if (error) {
+            XCTFail(@"Expectation error: %@", error);
+        }
+    }];
 }
 
 - (void)testCreateDownloadPath
 {
+    XCTestExpectation *expectation = [self expectationWithDescription:@"should create the download path"];
     NSString *testDirectory = [NSString pathWithComponents:@[self.manager.defaultDownloadPath, @"create_me"]];
     
-    [self.manager startDownloadWithURL:self.validURL
+    [self.manager startDownloadWithURL:[self fixtureDownloadWithNumberOfBytes:12]
                             customPath:testDirectory
-                         firstResponse:NULL
-                              progress:^(uint64_t receivedLength, uint64_t totalLength, NSInteger remainingTime, float progress) {
-                                  BOOL exists = [[NSFileManager defaultManager] fileExistsAtPath:testDirectory];
-                                  XCTAssert(exists, @"Custom download directory not created");
-                             
-                                  [self notify:XCTAsyncTestCaseStatusSucceeded];
-                              }
+                         firstResponse:^(NSURLResponse *response) {
+                             [expectation fulfill];
+                         }
+                              progress:NULL
                                  error:NULL
                               complete:NULL];
+        
+    [self waitForExpectationsWithTimeout:kDefaultAsyncTimeout handler:^(NSError *error) {
+        if (error) {
+            XCTFail(@"Expectation error: %@", error);
+        }
+    }];
     
-    [self waitForStatus:XCTAsyncTestCaseStatusSucceeded timeout:5];
-    
-    [self.manager startDownloadWithURL:self.validURL
-                            customPath:testDirectory
-                              delegate:nil];
-    
-    [self waitForTimeout:kDefaultAsyncTimeout];
-    XCTAssertTrue([[NSFileManager defaultManager] fileExistsAtPath:testDirectory], @"Custom download directory not created");
+    BOOL exists = [[NSFileManager defaultManager] fileExistsAtPath:testDirectory];
+    XCTAssert(exists, @"Custom download directory not created");
 }
 
-- (void)testOperationCorrectlyCancelled
+- (void)DISABLED_testOperationCorrectlyCancelled
 {
-    TCBlobDownloader *download = [self.manager startDownloadWithURL:self.validURL
+    TCBlobDownloader *download = [self.manager startDownloadWithURL:[self fixtureDownloadWithNumberOfBytes:4096]
                                                          customPath:nil
                                                            delegate:nil];
-    [self waitForTimeout:kDefaultAsyncTimeout];
+    [download cancelDownloadAndRemoveFile:NO];
     
-    [download cancelDownloadAndRemoveFile:YES];
     XCTAssert(self.manager.downloadCount == 0, @"TCBlobDownload operation didn't get removed from NSOperationQueue");
+    
+    BOOL exists = [[NSFileManager defaultManager] fileExistsAtPath:download.pathToFile];
+    XCTAssertTrue(exists, @"File removed after cancellation");
 }
 
-- (void)testFileIsRemovedOnCancel
+- (void)DISABLED_testFileIsRemovedOnCancel
 {
-    TCBlobDownloader *download = [self.manager startDownloadWithURL:self.validURL
+    TCBlobDownloader *download = [self.manager startDownloadWithURL:[self fixtureDownloadWithNumberOfBytes:4096]
                                                          customPath:nil
                                                            delegate:nil];
-    [self waitForTimeout:kDefaultAsyncTimeout];
-    
     [download cancelDownloadAndRemoveFile:YES];
     
-    __autoreleasing NSError *fileError;
-    NSArray *content = [[NSFileManager defaultManager] contentsOfDirectoryAtPath:download.pathToDownloadDirectory
-                                                                           error:&fileError];
-    if (fileError) {
-        XCTFail(@"An error occured while listing files in test downloads directory.");
-        NSLog(@"Error: %@", fileError);
-    }
-    if (content.count > 0) {
-        XCTFail(@"Files not removed from disk after download cancellation.");
-        NSLog(@"%ld file(s) located at %@", (unsigned long)content.count, download.pathToDownloadDirectory);
-    }
+    [self waitForCondition:download.state == TCBlobDownloadStateCancelled];
+    
+    BOOL exists = [[NSFileManager defaultManager] fileExistsAtPath:download.pathToFile];
+    XCTAssertFalse(exists, @"File not removed after cancellation");
 }
 
-- (void)testCallbacksBlocksShouldBeCalledOnMainThread
+- (void)testBlocksShouldBeCalled
 {
-    [self.manager startDownloadWithURL:self.validURL
+    XCTestExpectation *expectation = [self expectationWithDescription:@"should call the blocks"];
+    __block BOOL firstResponseCalled, progressCalled, completeCalled;
+    
+    [self.manager startDownloadWithURL:[self fixtureDownloadWithNumberOfBytes:10000000]
                             customPath:nil
                          firstResponse:^(NSURLResponse *response) {
                              XCTAssert([NSThread isMainThread], @"First response block is not called on main thread");
+                             firstResponseCalled = YES;
                          }
                          progress:^(uint64_t receivedLength, uint64_t totalLength, NSInteger remainingTime, float progress) {
                              XCTAssert([NSThread isMainThread], @"Progress block is not called on main thread");
+                             progressCalled = YES;
                          }
                          error:NULL
                          complete:^(BOOL downloadFinished, NSString *pathToFile) {
                              XCTAssert([NSThread isMainThread], @"Completion block is not called on main thread");
-                             [self notify:XCTAsyncTestCaseStatusSucceeded];
+                             completeCalled = YES;
+                             [expectation fulfill];
                          }];
     
-    [self waitForStatus:XCTAsyncTestCaseStatusSucceeded timeout:10.0];
+    [self waitForExpectationsWithTimeout:5.0 handler:^(NSError *error) {
+        if (error) {
+            XCTFail(@"Expectation error: %@", error);
+        }
+    }];
+    
+    XCTAssertTrue(firstResponseCalled);
+    XCTAssertTrue(progressCalled);
+    XCTAssertTrue(completeCalled);
 }
 
 - (void)testDelegateMethodsShouldBeCalled
 {
-    DownloadHandlerSuccess *handler = [[DownloadHandlerSuccess alloc] initWithTests:self];
+    XCTestExpectation *expectation = [self expectationWithDescription:@"should call the delegate methods"];
+    DownloadHandlerSuccess *handler = [[DownloadHandlerSuccess alloc] initWithExpectation:expectation];
     
     [self.manager startDownloadWithURL:self.validURL
                             customPath:nil
                               delegate:handler];
     
-    [self waitForStatus:kDidFinishWithSuccessMethodCalled timeout:5.0];
+    [self waitForExpectationsWithTimeout:5.0 handler:^(NSError *error) {
+        if (error) {
+            XCTFail(@"Expectation error: %@", error);
+        }
+    }];
+    
     XCTAssertTrue(handler.didReceiveFirstResponseCalled);
     XCTAssertTrue(handler.didReceiveDataCalled);
 }
 
 @end
-*/
