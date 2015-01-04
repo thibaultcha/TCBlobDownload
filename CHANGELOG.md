@@ -1,5 +1,12 @@
 ## Changelog :memo:
 
+### 2.1.0 (03/01/2015)
+* Fix crash on calling `sharedInstance` [#47](https://github.com/thibaultCha/TCBlobDownload/issues/47)
+* Better handling of the `NSOperation` states
+* Expose `TCBlobDownloadErrorDomain`
+* Remove `TCBlobDownloadErrorConnectionFailed` and directly return the `NSURLErrorDomain` error in case of connection failure
+* Fix Travis tests not executing
+
 ### 2.0.1 (01/01/2015)
 * Fix a warning regarding a property's attribute in `TCBlobDownload`
 * The `TCBlobDownloadManager` sharedInstance's `NSOperationQueue` is named
