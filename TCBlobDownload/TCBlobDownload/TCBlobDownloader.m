@@ -13,7 +13,6 @@ NSString * const TCBlobDownloadErrorDomain = @"com.thibaultcha.tcblobdownload";
 NSString * const TCBlobDownloadErrorHTTPStatusKey = @"TCBlobDownloadErrorHTTPStatusKey";
 
 #import "TCBlobDownloader.h"
-#import "UIDevice-Hardware.h"
 
 @interface TCBlobDownloader ()
 // Public
@@ -39,6 +38,8 @@ NSString * const TCBlobDownloadErrorHTTPStatusKey = @"TCBlobDownloadErrorHTTPSta
 @property (nonatomic, copy) void (^progressBlock)(uint64_t receivedLength, uint64_t totalLength, NSInteger remainingTime, float progress);
 @property (nonatomic, copy) void (^errorBlock)(NSError *error);
 @property (nonatomic, copy) void (^completeBlock)(BOOL downloadFinished, NSString *pathToFile);
+
++ (NSNumber *)freeDiskSpace;
 
 - (void)finishOperationWithState:(TCBlobDownloadState)state;
 - (void)notifyFromCompletionWithError:(NSError *)error pathToFile:(NSString *)pathToFile;
@@ -211,7 +212,7 @@ NSString * const TCBlobDownloadErrorHTTPStatusKey = @"TCBlobDownloadErrorHTTPSta
     }
 
     long long expected = @(self.expectedDataLength).longLongValue;
-    if ([[UIDevice currentDevice] freeDiskSpace].longLongValue < expected && expected != -1) {
+    if ([TCBlobDownloader freeDiskSpace].longLongValue < expected && expected != -1) {
         error = [NSError errorWithDomain:TCBlobDownloadErrorDomain
                                     code:TCBlobDownloadErrorNotEnoughFreeDiskSpace
                                 userInfo:@{ NSLocalizedDescriptionKey:@"Not enough free disk space" }];
@@ -375,6 +376,12 @@ NSString * const TCBlobDownloadErrorHTTPStatusKey = @"TCBlobDownloadErrorHTTPSta
     }
     
     return YES;
+}
+
++ (NSNumber *)freeDiskSpace
+{
+    NSDictionary *fattributes = [[NSFileManager defaultManager] attributesOfFileSystemForPath:NSHomeDirectory() error:nil];
+    return [fattributes objectForKey:NSFileSystemFreeSize];
 }
 
 
