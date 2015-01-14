@@ -1,5 +1,7 @@
 # TCBlobDownload
 
+[![Gitter](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/thibaultCha/TCBlobDownload?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
+
 [![Build Status](https://api.travis-ci.org/thibaultCha/TCBlobDownload.png)](https://travis-ci.org/thibaultCha/TCBlobDownload)
 [![Pod version](https://cocoapod-badges.herokuapp.com/v/TCBlobDownload/badge.png)](https://cocoapod-badges.herokuapp.com/v/TCBlobDownload/badge.png)
 [![Pod platform](https://cocoapod-badges.herokuapp.com/p/TCBlobDownload/badge.png)](https://cocoapod-badges.herokuapp.com/p/TCBlobDownload/badge.png)
