@@ -7,6 +7,8 @@
 
 > If you are developing for iOS 7+, please consider using [TCBlobDownloadSwift](https://github.com/thibaultCha/TCBlobDownloadSwift).
 
+> However, TCBlobDownload is still maintained and relevant for iOS 5+ projects.
+
 TCBlobDownload uses **NSOperations** to download large files (typically videos, music... well: BLOBs) using **NSURLConnection** in background threads.
 
 Tested with files from ~150MB to ~1.2GB, mostly videos.
