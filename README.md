@@ -1,7 +1,8 @@
 # TCBlobDownload
 
 [![Build Status][travis-image]][travis-url]
-[![Pod version][pod-version-image]
+![Pod version][pod-version-image]
+![Pod platform][pod-platform-image]
 [![Gitter][gitter-image]][gitter-url]
 
 > If you are developing for iOS 7+, please consider using [TCBlobDownloadSwift](https://github.com/thibaultCha/TCBlobDownloadSwift).
@@ -141,6 +142,8 @@ If you have any idea or request, please suggest it! :smiley:
 [travis-image]: https://img.shields.io/travis/thibaultCha/TCBlobDownload.svg?style=flat
 
 [pod-version-image]: https://img.shields.io/cocoapods/v/TCBlobDownload.svg
+
+[pod-platform-image]: https://img.shields.io/cocoapods/p/TCBlobDownload.svg
 
 [gitter-url]: https://gitter.im/thibaultCha/TCBlobDownload
 [gitter-image]: https://img.shields.io/badge/Gitter-Join%20Chat-blue.svg?style=flat
