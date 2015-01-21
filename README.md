@@ -146,4 +146,4 @@ If you have any idea or request, please suggest it! :smiley:
 [pod-platform-image]: https://img.shields.io/cocoapods/p/TCBlobDownload.svg
 
 [gitter-url]: https://gitter.im/thibaultCha/TCBlobDownload
-[gitter-image]: https://img.shields.io/badge/gitter-join%20chat-brightgreen.svg?style=flat
+[gitter-image]: https://img.shields.io/badge/Gitter-Join%20Chat-brightgreen.svg?style=flat
