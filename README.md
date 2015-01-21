@@ -1,9 +1,8 @@
 # TCBlobDownload
 
-[![Build Status](https://api.travis-ci.org/thibaultCha/TCBlobDownload.png)](https://travis-ci.org/thibaultCha/TCBlobDownload)
-[![Pod version](https://cocoapod-badges.herokuapp.com/v/TCBlobDownload/badge.png)](https://cocoapod-badges.herokuapp.com/v/TCBlobDownload/badge.png)
-[![Pod platform](https://cocoapod-badges.herokuapp.com/p/TCBlobDownload/badge.png)](https://cocoapod-badges.herokuapp.com/p/TCBlobDownload/badge.png)
-[![Gitter](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/thibaultCha/TCBlobDownload?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
+[![Build Status][travis-image]][travis-url]
+[![Pod version][pod-version-image]
+[![Gitter][gitter-image]][gitter-url]
 
 > If you are developing for iOS 7+, please consider using [TCBlobDownloadSwift](https://github.com/thibaultCha/TCBlobDownloadSwift).
 
@@ -135,3 +134,13 @@ If you have any idea or request, please suggest it! :smiley:
 
 * Multi segmented downloads
 * Dash XML feed for documentation versioning
+
+---
+
+[travis-url]: https://travis-ci.org/thibaultCha/TCBlobDownload
+[travis-image]: https://img.shields.io/travis/thibaultCha/TCBlobDownload.svg?style=flat
+
+[pod-version-image]: https://img.shields.io/cocoapods/v/TCBlobDownload.svg
+
+[gitter-url]: https://gitter.im/thibaultCha/TCBlobDownload
+[gitter-image]: https://img.shields.io/badge/Gitter-Join%20Chat-blue.svg?style=flat
