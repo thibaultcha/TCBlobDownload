@@ -19,7 +19,7 @@ Tested with files from ~150MB to ~1.2GB, mostly videos.
 
 I've implemented **TCBlobDownloader** which extends NSOperation and use **TCBlobDownloadManager** to execute it. You can set a delegate or use blocks for each download to update your views etc…
 
-Requires **iOS 5.1.1 or later** and ARC.
+Requires **iOS 5.0 or later** and ARC.
 
 - **[Features](#features)**
 - **[Documentation](#documentation-books)**
@@ -66,7 +66,6 @@ If you don't have CocoaPods installed or integrated into your project, you can l
 ## Examples :eyeglasses:
 
 ### 1. Blocks
-Blocks are cool.
 To immediately start a download in the default TCBlobDownloadManager directory (`tmp/` by default):
 
 ```objective-c
@@ -105,32 +104,32 @@ This will **create** the given path if needed and download the file in the `Path
 You can either set a delegate which can implement those optional methods if delegates have your preference over blocks:
 
 ```objective-c
-- (void)download:(TCBlobDownloader *)blobDownload didReceiveFirstResponse:(NSURLResponse *)response
+- (void)download:(TCBlobDownloader *)download didReceiveFirstResponse:(NSURLResponse *)response
 {
 
 }
 
-- (void)download:(TCBlobDownloader *)blobDownload didReceiveData:(uint64_t)received onTotal:(uint64_t)total
+- (void)download:(TCBlobDownloader *)download didReceiveData:(uint64_t)received onTotal:(uint64_t)total
 {
-  // blobDownload.remainingTime
-  // blobDownload.speedRate
+  // download.remainingTime
+  // download.speedRate
 }
 
-- (void)download:(TCBlobDownloader *)blobDownload didStopWithError:(NSError *)error
+- (void)download:(TCBlobDownloader *)download didStopWithError:(NSError *)error
 {
 
 }
 
-- (void)download:(TCBlobDownloader *)blobDownload didFinishWithSucces:(BOOL)downloadFinished atPath:(NSString *)pathToFile
+- (void)download:(TCBlobDownloader *)download didFinishWithSucces:(BOOL)downloadFinished atPath:(NSString *)pathToFile
 {
 
 }
 ```
 
-### 3. Other things you should know
-**Cool thing 1:** If a download has been stopped and the local file has not been deleted, when you will restart the download to the same local path, the download will start where it has stopped using the HTTP [Range](http://www.w3.org/Protocols/rfc2616/rfc2616-sec14.html) header (14.35).
+### 3. Other features
+- If a download has been stopped and the local file has not been deleted, when you will restart the download to the same local path, the download will start where it has stopped using the HTTP [Range](http://www.w3.org/Protocols/rfc2616/rfc2616-sec14.html) header (14.35).
 
-**Cool thing 2:** You can also set dependencies in your downloads using the `addDependentDownload:` method from `TCBlobDownloader`.
+- You can also set dependencies in your downloads using the `addDependentDownload:` method from `TCBlobDownloader`.
 
 See [documentation](#documentation-books) for more details.
 
