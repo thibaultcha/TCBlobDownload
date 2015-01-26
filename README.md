@@ -139,8 +139,6 @@ If you have any idea or request, please suggest it! :smiley:
 * Multi segmented downloads
 * Dash XML feed for documentation versioning
 
----
-
 [travis-url]: https://travis-ci.org/thibaultCha/TCBlobDownload
 [travis-image]: https://img.shields.io/travis/thibaultCha/TCBlobDownload.svg?style=flat
 
