@@ -135,6 +135,7 @@ NSString * const TCBlobDownloadErrorHTTPStatusKey = @"TCBlobDownloadErrorHTTPSta
     }
     else {
         uint64_t fileSize = [[fm attributesOfItemAtPath:self.pathToFile error:nil] fileSize];
+        _receivedDataLength += fileSize;
         NSString *range = [NSString stringWithFormat:@"bytes=%lld-", fileSize];
         [self.fileRequest setValue:range forHTTPHeaderField:@"Range"];
     }
@@ -198,7 +199,7 @@ NSString * const TCBlobDownloadErrorHTTPStatusKey = @"TCBlobDownloadErrorHTTPSta
 - (void)connection:(NSURLConnection*)connection didReceiveResponse:(NSURLResponse *)response
 {
     self.expectedDataLength = [response expectedContentLength];
-    
+    self.expectedDataLength += _receivedDataLength;
     NSHTTPURLResponse *httpResponse = (NSHTTPURLResponse *)response;
     NSError *error;
 
