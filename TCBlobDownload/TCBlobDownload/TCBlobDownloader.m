@@ -135,9 +135,10 @@ NSString * const TCBlobDownloadErrorHTTPStatusKey = @"TCBlobDownloadErrorHTTPSta
     }
     else {
         uint64_t fileSize = [[fm attributesOfItemAtPath:self.pathToFile error:nil] fileSize];
-        _receivedDataLength += fileSize;
         NSString *range = [NSString stringWithFormat:@"bytes=%lld-", fileSize];
         [self.fileRequest setValue:range forHTTPHeaderField:@"Range"];
+        // Allow progress to reflect what's already downloaded
+        self.receivedDataLength += fileSize;
     }
 
     // Initialization of everything we'll need to download the file
@@ -198,11 +199,11 @@ NSString * const TCBlobDownloadErrorHTTPStatusKey = @"TCBlobDownloadErrorHTTPSta
 
 - (void)connection:(NSURLConnection*)connection didReceiveResponse:(NSURLResponse *)response
 {
-    self.expectedDataLength = [response expectedContentLength];
-    self.expectedDataLength += _receivedDataLength;
+    // If anything was previousy downloaded, add it to the total expected length for the progress property
+    self.expectedDataLength = self.receivedDataLength + [response expectedContentLength];
+
     NSHTTPURLResponse *httpResponse = (NSHTTPURLResponse *)response;
     NSError *error;
-
     if (httpResponse.statusCode >= 400) {
         error = [NSError errorWithDomain:TCBlobDownloadErrorDomain
                                     code:TCBlobDownloadErrorHTTPError
@@ -243,7 +244,7 @@ NSString * const TCBlobDownloadErrorHTTPStatusKey = @"TCBlobDownloadErrorHTTPSta
 
     TCLog(@"%@ | %.2f%% - Received: %ld - Total: %ld",
           self.pathToFile,
-          (float) _receivedDataLength / self.expectedDataLength * 100,
+          (float) self.receivedDataLength / self.expectedDataLength * 100,
           (long) self.receivedDataLength, (long) self.expectedDataLength);
 
     if (self.receivedDataBuffer.length > kBufferSize && [self isExecuting]) {
@@ -401,12 +402,12 @@ NSString * const TCBlobDownloadErrorHTTPStatusKey = @"TCBlobDownloadErrorHTTPSta
 
 - (NSInteger)remainingTime
 {
-    return self.speedRate > 0 ? ((NSInteger)(self.expectedDataLength - self.receivedDataLength) / self.speedRate) : -1;
+    return self.speedRate > 0 ? ((NSInteger) (self.expectedDataLength - self.receivedDataLength) / self.speedRate) : -1;
 }
 
 - (float)progress
 {
-    return (_expectedDataLength == 0) ? 0 : (float)_receivedDataLength / (float)_expectedDataLength;
+    return (_expectedDataLength == 0) ? 0 : (float) self.receivedDataLength / (float) self.expectedDataLength;
 }
 
 @end
