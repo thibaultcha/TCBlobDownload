@@ -73,7 +73,7 @@
                                   delegate:(id<TCBlobDownloaderDelegate>)delegateOrNil;
 
 /**
- Instanciates and runs instantly a `TCBlobDownloader` object. Provides the same functionnalities than `-startDownloadWithURL:customPath:delegate:` but creates a `TCBlobDownloadObject` using blocks to update your view.
+ Instanciates and runs instantly a `TCBlobDownloader` object. Provides the same functionalities than `-startDownloadWithURL:customPath:delegate:` but creates a `TCBlobDownloadObject` using blocks to update your view.
  
  @see -startDownloadWithURL:customPath:delegate:
  
@@ -85,7 +85,7 @@
  @param customPathOrNil  An optional path to override the default download path of the `TCBlobDownloadManager` instance. Can be `nil`.
  @param firstResponseBlock  This block is called when receiving the first response from the server. Can be `nil`.
  @param progressBlock  This block is called on each response from the server while the download is occurring. Can be `nil`. If the remaining time has not been calculated yet, the value is `-1`. @param errorBlock  Called when an error occur during the download. If this block is called, the download will be cancelled just after. Can be `nil`.
- @param completeBlock  Called when the download is completed or cancelled. Can be `nil`. If the download has been cancelled with the paramater `removeFile` set to `YES`, then the `pathToFile` parameter is `nil`. The `TCBlobDownloader` operation will be removed from `TCBlobDownloadManager` just after this block is called.
+ @param completeBlock  Called when the download is completed or cancelled. Can be `nil`. If the download has been cancelled with the parameter `removeFile` set to `YES`, then the `pathToFile` parameter is `nil`. The `TCBlobDownloader` operation will be removed from `TCBlobDownloadManager` just after this block is called.
  
  @since 1.4
 */
