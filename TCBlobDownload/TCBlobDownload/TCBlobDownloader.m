@@ -104,6 +104,10 @@ NSString * const TCBlobDownloadErrorHTTPStatusKey = @"TCBlobDownloadErrorHTTPSta
 
 - (void)start
 {
+    if ([self isCancelled]) {
+        return;
+    }
+    
     // If we can't handle the request, better cancelling the operation right now
     if (![NSURLConnection canHandleRequest:self.fileRequest]) {
         NSError *error = [NSError errorWithDomain:TCBlobDownloadErrorDomain
@@ -312,11 +316,17 @@ NSString * const TCBlobDownloadErrorHTTPStatusKey = @"TCBlobDownloadErrorHTTPSta
     [self.file closeFile];
     
     // Let's finish the operation once and for all
-    [self willChangeValueForKey:@"isFinished"];
-    [self willChangeValueForKey:@"isExecuting"];
-    self.state = state;
-    [self didChangeValueForKey:@"isExecuting"];
-    [self didChangeValueForKey:@"isFinished"];
+    if ([self isExecuting]) {
+        [self willChangeValueForKey:@"isFinished"];
+        [self willChangeValueForKey:@"isExecuting"];
+        self.state = state;
+        [self didChangeValueForKey:@"isExecuting"];
+        [self didChangeValueForKey:@"isFinished"];
+    } else {
+        [self willChangeValueForKey:@"isExecuting"];
+        self.state = state;
+        [self didChangeValueForKey:@"isExecuting"];
+    }
 }
 
 - (void)cancel
