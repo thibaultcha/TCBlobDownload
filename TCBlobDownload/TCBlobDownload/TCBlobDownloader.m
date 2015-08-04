@@ -77,6 +77,7 @@ NSString * const TCBlobDownloadErrorHTTPStatusKey = @"TCBlobDownloadErrorHTTPSta
         self.fileRequest = [NSMutableURLRequest requestWithURL:self.downloadURL
                                                    cachePolicy:NSURLRequestUseProtocolCachePolicy
                                                timeoutInterval:kDefaultRequestTimeout];
+        self.bufferSize = kBufferSize;
     }
     return self;
 }
@@ -247,7 +248,7 @@ NSString * const TCBlobDownloadErrorHTTPStatusKey = @"TCBlobDownloadErrorHTTPSta
           (float) self.receivedDataLength / self.expectedDataLength * 100,
           (long) self.receivedDataLength, (long) self.expectedDataLength);
 
-    if (self.receivedDataBuffer.length > kBufferSize && [self isExecuting]) {
+    if (self.receivedDataBuffer.length > self.bufferSize && [self isExecuting]) {
         [self.file writeData:self.receivedDataBuffer];
         [self.receivedDataBuffer setData:nil];
     }
