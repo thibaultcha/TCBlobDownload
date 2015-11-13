@@ -190,6 +190,7 @@ typedef NS_ENUM(NSUInteger, TCBlobDownloadState) {
  @param progressBlock  This block is called on each response from the server while the download is occurring. Can be `nil`. If the remaining time has not been calculated yet, the value is `-1`.
  @param errorBlock  Called when an error occur during the download. If this block is called, the download will be cancelled just after. Can be `nil`.
  @param completeBlock  Called when the download is completed or cancelled. Can be `nil`. If the download has been cancelled with the parameter `removeFile` set to `YES`, then the `pathToFile` parameter is `nil`. The `TCBlobDownloader` operation will be removed from `TCBlobDownloadManager` just after this block is called.
+ * @param bufferSizeKb - save download state every "bufferSizeKb" kilobytes for this file.
  @return The newly created `TCBlobDownloader`.
  
  @since 1.3
@@ -199,7 +200,8 @@ typedef NS_ENUM(NSUInteger, TCBlobDownloadState) {
               firstResponse:(void (^)(NSURLResponse *response))firstResponseBlock
                    progress:(void (^)(uint64_t receivedLength, uint64_t totalLength, NSInteger remainingTime, float progress))progressBlock
                       error:(void (^)(NSError *error))errorBlock
-                   complete:(void (^)(BOOL downloadFinished, NSString *pathToFile))completeBlock;
+                   complete:(void (^)(BOOL downloadFinished, NSString *pathToFile))completeBlock
+               bufferSizeKb:(NSUInteger)bufferSizeKb;
 
 /**
  Cancels the download. Remove already downloaded parts of the file from the disk is asked.
