@@ -5,7 +5,6 @@
 //  Copyright (c) 2013 Thibault Charbonnier. All rights reserved.
 //
 
-static const double kBufferSize = 1000*1000; // 1 MB
 static const NSTimeInterval kDefaultRequestTimeout = 30;
 static const NSInteger kNumberOfSamples = 5;
 
@@ -25,6 +24,7 @@ NSString * const TCBlobDownloadErrorHTTPStatusKey = @"TCBlobDownloadErrorHTTPSta
 @property (nonatomic, strong) NSURLConnection *connection;
 @property (nonatomic, strong) NSMutableData *receivedDataBuffer;
 @property (nonatomic, strong) NSFileHandle *file;
+@property(nonatomic) NSUInteger bufferSizeBytes;
 // Speed rate and remaining time
 @property (nonatomic, strong) NSTimer *speedTimer;
 @property (nonatomic, strong) NSMutableArray *samplesOfDownloadedBytes;
@@ -87,6 +87,7 @@ NSString * const TCBlobDownloadErrorHTTPStatusKey = @"TCBlobDownloadErrorHTTPSta
                    progress:(void (^)(uint64_t receivedLength, uint64_t totalLength, NSInteger remainingTime, float progress))progressBlock
                       error:(void (^)(NSError *error))errorBlock
                    complete:(void (^)(BOOL downloadFinished, NSString *pathToFile))completeBlock
+               bufferSizeKb:(NSUInteger)bufferSizeKb
 {
     self = [self initWithURL:url downloadPath:pathToDL delegate:nil];
     if (self) {
@@ -94,6 +95,7 @@ NSString * const TCBlobDownloadErrorHTTPStatusKey = @"TCBlobDownloadErrorHTTPSta
         self.progressBlock = progressBlock;
         self.errorBlock = errorBlock;
         self.completeBlock = completeBlock;
+        self.bufferSizeBytes = bufferSizeKb * byte;
     }
     return self;
 }
@@ -247,7 +249,7 @@ NSString * const TCBlobDownloadErrorHTTPStatusKey = @"TCBlobDownloadErrorHTTPSta
           (float) self.receivedDataLength / self.expectedDataLength * 100,
           (long) self.receivedDataLength, (long) self.expectedDataLength);
 
-    if (self.receivedDataBuffer.length > kBufferSize && [self isExecuting]) {
+    if (self.receivedDataBuffer.length > self.bufferSizeBytes && [self isExecuting]) {
         [self.file writeData:self.receivedDataBuffer];
         [self.receivedDataBuffer setData:nil];
     }
