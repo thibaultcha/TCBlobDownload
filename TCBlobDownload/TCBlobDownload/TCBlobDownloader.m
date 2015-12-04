@@ -330,6 +330,10 @@ NSString * const TCBlobDownloadErrorHTTPStatusKey = @"TCBlobDownloadErrorHTTPSta
 {
     BOOL success = error == nil;
     
+    // Finish the operation
+    TCBlobDownloadState finalState = success ? TCBlobDownloadStateDone : TCBlobDownloadStateFailed;
+    [self finishOperationWithState:finalState];
+    
     // Notify from error if any
     if (error) {
         dispatch_async(dispatch_get_main_queue(), ^{
@@ -352,9 +356,7 @@ NSString * const TCBlobDownloadErrorHTTPStatusKey = @"TCBlobDownloadErrorHTTPSta
         }
     });
     
-    // Finish the operation
-    TCBlobDownloadState finalState = success ? TCBlobDownloadStateDone : TCBlobDownloadStateFailed;
-    [self finishOperationWithState:finalState];
+    
 }
 
 - (void)updateTransferRate
