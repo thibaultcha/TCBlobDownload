@@ -377,7 +377,9 @@ NSString * const TCBlobDownloadErrorHTTPStatusKey = @"TCBlobDownloadErrorHTTPSta
     [self.samplesOfDownloadedBytes addObject:[NSNumber numberWithUnsignedLongLong:self.receivedDataLength - self.previousTotal]];
     self.previousTotal = self.receivedDataLength;
     // Compute the speed rate on the average of the last seconds samples
-    self.speedRate = [[self.samplesOfDownloadedBytes valueForKeyPath:@"@avg.longValue"] longValue];
+    //self.speedRate = [[self.samplesOfDownloadedBytes valueForKeyPath:@"@avg.longValue"] longValue];
+    long sum = [[self.samplesOfDownloadedBytes valueForKeyPath:@"@sum.longValue"] longValue];
+    self.speedRate = sum / self.samplesOfDownloadedBytes.count;
 }
 
 - (BOOL)removeFileWithError:(NSError *__autoreleasing *)error
