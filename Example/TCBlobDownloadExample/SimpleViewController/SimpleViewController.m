@@ -49,7 +49,8 @@
                                        firstResponse:NULL
                                             progress:^(uint64_t receivedLength, uint64_t totalLength, NSInteger remainingTime, float progress) {
                                                 if (remainingTime != -1) {
-                                                    [self.remainingTime setText:[NSString stringWithFormat:@"%lds", (long)remainingTime]];
+                                                    NSLog(@"%f", progress);
+                                                    [self.remainingTime setText:[NSString stringWithFormat:@"%.0f%%", progress * 100]];
                                                 }
                                             }
                                                error:^(NSError *error) {

@@ -104,6 +104,7 @@ NSString * const TCBlobDownloadErrorHTTPStatusKey = @"TCBlobDownloadErrorHTTPSta
 
 - (void)start
 {
+
     // If we can't handle the request, better cancelling the operation right now
     if (![NSURLConnection canHandleRequest:self.fileRequest]) {
         NSError *error = [NSError errorWithDomain:TCBlobDownloadErrorDomain
@@ -116,6 +117,12 @@ NSString * const TCBlobDownloadErrorHTTPStatusKey = @"TCBlobDownloadErrorHTTPSta
     }
 
     NSFileManager *fm = [NSFileManager defaultManager];
+    
+    // If competed
+    if ([fm fileExistsAtPath:self.pathToCompletedFile]) {
+        [self notifyFromCompletionWithError:nil pathToFile:nil];
+        return;
+    }
 
     // Create download directory
     NSError *createDirError = nil;
@@ -311,6 +318,17 @@ NSString * const TCBlobDownloadErrorHTTPStatusKey = @"TCBlobDownloadErrorHTTPSta
     [self.speedTimer invalidate];
     [self.file closeFile];
     
+    // If has download file compelted
+    NSFileManager * fm = [NSFileManager defaultManager];
+    if (state == TCBlobDownloadStateDone && [fm fileExistsAtPath:self.pathToFile]) {
+        NSError * err = NULL;
+        
+        BOOL result = [fm moveItemAtPath:self.pathToFile toPath:self.pathToCompletedFile error:&err];
+        if(!result)
+            NSLog(@"Error: %@", err);
+        
+    }
+    
     // Let's finish the operation once and for all
     [self willChangeValueForKey:@"isFinished"];
     [self willChangeValueForKey:@"isExecuting"];
@@ -398,6 +416,11 @@ NSString * const TCBlobDownloadErrorHTTPStatusKey = @"TCBlobDownloadErrorHTTPSta
 }
 
 - (NSString *)pathToFile
+{
+    return [self.pathToDownloadDirectory stringByAppendingPathComponent: [NSString stringWithFormat:@"%@_segment", self.fileName]];
+}
+
+- (NSString *)pathToCompletedFile
 {
     return [self.pathToDownloadDirectory stringByAppendingPathComponent:self.fileName];
 }
