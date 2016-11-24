@@ -5,6 +5,8 @@
 //  Copyright (c) 2013 Thibault Charbonnier. All rights reserved.
 //
 
+static double const kDefaultBufferSizeKb = 1000; // 1 MB
+
 #import "TCBlobDownloadManager.h"
 #import "TCBlobDownloader.h"
 
@@ -66,6 +68,25 @@
                                      error:(void (^)(NSError *error))errorBlock
                                   complete:(void (^)(BOOL downloadFinished, NSString *pathToFile))completeBlock
 {
+
+    TCBlobDownloader *downloader = [self startDownloadWithURL:url
+                                                   customPath:customPathOrNil
+                                                firstResponse:firstResponseBlock
+                                                     progress:progressBlock
+                                                        error:errorBlock
+                                                     complete:completeBlock
+                                                 bufferSizeKb:kDefaultBufferSizeKb];
+
+    return downloader;
+}
+
+- (TCBlobDownloader *)startDownloadWithURL:(NSURL *)url
+                                customPath:(NSString *)customPathOrNil
+                             firstResponse:(void (^)(NSURLResponse *response))firstResponseBlock
+                                  progress:(void (^)(uint64_t receivedLength, uint64_t totalLength, NSInteger remainingTime, float progress))progressBlock
+                                     error:(void (^)(NSError *error))errorBlock complete:(void (^)(BOOL downloadFinished, NSString *pathToFile))completeBlock
+                              bufferSizeKb:(NSUInteger)bufferSizeKb {
+
     NSString *downloadPath = customPathOrNil ? customPathOrNil : self.defaultDownloadPath;
 
     TCBlobDownloader *downloader = [[TCBlobDownloader alloc] initWithURL:url
@@ -73,9 +94,11 @@
                                                            firstResponse:firstResponseBlock
                                                                 progress:progressBlock
                                                                    error:errorBlock
-                                                                complete:completeBlock];
-    [self.operationQueue addOperation:downloader];
+                                                                complete:completeBlock
+                                                            bufferSizeKb:bufferSizeKb];
 
+
+    [self.operationQueue addOperation:downloader];
     return downloader;
 }
 

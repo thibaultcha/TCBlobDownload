@@ -97,6 +97,17 @@
                                   complete:(void (^)(BOOL downloadFinished, NSString *pathToFile))completeBlock;
 
 /**
+ * @param bufferSizeKb - save download state every "bufferSizeKb" kilobytes for this file.
+ * */
+- (TCBlobDownloader *)startDownloadWithURL:(NSURL *)url
+                                customPath:(NSString *)customPathOrNil
+                             firstResponse:(void (^)(NSURLResponse *response))firstResponseBlock
+                                  progress:(void (^)(uint64_t receivedLength, uint64_t totalLength, NSInteger remainingTime, float progress))progressBlock
+                                     error:(void (^)(NSError *error))errorBlock
+                                  complete:(void (^)(BOOL downloadFinished, NSString *pathToFile))completeBlock
+                                bufferSizeKb:(NSUInteger)bufferSizeKb;
+
+/**
  Starts an already instanciated `TCBlobDownloader` object.
  
  You can instanciate a `TCBlobDownloader` object and instead of executing it directly using `-startDownloadWithURL:customPath:delegate:` or the block equivalent, pass it to this method whenever you're ready.
